@@ -1,0 +1,673 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glow Beauty Parlour</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#fff7fa;color:#333}
+header{background:#8e315d;color:white;padding:16px 5%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;position:sticky;top:0;z-index:10}
+.logo{font-size:25px;font-weight:bold}
+nav{display:flex;gap:5px;flex-wrap:wrap}
+nav button{background:transparent;color:white;border:1px solid white;padding:9px 12px;border-radius:7px;cursor:pointer}
+nav button:hover{background:white;color:#8e315d}
+.page{display:none;padding:30px 5%;min-height:75vh}
+.page.active{display:block}
+.hero{background:linear-gradient(#0007,#0007),url('https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1400');background-size:cover;background-position:center;color:white;text-align:center;padding:110px 15px;border-radius:15px}
+.hero h1{font-size:42px;margin-bottom:15px}
+.hero p{font-size:18px;margin-bottom:20px}
+button{cursor:pointer;border:none}
+.primary,.success,.danger,.secondary,.warning{padding:11px 16px;border-radius:7px;margin:3px;font-weight:bold}
+.primary{background:#b83d75;color:white}
+.success{background:#198754;color:white}
+.danger{background:#dc3545;color:white}
+.secondary{background:#6c757d;color:white}
+.warning{background:#ffc107;color:#222}
+.card{background:white;padding:22px;border-radius:12px;box-shadow:0 3px 14px #0001;margin:15px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:20px}
+.service{background:white;border-radius:13px;overflow:hidden;box-shadow:0 3px 12px #0001}
+.service img{width:100%;height:170px;object-fit:cover}
+.service-info{padding:17px}
+.price{font-size:22px;color:#b83d75;font-weight:bold;margin:10px 0}
+.badge{background:#ffe1ed;color:#8e315d;padding:5px 10px;border-radius:15px;font-size:12px}
+input,select,textarea{width:100%;padding:11px;border:1px solid #ccc;border-radius:7px;margin:5px 0 13px}
+label{font-weight:bold;display:block;margin-top:8px}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.category{padding:10px 17px;background:#ffe1ed;color:#8e315d;border-radius:20px;margin:5px;cursor:pointer}
+.category:hover{background:#b83d75;color:white}
+table{width:100%;border-collapse:collapse;background:white;margin-top:12px}
+th,td{padding:11px;border-bottom:1px solid #ddd;text-align:left}
+th{background:#8e315d;color:white}
+.table-wrap{overflow-x:auto}
+.stat{text-align:center}
+.stat h2{color:#b83d75;font-size:30px}
+.modal{display:none;position:fixed;inset:0;background:#0009;z-index:20;overflow:auto}
+.modal-content{background:white;width:92%;max-width:700px;margin:35px auto;padding:25px;border-radius:14px}
+.close{float:right;font-size:27px;cursor:pointer}
+.notice{background:#fff3cd;padding:13px;border-radius:7px;margin:12px 0}
+.slot{padding:12px;background:#ffe1ed;color:#8e315d;border-radius:7px;margin:5px}
+.slot:disabled{background:#ddd;color:#888;cursor:not-allowed}
+.slot.selected{background:#8e315d;color:white}
+footer{background:#8e315d;color:white;text-align:center;padding:25px;margin-top:25px}
+@media(max-width:600px){.hero h1{font-size:30px}header{justify-content:center}}
+@media print{header,footer,.no-print{display:none!important}.modal{position:static;background:white}.modal-content{box-shadow:none;margin:0;width:100%}}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">💄 Glow Beauty Parlour</div>
+<nav>
+<button onclick="showPage('home')">Home</button>
+<button onclick="showPage('services')">Services</button>
+<button onclick="showPage('booking')">Book Appointment</button>
+<button onclick="showPage('mybookings')">My Bookings</button>
+<button onclick="showPage('feedback')">Feedback</button>
+<button onclick="showPage('admin')">Admin</button>
+</nav>
+</header>
+
+<!-- HOME PAGE -->
+<section id="home" class="page active">
+<div class="hero">
+<h1>Welcome to Glow Beauty Parlour</h1>
+<p>Enhance Your Beauty With Professional Care</p>
+<button class="primary" onclick="showPage('services')">Explore Services</button>
+<button class="success" onclick="showPage('booking')">Book Appointment</button>
+</div>
+
+<div class="grid">
+<div class="card"><h3>💇 Hair Care</h3><p>Professional hair cutting, styling and colouring.</p></div>
+<div class="card"><h3>💆 Skin Care</h3><p>Facial, cleanup and skin treatment services.</p></div>
+<div class="card"><h3>💅 Nail Care</h3><p>Manicure, pedicure and nail decoration.</p></div>
+<div class="card"><h3>👰 Bridal Makeup</h3><p>Special makeup packages for weddings and events.</p></div>
+</div>
+
+<div class="card">
+<h2>Why Choose Us?</h2><br>
+<p>✔ Experienced beauticians</p><br>
+<p>✔ Affordable service prices</p><br>
+<p>✔ Easy online appointments</p><br>
+<p>✔ Flexible appointment timings</p><br>
+<p>✔ Professional beauty products</p><br>
+<p>✔ Customer-friendly service</p>
+</div>
+</section>
+
+<!-- SERVICES PAGE -->
+<section id="services" class="page">
+<h1>Our Beauty Services</h1>
+<div class="card">
+<input id="serviceSearch" placeholder="Search services..." oninput="renderServices()">
+<div id="categories"></div>
+</div>
+<div id="serviceList" class="grid"></div>
+</section>
+
+<!-- BOOKING PAGE -->
+<section id="booking" class="page">
+<h1>Book Your Appointment</h1>
+<div class="card">
+<h3>Customer Information</h3>
+<div class="form-grid">
+<div><label>Full Name</label><input id="cname" placeholder="Enter your name"></div>
+<div><label>Mobile Number</label><input id="phone" type="tel" placeholder="Enter mobile number"></div>
+<div><label>Email Address</label><input id="email" type="email" placeholder="Enter email"></div>
+</div>
+
+<h3>Select Beauty Service</h3>
+<label>Service</label>
+<select id="serviceSelect" onchange="updateBookingPrice()"></select>
+
+<div class="form-grid">
+<div><label>Beautician</label><select id="staffSelect"></select></div>
+<div><label>Appointment Date</label><input type="date" id="appointmentDate" onchange="showSlots()"></div>
+</div>
+
+<h3>Choose Appointment Time</h3>
+<div id="slots"></div>
+<p>Selected Time: <strong id="selectedTime">Not selected</strong></p>
+
+<div class="card">
+<h3>Appointment Summary</h3>
+<p>Service: <span id="summaryService">-</span></p>
+<p>Beautician: <span id="summaryStaff">-</span></p>
+<p>Price: ₹<span id="summaryPrice">0</span></p>
+<p>Duration: <span id="summaryDuration">0</span> minutes</p>
+</div>
+
+<label>Additional Requirements</label>
+<textarea id="requirements" rows="3" placeholder="Enter any special requirements"></textarea>
+
+<h3>Payment Method</h3>
+<select id="payment">
+<option>UPI (Demo)</option>
+<option>Debit Card (Demo)</option>
+<option>Credit Card (Demo)</option>
+<option>Cash at Parlour</option>
+</select>
+
+<div class="notice">Demo project: Online payment is simulated. No actual money is charged.</div>
+<button class="primary" onclick="bookAppointment()">Confirm Appointment</button>
+</div>
+</section>
+
+<!-- CUSTOMER BOOKINGS -->
+<section id="mybookings" class="page">
+<h1>My Appointments</h1>
+<div class="card">
+<label>Enter your registered mobile number</label>
+<input id="customerLookup" placeholder="Mobile number">
+<button class="primary" onclick="findMyBookings()">View My Bookings</button>
+</div>
+<div id="customerBookings"></div>
+</section>
+
+<!-- FEEDBACK -->
+<section id="feedback" class="page">
+<h1>Customer Feedback</h1>
+<div class="card">
+<label>Your Name</label>
+<input id="feedbackName" placeholder="Name">
+<label>Mobile Number</label>
+<input id="feedbackPhone" placeholder="Registered mobile number">
+<label>Rate Our Service</label>
+<select id="rating">
+<option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+<option value="4">⭐⭐⭐⭐ Very Good</option>
+<option value="3">⭐⭐⭐ Good</option>
+<option value="2">⭐⭐ Fair</option>
+<option value="1">⭐ Poor</option>
+</select>
+<label>Your Feedback</label>
+<textarea id="feedbackText" rows="4" placeholder="Write your experience"></textarea>
+<button class="primary" onclick="submitFeedback()">Submit Feedback</button>
+</div>
+<div id="feedbackList"></div>
+</section>
+
+<!-- ADMIN PAGE -->
+<section id="admin" class="page">
+<h1>Admin Dashboard</h1>
+<div id="adminLogin" class="card">
+<h3>Admin Login</h3>
+<label>Username</label>
+<input id="adminUser" placeholder="Username">
+<label>Password</label>
+<input id="adminPass" type="password" placeholder="Password">
+<button class="primary" onclick="adminLogin()">Login</button>
+<p class="notice">Demo login: admin | admin123</p>
+</div>
+
+<div id="adminPanel" style="display:none">
+<button class="danger no-print" onclick="adminLogout()">Logout</button>
+
+<div class="grid">
+<div class="card stat"><h2 id="totalServices">0</h2><p>Total Services</p></div>
+<div class="card stat"><h2 id="totalAppointments">0</h2><p>Total Appointments</p></div>
+<div class="card stat"><h2 id="revenue">₹0</h2><p>Confirmed Revenue</p></div>
+<div class="card stat"><h2 id="pending">0</h2><p>Pending Appointments</p></div>
+</div>
+
+<div class="card">
+<h2>Add / Edit Beauty Service</h2>
+<input type="hidden" id="editId">
+<div class="form-grid">
+<div><label>Service Name</label><input id="newName" placeholder="Service name"></div>
+<div><label>Category</label><input id="newCategory" placeholder="Hair / Skin / Bridal"></div>
+<div><label>Price (₹)</label><input id="newPrice" type="number" min="1"></div>
+<div><label>Duration (minutes)</label><input id="newDuration" type="number" min="1"></div>
+</div>
+<label>Image URL</label><input id="newImage" placeholder="Image URL (optional)">
+<button class="success" onclick="saveService()">Save Service</button>
+<button class="secondary" onclick="clearServiceForm()">Clear</button>
+</div>
+
+<div class="card">
+<h2>Manage Beauty Services</h2>
+<div class="table-wrap" id="adminServices"></div>
+</div>
+
+<div class="card">
+<h2>Manage Beauticians</h2>
+<label>New Beautician Name</label>
+<input id="newStaff" placeholder="Enter beautician name">
+<button class="success" onclick="addStaff()">Add Beautician</button>
+<div id="staffList"></div>
+</div>
+
+<div class="card">
+<h2>Manage Appointments</h2>
+<div class="table-wrap" id="adminAppointments"></div>
+</div>
+
+<div class="card">
+<h2>Customer Feedback</h2>
+<div id="adminFeedback"></div>
+</div>
+</div>
+</section>
+
+<!-- RECEIPT MODAL -->
+<div id="receiptModal" class="modal">
+<div class="modal-content">
+<span class="close no-print" onclick="closeReceipt()">×</span>
+<div id="receipt"></div>
+<br>
+<button class="primary no-print" onclick="window.print()">Print Appointment Receipt</button>
+</div>
+</div>
+
+<footer>
+<h3>💄 Glow Beauty Parlour</h3>
+<p>Beauty | Care | Confidence</p>
+<p>Online Beauty Parlour Appointment Booking System</p>
+<p>© 2026 Glow Beauty Parlour</p>
+</footer>
+
+<script>
+/* DATABASE */
+
+const defaultServices=[
+{id:1,name:"Hair Cutting",category:"Hair",price:300,duration:30,image:"https://images.unsplash.com/photo-1560869713-da86a9ec8d5c?w=600"},
+{id:2,name:"Hair Styling",category:"Hair",price:500,duration:45,image:"https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600"},
+{id:3,name:"Hair Colouring",category:"Hair",price:1200,duration:90,image:"https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=600"},
+{id:4,name:"Facial Treatment",category:"Skin",price:800,duration:60,image:"https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600"},
+{id:5,name:"Skin Cleanup",category:"Skin",price:500,duration:35,image:"https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=600"},
+{id:6,name:"Bridal Makeup",category:"Bridal",price:8000,duration:180,image:"https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600"},
+{id:7,name:"Party Makeup",category:"Makeup",price:2500,duration:90,image:"https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?w=600"},
+{id:8,name:"Manicure",category:"Nail",price:400,duration:40,image:"https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600"},
+{id:9,name:"Pedicure",category:"Nail",price:500,duration:45,image:"https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=600"},
+{id:10,name:"Waxing",category:"Skin",price:600,duration:40,image:"https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=600"},
+{id:11,name:"Threading",category:"Skin",price:100,duration:15,image:"https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600"}
+];
+
+let services=JSON.parse(localStorage.getItem("glowServices"))||defaultServices;
+let staff=JSON.parse(localStorage.getItem("glowStaff"))||["Anjali","Priya","Divya","Meena"];
+let appointments=JSON.parse(localStorage.getItem("glowAppointments"))||[];
+let feedbacks=JSON.parse(localStorage.getItem("glowFeedback"))||[];
+let selectedTime="";
+let activeCategory="All";
+
+/* STORAGE */
+
+function saveAll(){
+localStorage.setItem("glowServices",JSON.stringify(services));
+localStorage.setItem("glowStaff",JSON.stringify(staff));
+localStorage.setItem("glowAppointments",JSON.stringify(appointments));
+localStorage.setItem("glowFeedback",JSON.stringify(feedbacks));
+}
+
+function esc(value){
+return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+/* NAVIGATION */
+
+function showPage(id){
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+if(id==="services")renderServices();
+if(id==="booking")prepareBooking();
+if(id==="feedback")renderFeedback();
+if(id==="admin" && sessionStorage.getItem("glowAdmin")==="yes")loadAdmin();
+window.scrollTo(0,0);
+}
+
+/* SERVICES */
+
+function renderServices(){
+let cats=["All",...new Set(services.map(s=>s.category))];
+document.getElementById("categories").innerHTML=cats.map(c=>
+`<button class="category" onclick="filterCategory('${esc(c)}')">${esc(c)}</button>`).join("");
+
+let search=(document.getElementById("serviceSearch")?.value||"").toLowerCase();
+let list=services.filter(s=>(activeCategory==="All"||s.category===activeCategory)&&s.name.toLowerCase().includes(search));
+
+document.getElementById("serviceList").innerHTML=list.length?list.map(s=>`
+<div class="service">
+<img src="${esc(s.image)}" alt="${esc(s.name)}">
+<div class="service-info">
+<span class="badge">${esc(s.category)}</span>
+<h3>${esc(s.name)}</h3>
+<p class="price">₹${s.price}</p>
+<p>Duration: ${s.duration} minutes</p><br>
+<button class="primary" onclick="selectService(${s.id})">Book Now</button>
+</div></div>`).join(""):"<div class='card'>No services found.</div>";
+}
+
+function filterCategory(c){activeCategory=c;renderServices();}
+
+function selectService(id){
+showPage("booking");
+document.getElementById("serviceSelect").value=id;
+updateBookingPrice();
+}
+
+/* BOOKING FORM */
+
+function prepareBooking(){
+let sel=document.getElementById("serviceSelect");
+sel.innerHTML=services.map(s=>`<option value="${s.id}">${esc(s.name)} - ₹${s.price}</option>`).join("");
+document.getElementById("staffSelect").innerHTML=staff.map(s=>`<option>${esc(s)}</option>`).join("");
+document.getElementById("appointmentDate").min=new Date().toLocaleDateString("en-CA");
+updateBookingPrice();
+showSlots();
+}
+
+function updateBookingPrice(){
+let s=services.find(x=>x.id==document.getElementById("serviceSelect").value);
+if(!s)return;
+document.getElementById("summaryService").textContent=s.name;
+document.getElementById("summaryPrice").textContent=s.price;
+document.getElementById("summaryDuration").textContent=s.duration;
+document.getElementById("summaryStaff").textContent=document.getElementById("staffSelect").value;
+}
+
+/* TIME SLOTS */
+
+const times=["09:00 AM","10:00 AM","11:00 AM","12:00 PM","01:00 PM","02:00 PM","03:00 PM","04:00 PM","05:00 PM","06:00 PM"];
+
+function showSlots(){
+selectedTime="";
+document.getElementById("selectedTime").textContent="Not selected";
+let date=document.getElementById("appointmentDate").value;
+let beautician=document.getElementById("staffSelect").value;
+let container=document.getElementById("slots");
+
+if(!date){container.innerHTML="<p>Please select an appointment date first.</p>";return;}
+
+container.innerHTML=times.map(t=>{
+let taken=appointments.some(a=>a.date===date&&a.staff===beautician&&a.time===t&&a.status!=="Cancelled");
+return `<button class="slot" ${taken?"disabled":""} onclick="chooseTime('${t}',this)">${t}${taken?" (Booked)":""}</button>`;
+}).join("");
+}
+
+function chooseTime(t,button){
+selectedTime=t;
+document.querySelectorAll(".slot").forEach(b=>b.classList.remove("selected"));
+button.classList.add("selected");
+document.getElementById("selectedTime").textContent=t;
+}
+
+/* CONFIRM BOOKING */
+
+function bookAppointment(){
+let name=document.getElementById("cname").value.trim();
+let phone=document.getElementById("phone").value.trim();
+let email=document.getElementById("email").value.trim();
+let date=document.getElementById("appointmentDate").value;
+let service=services.find(s=>s.id==document.getElementById("serviceSelect").value);
+let beautician=document.getElementById("staffSelect").value;
+
+if(!name||!phone||!email||!date||!service||!selectedTime){
+alert("Please complete all required details and select a time slot.");return;
+}
+if(!/^[0-9]{10}$/.test(phone)){alert("Enter a valid 10-digit mobile number.");return;}
+if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){alert("Enter a valid email.");return;}
+if(date<new Date().toLocaleDateString("en-CA")){alert("Select a valid future date.");return;}
+
+if(appointments.some(a=>a.date===date&&a.staff===beautician&&a.time===selectedTime&&a.status!=="Cancelled")){
+alert("This slot has already been booked. Please choose another.");showSlots();return;
+}
+
+let appointment={
+id:"GL"+Date.now(),
+name,phone,email,
+service:service.name,
+serviceId:service.id,
+staff:beautician,
+date,time:selectedTime,
+price:service.price,
+duration:service.duration,
+requirements:document.getElementById("requirements").value,
+payment:document.getElementById("payment").value,
+status:"Confirmed",
+created:new Date().toLocaleString()
+};
+
+appointments.push(appointment);
+saveAll();
+showReceipt(appointment);
+document.getElementById("cname").value="";
+document.getElementById("phone").value="";
+document.getElementById("email").value="";
+document.getElementById("requirements").value="";
+selectedTime="";
+showSlots();
+}
+
+/* RECEIPT */
+
+function showReceipt(a){
+document.getElementById("receipt").innerHTML=`
+<h1>💄 Glow Beauty Parlour</h1><hr><br>
+<h2>Appointment Confirmed!</h2><br>
+<p><b>Appointment ID:</b> ${esc(a.id)}</p>
+<p><b>Customer:</b> ${esc(a.name)}</p>
+<p><b>Phone:</b> ${esc(a.phone)}</p>
+<p><b>Service:</b> ${esc(a.service)}</p>
+<p><b>Beautician:</b> ${esc(a.staff)}</p>
+<p><b>Date:</b> ${esc(a.date)}</p>
+<p><b>Time:</b> ${esc(a.time)}</p>
+<p><b>Duration:</b> ${a.duration} minutes</p>
+<p><b>Payment:</b> ${esc(a.payment)}</p>
+<p><b>Amount:</b> ₹${a.price}</p>
+<p><b>Status:</b> ${esc(a.status)}</p><br>
+<div class="notice">Please arrive 10 minutes before your appointment.</div>`;
+document.getElementById("receiptModal").style.display="block";
+}
+
+function closeReceipt(){document.getElementById("receiptModal").style.display="none";}
+
+/* CUSTOMER BOOKINGS */
+
+function findMyBookings(){
+let phone=document.getElementById("customerLookup").value.trim();
+if(!phone){alert("Enter your mobile number.");return;}
+let list=appointments.filter(a=>a.phone===phone);
+let container=document.getElementById("customerBookings");
+if(!list.length){container.innerHTML="<div class='card'>No appointments found.</div>";return;}
+
+container.innerHTML=list.map(a=>`
+<div class="card">
+<span class="badge">${esc(a.status)}</span>
+<h3>${esc(a.service)}</h3>
+<p>Appointment ID: ${esc(a.id)}</p>
+<p>Beautician: ${esc(a.staff)}</p>
+<p>Date: ${esc(a.date)} | ${esc(a.time)}</p>
+<p>Amount: ₹${a.price}</p>
+<button class="primary" onclick="customerReceipt('${a.id}')">View Receipt</button>
+${!["Cancelled","Completed"].includes(a.status)?`<button class="danger" onclick="cancelAppointment('${a.id}')">Cancel Appointment</button>`:""}
+</div>`).join("");
+}
+
+function customerReceipt(id){
+let a=appointments.find(x=>x.id===id);
+if(a)showReceipt(a);
+}
+
+function cancelAppointment(id){
+if(!confirm("Cancel this appointment?"))return;
+let a=appointments.find(x=>x.id===id);
+if(a)a.status="Cancelled";
+saveAll();
+findMyBookings();
+}
+
+/* FEEDBACK */
+
+function submitFeedback(){
+let name=document.getElementById("feedbackName").value.trim();
+let phone=document.getElementById("feedbackPhone").value.trim();
+let message=document.getElementById("feedbackText").value.trim();
+if(!name||!phone||!message){alert("Please fill all feedback fields.");return;}
+feedbacks.push({name,phone,rating:document.getElementById("rating").value,message,date:new Date().toLocaleDateString()});
+saveAll();
+alert("Thank you for your feedback!");
+document.getElementById("feedbackName").value="";
+document.getElementById("feedbackPhone").value="";
+document.getElementById("feedbackText").value="";
+renderFeedback();
+}
+
+function renderFeedback(){
+document.getElementById("feedbackList").innerHTML=feedbacks.map(f=>`
+<div class="card"><h3>${esc(f.name)}</h3>
+<p>Rating: ${"⭐".repeat(Number(f.rating))}</p>
+<p>${esc(f.message)}</p>
+<small>${esc(f.date)}</small></div>`).join("");
+}
+
+/* ADMIN LOGIN */
+
+function adminLogin(){
+if(document.getElementById("adminUser").value==="admin"&&document.getElementById("adminPass").value==="admin123"){
+sessionStorage.setItem("glowAdmin","yes");
+loadAdmin();
+}else alert("Invalid username or password.");
+}
+
+function adminLogout(){
+sessionStorage.removeItem("glowAdmin");
+document.getElementById("adminPanel").style.display="none";
+document.getElementById("adminLogin").style.display="block";
+}
+
+function loadAdmin(){
+document.getElementById("adminLogin").style.display="none";
+document.getElementById("adminPanel").style.display="block";
+
+document.getElementById("totalServices").textContent=services.length;
+document.getElementById("totalAppointments").textContent=appointments.length;
+document.getElementById("pending").textContent=appointments.filter(a=>a.status==="Confirmed").length;
+let revenue=appointments.filter(a=>!["Cancelled"].includes(a.status)).reduce((sum,a)=>sum+a.price,0);
+document.getElementById("revenue").textContent="₹"+revenue;
+
+renderAdminServices();
+renderStaff();
+renderAdminAppointments();
+renderFeedback();
+document.getElementById("adminFeedback").innerHTML=feedbacks.map(f=>`<div class="card">${esc(f.name)} - ${"⭐".repeat(Number(f.rating))}<p>${esc(f.message)}</p></div>`).join("")||"No feedback yet.";
+}
+
+/* ADMIN SERVICE MANAGEMENT */
+
+function saveService(){
+let id=document.getElementById("editId").value;
+let name=document.getElementById("newName").value.trim();
+let category=document.getElementById("newCategory").value.trim();
+let price=Number(document.getElementById("newPrice").value);
+let duration=Number(document.getElementById("newDuration").value);
+let image=document.getElementById("newImage").value.trim()||"https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600";
+if(!name||!category||price<=0||duration<=0){alert("Enter valid service details.");return;}
+
+if(id){
+let s=services.find(x=>x.id==id);
+Object.assign(s,{name,category,price,duration,image});
+}else{
+services.push({id:Date.now(),name,category,price,duration,image});
+}
+saveAll();
+clearServiceForm();
+loadAdmin();
+alert("Service saved successfully.");
+}
+
+function editService(id){
+let s=services.find(x=>x.id===id);
+document.getElementById("editId").value=s.id;
+document.getElementById("newName").value=s.name;
+document.getElementById("newCategory").value=s.category;
+document.getElementById("newPrice").value=s.price;
+document.getElementById("newDuration").value=s.duration;
+document.getElementById("newImage").value=s.image;
+window.scrollTo(0,0);
+}
+
+function clearServiceForm(){
+["editId","newName","newCategory","newPrice","newDuration","newImage"].forEach(id=>document.getElementById(id).value="");
+}
+
+function deleteService(id){
+if(!confirm("Delete this service?"))return;
+services=services.filter(s=>s.id!==id);
+saveAll();
+loadAdmin();
+}
+
+function renderAdminServices(){
+document.getElementById("adminServices").innerHTML=`
+<table><tr><th>Service</th><th>Category</th><th>Price</th><th>Duration</th><th>Actions</th></tr>
+${services.map(s=>`<tr><td>${esc(s.name)}</td><td>${esc(s.category)}</td><td>₹${s.price}</td><td>${s.duration} min</td><td><button class="warning" onclick="editService(${s.id})">Edit</button><button class="danger" onclick="deleteService(${s.id})">Delete</button></td></tr>`).join("")}
+</table>`;
+}
+
+/* BEAUTICIAN MANAGEMENT */
+
+function addStaff(){
+let name=document.getElementById("newStaff").value.trim();
+if(!name){alert("Enter beautician name.");return;}
+if(staff.includes(name)){alert("Beautician already exists.");return;}
+staff.push(name);
+document.getElementById("newStaff").value="";
+saveAll();
+loadAdmin();
+}
+
+function removeStaff(name){
+if(appointments.some(a=>a.staff===name&&a.status!=="Cancelled")){alert("This beautician has active appointments and cannot be removed.");return;}
+if(!confirm("Remove this beautician?"))return;
+staff=staff.filter(s=>s!==name);
+saveAll();
+loadAdmin();
+}
+
+function renderStaff(){
+document.getElementById("staffList").innerHTML=staff.map(s=>`
+<div class="card">${esc(s)}
+<button class="danger" onclick="removeStaff('${esc(s).replace(/'/g,"\\'")}')">Remove</button></div>`).join("");
+}
+
+/* ADMIN APPOINTMENTS */
+
+function renderAdminAppointments(){
+document.getElementById("adminAppointments").innerHTML=`
+<table>
+<tr><th>ID</th><th>Customer</th><th>Service</th><th>Beautician</th><th>Date / Time</th><th>Price</th><th>Status</th></tr>
+${appointments.map(a=>`
+<tr>
+<td>${esc(a.id)}</td>
+<td>${esc(a.name)}<br>${esc(a.phone)}</td>
+<td>${esc(a.service)}</td>
+<td>${esc(a.staff)}</td>
+<td>${esc(a.date)}<br>${esc(a.time)}</td>
+<td>₹${a.price}</td>
+<td><select onchange="updateStatus('${a.id}',this.value)">
+${["Confirmed","Completed","Cancelled"].map(s=>`<option ${a.status===s?"selected":""}>${s}</option>`).join("")}
+</select></td>
+</tr>`).join("")}
+</table>`;
+}
+
+function updateStatus(id,status){
+let a=appointments.find(x=>x.id===id);
+if(a)a.status=status;
+saveAll();
+loadAdmin();
+alert("Appointment status updated.");
+}
+
+/* INITIALIZE */
+
+renderServices();
+prepareBooking();
+updateBookingPrice();
+
+</script>
+</body>
+</html>

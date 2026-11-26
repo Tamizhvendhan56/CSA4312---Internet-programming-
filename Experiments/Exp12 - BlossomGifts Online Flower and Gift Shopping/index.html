@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BlossomGifts | Flowers & Gifts</title>
+<style>
+:root{
+ --primary:#d94f78;--pink:#fff0f4;--dark:#29212a;
+ --bg:#fff9fa;--white:#fff;--muted:#8d8187;
+ --border:#f0e4e9;--green:#16875d;--red:#d94f60;
+ --shadow:0 8px 28px rgba(80,30,50,.07)
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--dark)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+.btn{border:0;background:var(--primary);color:white;padding:11px 17px;border-radius:8px;font-weight:bold}
+.btn:hover{filter:brightness(.94)}
+.btn.light{background:var(--pink);color:var(--primary)}
+.btn.dark{background:var(--dark)}
+.btn.danger{background:#fff0f0;color:var(--red)}
+.btn.small{padding:7px 10px;font-size:11px}
+.btn.full{width:100%}
+.field{width:100%;padding:12px;border:1px solid var(--border);border-radius:8px;outline:none;background:white}
+.field:focus{border-color:var(--primary)}
+label{font-size:11px;font-weight:bold;display:block;margin-bottom:7px}
+.field-group{margin:15px 0}
+.muted{color:var(--muted)}
+.logo{font-size:26px;font-weight:900;letter-spacing:1px}
+.logo span{color:var(--primary)}
+.auth{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:white}
+.auth-art{background:linear-gradient(140deg,#34202b,#a83d66,#ed9db5);color:white;padding:10%;display:flex;flex-direction:column;justify-content:center}
+.auth-art h1{font-size:50px;line-height:1.1;margin:35px 0 12px}
+.auth-art p{line-height:1.8;color:#ffeaf0;max-width:430px}
+.auth-panel{display:grid;place-items:center;padding:25px}
+.auth-card{width:min(400px,100%)}
+.auth-card h2{font-size:29px;margin-bottom:5px}
+.auth-links{margin-top:20px;font-size:12px}
+.auth-links a{color:var(--primary)}
+.topbar{height:70px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 5%;position:sticky;top:0;z-index:5}
+.top-actions{display:flex;align-items:center;gap:12px}
+.role{background:var(--pink);color:var(--primary);padding:7px 11px;border-radius:20px;font-size:10px;font-weight:bold}
+.avatar{width:34px;height:34px;border-radius:50%;background:#f8dce5;color:#a53b61;display:grid;place-items:center;font-weight:bold}
+.navbar{background:white;border-bottom:1px solid var(--border);padding:0 5%;display:flex;gap:24px;overflow-x:auto}
+.navbar button{background:none;border:0;padding:15px 2px;color:#655961;white-space:nowrap;border-bottom:2px solid transparent}
+.navbar button.active,.navbar button:hover{color:var(--primary);border-color:var(--primary)}
+main{max-width:1250px;margin:auto;padding:25px 25px 50px}
+.hero{min-height:285px;border-radius:15px;background:linear-gradient(100deg,#301b29dd,#74304aaa),url('https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=1500') center/cover;color:white;padding:42px;display:flex;flex-direction:column;justify-content:center;margin-bottom:25px}
+.hero h1{font-size:42px;margin:10px 0}
+.hero p{max-width:470px;line-height:1.8;color:#ffeaf0}
+.eyebrow{font-size:10px;letter-spacing:2px;color:var(--primary);font-weight:bold}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin:25px 0 15px;gap:12px}
+.section-head h2{font-size:21px;margin:0}
+.categories{display:grid;grid-template-columns:repeat(5,1fr);gap:13px}
+.category{background:white;border:1px solid var(--border);border-radius:11px;text-align:center;padding:20px 8px;cursor:pointer;transition:.2s}
+.category:hover{transform:translateY(-3px);border-color:var(--primary)}
+.category .emoji{font-size:35px;display:block;margin-bottom:9px}
+.category b{font-size:13px}
+.chips{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0}
+.chip{border:1px solid var(--border);background:white;border-radius:20px;padding:8px 13px;font-size:11px;cursor:pointer}
+.chip.active,.chip:hover{background:var(--pink);color:var(--primary);border-color:#f2c1d0}
+.products{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.product{background:white;border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:.2s}
+.product:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.product-image{height:215px;background:#f5e9ed;position:relative;overflow:hidden}
+.product-image img{width:100%;height:100%;object-fit:cover}
+.heart{position:absolute;right:11px;top:11px;border:0;border-radius:50%;width:35px;height:35px;background:white;font-size:18px}
+.product-info{padding:14px}
+.product-info h3{font-size:14px;margin:7px 0}
+.product-info p{font-size:11px;color:var(--muted);margin:6px 0}
+.price{font-size:18px;font-weight:bold;margin:10px 0}
+.old-price{text-decoration:line-through;color:#999;font-size:11px;margin-left:6px}
+.product-buttons{display:flex;gap:7px}
+.product-buttons button{flex:1}
+.panel{background:white;border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:18px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:17px}
+.toolbar .search{flex:1;min-width:180px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:20px}
+.stat{background:white;border:1px solid var(--border);padding:18px;border-radius:11px}
+.stat small{color:var(--muted)}
+.stat strong{display:block;font-size:25px;margin-top:10px}
+table{border-collapse:collapse;width:100%;white-space:nowrap}
+th{text-align:left;font-size:10px;color:#999;padding:12px;border-bottom:1px solid var(--border)}
+td{font-size:12px;padding:13px 12px;border-bottom:1px solid #f2eef0}
+.table-wrap{overflow:auto}
+.status{font-size:10px;padding:5px 9px;border-radius:20px;font-weight:bold}
+.status.processing{background:#fff3dd;color:#9c731c}
+.status.delivered{background:#e6f7ef;color:var(--green)}
+.status.cancelled{background:#fff0f0;color:var(--red)}
+.status.pending{background:#eef1ff;color:#5368bd}
+.empty{text-align:center;padding:35px;color:var(--muted)}
+.qty{display:flex;align-items:center;gap:8px}
+.qty button{border:0;background:var(--pink);color:var(--primary);padding:5px 9px;border-radius:5px}
+.total-line{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.total-line.final{font-size:20px;font-weight:bold;border:0}
+.modal-bg{position:fixed;inset:0;background:#0008;display:grid;place-items:center;padding:15px;z-index:20}
+.modal{background:white;border-radius:13px;padding:22px;width:min(570px,100%);max-height:90vh;overflow:auto}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+.close{border:0;background:#f2eef0;border-radius:6px;padding:8px 11px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.toast{position:fixed;right:20px;bottom:20px;background:#29212a;color:white;padding:14px 19px;border-radius:9px;z-index:30}
+.footer{background:#29212a;color:#d6c9cf;padding:30px 5%;text-align:center;font-size:12px}
+@media(max-width:950px){.products{grid-template-columns:repeat(3,1fr)}.categories{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:650px){
+ .auth{grid-template-columns:1fr}.auth-art{display:none}
+ .topbar{padding:0 12px}.navbar{padding:0 12px;gap:17px}
+ main{padding:15px 12px 30px}
+ .hero{padding:25px;min-height:240px}.hero h1{font-size:30px}
+ .products{grid-template-columns:repeat(2,1fr);gap:10px}
+ .product-image{height:160px}.categories{grid-template-columns:repeat(3,1fr)}
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .form-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN PAGE -->
+<section id="auth" class="auth">
+ <div class="auth-art">
+  <div class="logo">Blossom<span>Gifts.</span></div>
+  <div class="eyebrow" style="color:#ffd8e5;margin-top:50px">MAKE EVERY MOMENT SPECIAL</div>
+  <h1>Send Love.<br>Share Happiness.</h1>
+  <p>Discover beautiful flowers, thoughtful gift baskets and personalized gifts for every celebration and special occasion.</p>
+ </div>
+ <div class="auth-panel">
+  <div class="auth-card">
+   <div class="eyebrow">BLOSSOMGIFT ACCOUNT</div>
+   <h2>Welcome back!</h2>
+   <p class="muted">Login to discover thoughtful gifts.</p>
+   <form id="loginForm">
+    <div class="field-group"><label>LOGIN AS</label>
+     <select class="field" id="loginRole"><option value="customer">Customer</option><option value="admin">Administrator</option></select>
+    </div>
+    <div class="field-group"><label>EMAIL ADDRESS</label><input class="field" id="loginEmail" type="email" required placeholder="Enter your email"></div>
+    <div class="field-group"><label>PASSWORD</label><input class="field" id="loginPassword" type="password" required placeholder="Enter password"></div>
+    <button class="btn full">Login →</button>
+   </form>
+   <div class="auth-links"><a href="#" id="registerLink">Create customer account</a></div>
+  </div>
+ </div>
+</section>
+
+<!-- APPLICATION -->
+<div id="app" class="hidden">
+ <header class="topbar">
+  <div class="logo">Blossom<span>Gifts.</span></div>
+  <div class="top-actions">
+   <span class="role" id="roleBadge">CUSTOMER</span>
+   <span class="avatar" id="avatar">B</span>
+   <button class="btn dark small" id="logout">Logout</button>
+  </div>
+ </header>
+ <nav class="navbar" id="navigation"></nav>
+ <main id="content"></main>
+ <footer class="footer">BLOSSOMGIFTS © 2026 | Making Every Moment Bloom | All Rights Reserved</footer>
+</div>
+
+<div id="modalRoot"></div>
+<div id="toastRoot"></div>
+
+<script>
+"use strict";
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const initialProducts=[
+{id:1,name:"Red Rose Bouquet",category:"Flowers",occasion:"Anniversary",recipient:"Partner",price:1299,old:1599,stock:20,icon:"🌹",image:"https://images.unsplash.com/photo-1494972308805-463bc619d34e?w=700",description:"A beautiful bouquet of fresh red roses arranged with elegant wrapping.",rating:5},
+{id:2,name:"Pink Tulip Bouquet",category:"Flowers",occasion:"Birthday",recipient:"Friend",price:1499,old:1799,stock:15,icon:"🌷",image:"https://images.unsplash.com/photo-1520763185298-1b434c919102?w=700",description:"Fresh pink tulips that bring joy and colour to every occasion.",rating:5},
+{id:3,name:"Chocolate Gift Basket",category:"Gift Baskets",occasion:"Birthday",recipient:"Family",price:999,old:1299,stock:18,icon:"🍫",image:"https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=700",description:"A delightful basket filled with delicious chocolates and treats.",rating:4},
+{id:4,name:"Personalized Photo Frame",category:"Personalized Gifts",occasion:"Anniversary",recipient:"Partner",price:799,old:999,stock:12,icon:"🖼️",image:"https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=700",description:"A personalized photo frame to preserve your favourite memories.",rating:5},
+{id:5,name:"Sunflower Bouquet",category:"Flowers",occasion:"Congratulations",recipient:"Friend",price:1099,old:1399,stock:25,icon:"🌻",image:"https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=700",description:"Bright sunflowers arranged to spread happiness and positivity.",rating:5},
+{id:6,name:"Luxury Gift Hamper",category:"Gift Baskets",occasion:"Festival",recipient:"Family",price:2499,old:2999,stock:8,icon:"🎁",image:"https://images.unsplash.com/photo-1513201099705-a9746e1e201f?w=700",description:"A premium gift hamper with carefully selected goodies.",rating:5},
+{id:7,name:"Birthday Teddy Bear",category:"Personalized Gifts",occasion:"Birthday",recipient:"Children",price:899,old:1199,stock:16,icon:"🧸",image:"https://images.unsplash.com/photo-1559454403-b8fb88521f11?w=700",description:"A soft and adorable teddy bear for a memorable birthday.",rating:4},
+{id:8,name:"Orchid Flower Pot",category:"Flowers",occasion:"Housewarming",recipient:"Family",price:1899,old:2299,stock:10,icon:"🌸",image:"https://images.unsplash.com/photo-1566945984547-7e1c0b3e8a5b?w=700",description:"Elegant orchids in a decorative pot for beautiful interiors.",rating:5},
+{id:9,name:"Heart Shape Cake",category:"Gift Baskets",occasion:"Anniversary",recipient:"Partner",price:1199,old:1499,stock:14,icon:"🎂",image:"https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=700",description:"A delicious heart-shaped cake for a sweet celebration.",rating:5},
+{id:10,name:"Customized Coffee Mug",category:"Personalized Gifts",occasion:"Thank You",recipient:"Friend",price:499,old:699,stock:30,icon:"☕",image:"https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=700",description:"A personalized mug with a custom message or name.",rating:4},
+{id:11,name:"Mixed Flower Basket",category:"Flowers",occasion:"Get Well Soon",recipient:"Family",price:1699,old:1999,stock:9,icon:"💐",image:"https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=700",description:"A colourful collection of seasonal fresh flowers.",rating:5},
+{id:12,name:"Premium Fruit Basket",category:"Gift Baskets",occasion:"Get Well Soon",recipient:"Family",price:1399,old:1699,stock:11,icon:"🍎",image:"https://images.unsplash.com/photo-1543168256-418811576931?w=700",description:"A healthy and thoughtful gift basket of fresh fruits.",rating:4}
+];
+
+const defaults={
+ products:initialProducts,
+ customers:[{id:1,name:"Demo Customer",email:"customer@blossom.demo",password:"customer123",phone:"9876543210"}],
+ orders:[],reviews:[],nextOrder:1001,discount:10
+};
+function load(){
+ try{
+  const d=JSON.parse(localStorage.getItem("blossom_data"));
+  if(!d)return JSON.parse(JSON.stringify(defaults));
+  return {...defaults,...d};
+ }catch(e){return JSON.parse(JSON.stringify(defaults))}
+}
+let db=load();
+let session=null,cart=[],wishlist=[],page="home",categoryFilter="",occasionFilter="",recipientFilter="";
+
+function save(){localStorage.setItem("blossom_data",JSON.stringify(db))}
+function money(n){return "₹"+Number(n).toLocaleString("en-IN")}
+function notify(msg){
+ $("#toastRoot").innerHTML=`<div class="toast">${esc(msg)}</div>`;
+ setTimeout(()=>$("#toastRoot").innerHTML="",2600);
+}
+function modal(title,body){
+ $("#modalRoot").innerHTML=`<div class="modal-bg" id="modalBg"><div class="modal">
+ <div class="modal-head"><h3>${title}</h3><button class="close" onclick="closeModal()">✕</button></div>${body}
+ </div></div>`;
+ $("#modalBg").onclick=e=>{if(e.target.id==="modalBg")closeModal()};
+}
+function closeModal(){$("#modalRoot").innerHTML=""}
+function field(label,name,value="",type="text"){
+ return `<div class="field-group"><label>${label.toUpperCase()}</label><input class="field" name="${name}" type="${type}" value="${esc(value)}" required></div>`;
+}
+function heading(title,desc,action=""){
+ return `<div class="section-head"><div><div class="eyebrow">BLOSSOMGIFTS / GIFT STORE</div><h2>${title}</h2><p class="muted" style="font-size:12px">${desc}</p></div>${action}</div>`;
+}
+function status(s){
+ let c=s==="Delivered"?"delivered":s==="Cancelled"?"cancelled":s==="Pending"?"pending":"processing";
+ return `<span class="status ${c}">${esc(s)}</span>`;
+}
+
+/* AUTHENTICATION */
+$("#loginForm").onsubmit=e=>{
+ e.preventDefault();
+ const role=$("#loginRole").value,email=$("#loginEmail").value.trim().toLowerCase(),pass=$("#loginPassword").value;
+ if(role==="admin"){
+  if(email!=="admin@blossom.demo"||pass!=="admin123")return notify("Invalid administrator login.");
+  startSession("admin",email);
+ }else{
+  const c=db.customers.find(x=>x.email.toLowerCase()===email&&x.password===pass);
+  if(!c)return notify("Incorrect customer email or password.");
+  startSession("customer",email);
+ }
+};
+$("#registerLink").onclick=e=>{
+ e.preventDefault();
+ modal("Create customer account",`<form id="registerForm">
+ ${field("Full name","name")}${field("Email address","email","","email")}
+ ${field("Phone number","phone")}${field("Password","password","","password")}
+ <button class="btn full">Register</button></form>`);
+ $("#registerForm").onsubmit=e=>{
+  e.preventDefault();const d=Object.fromEntries(new FormData(e.target));
+  if(db.customers.some(c=>c.email.toLowerCase()===d.email.toLowerCase()))return notify("Email already registered.");
+  db.customers.push({...d,id:Date.now()});save();closeModal();
+  $("#loginEmail").value=d.email;notify("Account created. Please login.");
+ };
+};
+function startSession(role,email){
+ session={role,email};cart=[];wishlist=[];
+ $("#auth").classList.add("hidden");$("#app").classList.remove("hidden");
+ $("#roleBadge").textContent=role.toUpperCase();$("#avatar").textContent=email[0].toUpperCase();
+ page="home";navigation();render();
+}
+$("#logout").onclick=()=>{
+ session=null;cart=[];$("#app").classList.add("hidden");$("#auth").classList.remove("hidden");
+ $("#loginForm").reset();notify("Logged out successfully.");
+};
+
+/* NAVIGATION */
+const adminNav=[["home","Dashboard"],["products","Products"],["inventory","Inventory"],["customers","Customers"],["orders","All Orders"],["promotions","Promotions"],["reports","Reports"]];
+const customerNav=[["home","Home"],["shop","Shop Gifts"],["wishlist","Wishlist"],["cart","Cart 🛒"],["orders","My Orders"],["history","Order History"],["profile","My Profile"]];
+function navigation(){
+ const list=session.role==="admin"?adminNav:customerNav;
+ $("#navigation").innerHTML=list.map(([id,name])=>`<button class="${page===id?"active":""}" onclick="go('${id}')">${name}</button>`).join("");
+}
+function go(p){page=p;navigation();render();window.scrollTo(0,0)}
+
+/* PRODUCT CARDS */
+function card(p){
+ const wished=wishlist.includes(p.id);
+ return `<article class="product">
+ <div class="product-image"><img src="${esc(p.image)}" alt="${esc(p.name)}" onerror="this.src='https://placehold.co/500x400/fff0f4/d94f78?text=BlossomGifts'">
+ <button class="heart" onclick="toggleWish(${p.id})">${wished?"♥":"♡"}</button></div>
+ <div class="product-info"><span class="eyebrow">${esc(p.category)} / ${esc(p.occasion)}</span>
+ <h3>${esc(p.name)}</h3><div style="color:#e5a52e">★★★★★</div>
+ <div class="price">${money(p.price)} <span class="old-price">${money(p.old||p.price)}</span></div>
+ <p>${p.stock>0?`<span style="color:var(--green)">● ${p.stock} available</span>`:'<span style="color:var(--red)">● Out of stock</span>'}</p>
+ <div class="product-buttons"><button class="btn light small" onclick="details(${p.id})">Details</button>
+ ${session.role==="customer"?`<button class="btn small" onclick="addCart(${p.id})" ${p.stock<=0?"disabled":""}>Add to cart</button>`:""}
+ </div></div></article>`;
+}
+
+/* HOME */
+function homePage(){
+ if(session.role==="admin")return adminHome();
+ const cats=[["Flowers","💐"],["Gift Baskets","🎁"],["Personalized Gifts","🧸"],["Birthday","🎂"],["Anniversary","💝"]];
+ return `<section class="hero"><div class="eyebrow" style="color:#ffd8e5">SPECIAL MOMENTS, BEAUTIFUL GIFTS</div>
+ <h1>Make Someone<br>Smile Today.</h1>
+ <p>Send beautiful flowers and thoughtful gifts to the people who matter most. Make every occasion memorable.</p>
+ <button class="btn" style="width:max-content" onclick="go('shop')">Explore Gifts →</button></section>
+ ${heading("Shop by category","Find the perfect gift for every special moment.")}
+ <div class="categories">${cats.map(([name,icon])=>`<div class="category" onclick="selectCategory('${name}')"><span class="emoji">${icon}</span><b>${name}</b></div>`).join("")}</div>
+ ${heading("Shop by occasion","Choose a gift based on the celebration.")}
+ <div class="chips">${["Birthday","Anniversary","Wedding","Festival","Congratulations","Thank You","Get Well Soon","Housewarming"].map(x=>`<button class="chip" onclick="selectOccasion('${x}')">${x}</button>`).join("")}</div>
+ ${heading("Shop by recipient","Find something special for everyone.")}
+ <div class="chips">${["Partner","Friend","Family","Children","Parents","Colleague"].map(x=>`<button class="chip" onclick="selectRecipient('${x}')">${x}</button>`).join("")}</div>
+ <div class="section-head"><h2>Popular gifts</h2><button class="btn light small" onclick="go('shop')">View all</button></div>
+ <div class="products">${db.products.slice(0,4).map(card).join("")}</div>
+ <section class="panel" style="margin-top:25px;text-align:center;background:var(--pink)">
+ <h2>Special BlossomGifts Offer!</h2><p>Enjoy ${db.discount}% off on selected gifts.</p>
+ <button class="btn" onclick="go('shop')">Shop offers</button></section>`;
+}
+function selectCategory(c){categoryFilter=c;occasionFilter="";recipientFilter="";go("shop")}
+function selectOccasion(c){occasionFilter=c;categoryFilter="";recipientFilter="";go("shop")}
+function selectRecipient(c){recipientFilter=c;categoryFilter="";occasionFilter="";go("shop")}
+
+/* ADMIN DASHBOARD */
+function adminHome(){
+ const revenue=db.orders.filter(o=>o.status!=="Cancelled").reduce((n,o)=>n+o.total,0);
+ return `${heading("Admin dashboard","Manage BlossomGifts products, customers and orders.")}
+ <section class="hero"><div class="eyebrow" style="color:#ffd8e5">STORE MANAGEMENT</div>
+ <h1>Welcome, Administrator.</h1><p>Manage flower collections, gift products, inventory and customer orders.</p>
+ <button class="btn" style="width:max-content" onclick="go('products')">Manage products →</button></section>
+ <div class="stats">
+ <div class="stat"><small>TOTAL PRODUCTS</small><strong>${db.products.length}</strong></div>
+ <div class="stat"><small>CUSTOMERS</small><strong>${db.customers.length}</strong></div>
+ <div class="stat"><small>TOTAL ORDERS</small><strong>${db.orders.length}</strong></div>
+ <div class="stat"><small>REVENUE</small><strong>${money(revenue)}</strong></div>
+ </div>
+ <section class="panel"><div class="section-head"><h2>Recent orders</h2><button class="btn light small" onclick="go('orders')">View all</button></div>${orderTable(db.orders.slice().reverse().slice(0,5))}</section>
+ <section class="panel"><h3>Quick actions</h3><br>
+ <button class="btn" onclick="openProduct()">＋ Add product</button>
+ <button class="btn light" onclick="go('customers')">View customers</button>
+ <button class="btn light" onclick="go('promotions')">Manage offers</button></section>`;
+}
+
+/* SHOP AND SEARCH */
+function shopPage(){
+ return `${heading("Explore flowers & gifts","Find the perfect gift for your loved ones.")}
+ <section class="panel"><div class="toolbar">
+ <input class="field search" id="search" placeholder="Search flowers, gift baskets, teddy bears..." oninput="renderShop()">
+ <select class="field" id="category" style="max-width:160px" onchange="renderShop()">
+ <option value="">All categories</option>${["Flowers","Gift Baskets","Personalized Gifts"].map(x=>`<option>${x}</option>`).join("")}</select>
+ <select class="field" id="priceFilter" style="max-width:150px" onchange="renderShop()">
+ <option value="">All prices</option><option value="500">Under ₹500</option><option value="1000">Under ₹1,000</option><option value="2000">Under ₹2,000</option><option value="high">Above ₹2,000</option></select>
+ </div>
+ <div class="chips">${["Birthday","Anniversary","Festival","Wedding","Thank You","Get Well Soon","Housewarming"].map(x=>`<button class="chip ${occasionFilter===x?"active":""}" onclick="filterOccasion('${x}')">${x}</button>`).join("")}
+ <button class="chip" onclick="filterOccasion('')">All occasions</button></div>
+ <div class="products" id="productList"></div></section>`;
+}
+function filterOccasion(s){occasionFilter=s;render()}
+function renderShop(){
+ const q=($("#search")?.value||"").toLowerCase();
+ const cat=$("#category")?.value||"";
+ const price=$("#priceFilter")?.value||"";
+ const list=db.products.filter(p=>
+ (p.name+" "+p.category+" "+p.description+" "+p.occasion+" "+p.recipient).toLowerCase().includes(q)&&
+ (!cat||p.category===cat)&&
+ (!categoryFilter||p.category===categoryFilter)&&
+ (!occasionFilter||p.occasion===occasionFilter)&&
+ (!recipientFilter||p.recipient===recipientFilter)&&
+ (!price||(price==="high"?p.price>2000:p.price<=Number(price)))
+ );
+ $("#productList").innerHTML=list.map(card).join("")||'<div class="empty">No gifts found. Try another search.</div>';
+}
+function details(id){
+ const p=db.products.find(x=>x.id===id);if(!p)return;
+ const reviews=db.reviews.filter(r=>r.productId===id);
+ modal("Gift details",`
+ <img src="${esc(p.image)}" style="width:100%;height:230px;object-fit:cover;border-radius:9px">
+ <h2>${esc(p.name)}</h2><div style="color:#e5a52e">★★★★★</div>
+ <p class="muted">${esc(p.description)}</p>
+ <h2>${money(p.price)} <small class="old-price">${money(p.old||p.price)}</small></h2>
+ <p>Category: <b>${esc(p.category)}</b></p>
+ <p>Occasion: ${esc(p.occasion)} | Recipient: ${esc(p.recipient)}</p>
+ <p>Availability: ${p.stock>0?p.stock+" items available":"Out of stock"}</p>
+ ${session.role==="customer"?`<button class="btn full" onclick="closeModal();customizeGift(${p.id})" ${p.stock<=0?"disabled":""}>Customize & add to cart</button>`:""}
+ <hr><h3>Customer reviews (${reviews.length})</h3>
+ ${reviews.map(r=>`<p><b>${esc(r.name)}</b> ★★★★★<br>${esc(r.text)}</p>`).join("")||'<p class="muted">No reviews yet.</p>'}
+ ${session.role==="customer"?`<button class="btn light full" onclick="writeReview(${p.id})">Write a review</button>`:""}
+ `);
+}
+
+/* CUSTOMIZE GIFT */
+function customizeGift(id){
+ const p=db.products.find(x=>x.id===id);
+ modal("Customize your gift",`<form id="customForm">
+ <div class="field-group"><label>PERSONALIZED MESSAGE</label><textarea class="field" name="message" placeholder="Write your gift message..."></textarea></div>
+ <div class="field-group"><label>GIFT WRAPPING</label><select class="field" name="wrapping"><option>Standard wrapping</option><option>Premium gift wrapping (+₹100)</option></select></div>
+ <div class="field-group"><label>DELIVERY DATE</label><input class="field" type="date" name="deliveryDate" min="${new Date().toISOString().split("T")[0]}" required></div>
+ <button class="btn full">Add customized gift</button></form>`);
+ $("#customForm").onsubmit=e=>{
+  e.preventDefault();const d=Object.fromEntries(new FormData(e.target));
+  const wrap=d.wrapping.includes("Premium")?100:0;
+  const item=cart.find(x=>x.id===id&&x.message===d.message&&x.deliveryDate===d.deliveryDate);
+  if(item)item.qty++;
+  else cart.push({id,qty:1,message:d.message,wrapping:d.wrapping,extra:wrap,deliveryDate:d.deliveryDate});
+  closeModal();notify("Customized gift added to cart.");
+ };
+}
+
+/* WISHLIST */
+function toggleWish(id){
+ if(wishlist.includes(id))wishlist=wishlist.filter(x=>x!==id);
+ else wishlist.push(id);
+ render();
+}
+function wishlistPage(){
+ return `${heading("My wishlist","Your favourite flowers and gifts.")}
+ <div class="products">${wishlist.map(id=>db.products.find(p=>p.id===id)).filter(Boolean).map(card).join("")||'<div class="panel empty">Your wishlist is empty.</div>'}</div>`;
+}
+
+/* CART */
+function addCart(id){
+ const p=db.products.find(x=>x.id===id);
+ if(!p||p.stock<=0)return notify("This product is unavailable.");
+ const item=cart.find(x=>x.id===id&&!x.message);
+ if(item){if(item.qty>=p.stock)return notify("Maximum stock reached.");item.qty++}
+ else cart.push({id,qty:1,message:"",wrapping:"Standard wrapping",extra:0,deliveryDate:""});
+ notify("Gift added to cart.");
+}
+function changeQty(index,n){
+ const i=cart[index],p=db.products.find(x=>x.id===i.id);
+ if(!i||!p)return;
+ if(i.qty+n<=0)cart.splice(index,1);
+ else if(i.qty+n>p.stock)return notify("Not enough stock available.");
+ else i.qty+=n;
+ render();
+}
+function removeCart(index){cart.splice(index,1);render();notify("Item removed from cart.")}
+function cartTotal(){
+ return cart.reduce((sum,i)=>sum+(db.products.find(p=>p.id===i.id).price+i.extra)*i.qty,0);
+}
+function cartPage(){
+ if(!cart.length)return `${heading("Shopping cart","Review your selected gifts.")}
+ <section class="panel empty"><h2>🎁</h2><h3>Your cart is empty</h3><button class="btn" onclick="go('shop')">Explore gifts</button></section>`;
+ return `${heading("Shopping cart","Edit quantities and review your gifts.")}
+ <section class="panel"><div class="table-wrap"><table><thead><tr><th>Gift</th><th>Price</th><th>Quantity</th><th>Delivery date</th><th>Total</th><th></th></tr></thead>
+ <tbody>${cart.map((i,n)=>{const p=db.products.find(x=>x.id===i.id);return `<tr>
+ <td>${esc(p.name)}<br><small class="muted">${esc(i.wrapping)}${i.message?" | Personalized":""}</small></td>
+ <td>${money(p.price+i.extra)}</td>
+ <td><div class="qty"><button onclick="changeQty(${n},-1)">−</button>${i.qty}<button onclick="changeQty(${n},1)">+</button></div></td>
+ <td>${i.deliveryDate||"Choose at checkout"}</td><td><b>${money((p.price+i.extra)*i.qty)}</b></td>
+ <td><button class="btn danger small" onclick="removeCart(${n})">Remove</button></td>
+ </tr>`}).join("")}</tbody></table></div>
+ <div style="max-width:340px;margin:20px 0 0 auto">
+ <div class="total-line"><span>Subtotal</span><b>${money(cartTotal())}</b></div>
+ <div class="total-line"><span>Delivery</span><b>FREE</b></div>
+ <div class="total-line final"><span>Total</span><span>${money(cartTotal())}</span></div>
+ <button class="btn full" onclick="checkout()">Proceed to checkout →</button></div></section>`;
+}
+
+/* CHECKOUT AND DELIVERY SCHEDULING */
+function checkout(){
+ if(!cart.length)return notify("Your cart is empty.");
+ if(cart.some(i=>db.products.find(p=>p.id===i.id).stock<i.qty))return notify("Some gifts are out of stock.");
+ modal("Checkout & delivery details",`<h3>Order total: ${money(cartTotal())}</h3>
+ <form id="checkoutForm">
+ <div class="field-group"><label>DELIVERY ADDRESS</label><textarea class="field" name="address" required placeholder="Enter complete delivery address"></textarea></div>
+ ${field("Recipient name","recipientName")}
+ ${field("Recipient phone number","phone")}
+ <div class="form-grid">
+ <div class="field-group"><label>DELIVERY DATE</label><input class="field" type="date" name="deliveryDate" min="${new Date().toISOString().split("T")[0]}" required></div>
+ <div class="field-group"><label>DELIVERY TIME</label><select class="field" name="deliveryTime"><option>9 AM - 12 PM</option><option>12 PM - 3 PM</option><option>3 PM - 6 PM</option><option>6 PM - 9 PM</option></select></div>
+ </div>
+ <div class="field-group"><label>PAYMENT METHOD</label><select class="field" name="payment"><option>Cash on Delivery</option><option>UPI (Demo)</option><option>Credit/Debit Card (Demo)</option></select></div>
+ <div class="field-group"><label>ORDER MESSAGE</label><textarea class="field" name="message" placeholder="Special instructions for delivery"></textarea></div>
+ <p class="muted" style="font-size:11px">Demo checkout. No real payment will be collected.</p>
+ <button class="btn full">Place order</button></form>`);
+ $("#checkoutForm").onsubmit=e=>{
+  e.preventDefault();
+  const d=Object.fromEntries(new FormData(e.target));
+  for(const i of cart){const p=db.products.find(x=>x.id===i.id);if(!p||p.stock<i.qty){closeModal();return notify("Stock unavailable. Review your cart.")}}
+  const customer=db.customers.find(c=>c.email===session.email);
+  const order={
+   id:db.nextOrder++,email:session.email,customer:customer?.name||session.email,
+   recipientName:d.recipientName,phone:d.phone,address:d.address,
+   deliveryDate:d.deliveryDate,deliveryTime:d.deliveryTime,payment:d.payment,
+   message:d.message,
+   items:cart.map(i=>({...i,name:db.products.find(p=>p.id===i.id).name,price:db.products.find(p=>p.id===i.id).price})),
+   total:cartTotal(),status:"Processing",date:new Date().toLocaleString()
+  };
+  cart.forEach(i=>db.products.find(p=>p.id===i.id).stock-=i.qty);
+  db.orders.push(order);cart=[];save();closeModal();
+  notify("Order placed! Confirmation recorded.");
+  go("orders");
+ };
+}
+
+/* ORDERS */
+function orderTable(list){
+ return `<div class="table-wrap"><table><thead><tr><th>Order ID</th><th>Customer</th><th>Delivery date</th><th>Total</th><th>Status</th><th>Action</th></tr></thead>
+ <tbody>${list.map(o=>`<tr><td>#${o.id}</td><td>${esc(o.customer)}</td><td>${esc(o.deliveryDate)}</td><td>${money(o.total)}</td><td>${status(o.status)}</td><td><button class="btn light small" onclick="viewOrder(${o.id})">Track</button></td></tr>`).join("")||'<tr><td colspan="6" class="empty">No orders found.</td></tr>'}</tbody></table></div>`;
+}
+function ordersPage(){
+ const list=session.role==="admin"?db.orders.slice().reverse():db.orders.filter(o=>o.email===session.email).slice().reverse();
+ return `${heading(session.role==="admin"?"All customer orders":"Track my orders","View delivery dates and order status.")}
+ <section class="panel">${orderTable(list)}</section>`;
+}
+function historyPage(){
+ return `${heading("Order history","Browse all your previous purchases.")}
+ <section class="panel">${orderTable(db.orders.filter(o=>o.email===session.email).slice().reverse())}</section>`;
+}
+function viewOrder(id){
+ const o=db.orders.find(x=>x.id===id);if(!o)return;
+ modal("Order tracking #"+o.id,`
+ <p>Customer: <b>${esc(o.customer)}</b></p>
+ <p>Recipient: ${esc(o.recipientName)}</p>
+ <p>Order date: ${esc(o.date)}</p>
+ <p>Delivery address: ${esc(o.address)}</p>
+ <p>Scheduled delivery: <b>${esc(o.deliveryDate)} | ${esc(o.deliveryTime)}</b></p>
+ <p>Payment: ${esc(o.payment)}</p><p>Status: ${status(o.status)}</p>
+ <h3>Order items</h3>${o.items.map(i=>`<p>${esc(i.name)} × ${i.qty} — ${money((i.price+i.extra)*i.qty)}</p>`).join("")}
+ <h3>Total: ${money(o.total)}</h3>
+ ${session.role==="admin"?`<hr><label>UPDATE ORDER STATUS</label><select class="field" id="orderStatus"><option>Processing</option><option>Out for Delivery</option><option>Delivered</option><option>Cancelled</option></select><br><br><button class="btn full" onclick="updateOrder(${o.id})">Save status</button>`:""}
+ `);
+}
+function updateOrder(id){
+ const o=db.orders.find(x=>x.id===id),next=$("#orderStatus").value;
+ if(next==="Cancelled"&&o.status!=="Cancelled")o.items.forEach(i=>{const p=db.products.find(p=>p.id===i.id);if(p)p.stock+=i.qty});
+ o.status=next;save();closeModal();render();notify("Order status updated.");
+}
+
+/* REVIEWS */
+function writeReview(id){
+ modal("Write a review",`<form id="reviewForm">
+ <div class="field-group"><label>RATING</label><select class="field" name="rating"><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select></div>
+ <div class="field-group"><label>YOUR REVIEW</label><textarea class="field" name="text" required placeholder="Share your experience"></textarea></div>
+ <button class="btn full">Submit review</button></form>`);
+ $("#reviewForm").onsubmit=e=>{
+  e.preventDefault();const d=Object.fromEntries(new FormData(e.target));
+  db.reviews.push({...d,id:Date.now(),productId:id,name:session.email});
+  save();closeModal();notify("Review submitted.");
+ };
+}
+
+/* ADMIN PRODUCTS */
+function productsPage(){
+ return `${heading("Product management","Add, edit and remove flowers and gifts.",'<button class="btn" onclick="openProduct()">＋ Add product</button>')}
+ <section class="panel"><div class="toolbar"><input class="field" placeholder="Search products..." oninput="filterRows(this,'productTable')"></div>
+ <div class="table-wrap" id="productTable"><table><thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Actions</th></tr></thead>
+ <tbody>${db.products.map(p=>`<tr><td>${esc(p.name)}</td><td>${esc(p.category)}</td><td>${money(p.price)}</td><td>${p.stock}</td>
+ <td><button class="btn light small" onclick="openProduct(${p.id})">Edit</button> <button class="btn danger small" onclick="deleteProduct(${p.id})">Delete</button></td></tr>`).join("")}</tbody></table></div></section>`;
+}
+function openProduct(id){
+ const p=db.products.find(x=>x.id===id)||{};
+ modal(id?"Edit gift":"Add new gift",`<form id="productForm">
+ <div class="form-grid">
+ ${field("Product name","name",p.name)}
+ <div class="field-group"><label>CATEGORY</label><select class="field" name="category">${["Flowers","Gift Baskets","Personalized Gifts"].map(x=>`<option ${p.category===x?"selected":""}>${x}</option>`).join("")}</select></div>
+ <div class="field-group"><label>OCCASION</label><select class="field" name="occasion">${["Birthday","Anniversary","Wedding","Festival","Congratulations","Thank You","Get Well Soon","Housewarming"].map(x=>`<option ${p.occasion===x?"selected":""}>${x}</option>`).join("")}</select></div>
+ <div class="field-group"><label>RECIPIENT</label><select class="field" name="recipient">${["Partner","Friend","Family","Children","Parents","Colleague"].map(x=>`<option ${p.recipient===x?"selected":""}>${x}</option>`).join("")}</select></div>
+ ${field("Price (₹)","price",p.price||"","number")}
+ ${field("Old price (₹)","old",p.old||"","number")}
+ ${field("Stock quantity","stock",p.stock??"","number")}
+ ${field("Product icon","icon",p.icon||"🎁")}
+ ${field("Image URL","image",p.image||"")}
+ ${field("Rating","rating",p.rating||5,"number")}
+ </div>
+ <div class="field-group"><label>DESCRIPTION</label><textarea class="field" name="description" required>${esc(p.description)}</textarea></div>
+ <button class="btn full">Save product</button></form>`);
+ $("#productForm").onsubmit=e=>{
+  e.preventDefault();const d=Object.fromEntries(new FormData(e.target));
+  d.price=Number(d.price);d.old=Number(d.old);d.stock=Number(d.stock);d.rating=Math.min(5,Math.max(1,Number(d.rating)));
+  if(d.price<=0||d.stock<0)return notify("Enter a valid price and stock.");
+  if(id)Object.assign(p,d);else db.products.push({...d,id:Date.now()});
+  save();closeModal();render();notify("Product saved successfully.");
+ };
+}
+function deleteProduct(id){
+ if(!confirm("Delete this product?"))return;
+ db.products=db.products.filter(p=>p.id!==id);save();render();notify("Product deleted.");
+}
+
+/* INVENTORY */
+function inventoryPage(){
+ return `${heading("Inventory management","Check and update product availability.")}
+ <section class="panel"><div class="table-wrap"><table><thead><tr><th>Product</th><th>Category</th><th>Stock</th><th>Availability</th><th>Action</th></tr></thead>
+ <tbody>${db.products.map(p=>`<tr><td>${esc(p.name)}</td><td>${esc(p.category)}</td><td>${p.stock}</td><td>${p.stock>0?'<span class="status delivered">Available</span>':'<span class="status cancelled">Out of stock</span>'}</td><td><button class="btn light small" onclick="updateStock(${p.id})">Update</button></td></tr>`).join("")}</tbody></table></div></section>`;
+}
+function updateStock(id){
+ const p=db.products.find(x=>x.id===id);
+ modal("Update stock",`<form id="stockForm"><div class="field-group"><label>NEW STOCK QUANTITY</label><input class="field" type="number" min="0" name="stock" value="${p.stock}" required></div><button class="btn full">Update stock</button></form>`);
+ $("#stockForm").onsubmit=e=>{e.preventDefault();p.stock=Number(new FormData(e.target).get("stock"));save();closeModal();render();notify("Stock updated.")};
+}
+
+/* CUSTOMER MANAGEMENT */
+function customersPage(){
+ return `${heading("Customer information","View registered customers and checkout details.")}
+ <section class="panel"><div class="table-wrap"><table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Orders</th><th>Details</th></tr></thead>
+ <tbody>${db.customers.map(c=>`<tr><td>${esc(c.name)}</td><td>${esc(c.email)}</td><td>${esc(c.phone)}</td><td>${db.orders.filter(o=>o.email===c.email).length}</td><td><button class="btn light small" onclick="customerDetails(${c.id})">View</button></td></tr>`).join("")}</tbody></table></div></section>`;
+}
+function customerDetails(id){
+ const c=db.customers.find(x=>x.id===id);
+ modal("Customer details",`<h3>${esc(c.name)}</h3><p>Email: ${esc(c.email)}</p><p>Phone: ${esc(c.phone)}</p><h3>Customer orders</h3>
+ ${db.orders.filter(o=>o.email===c.email).map(o=>`<p>Order #${o.id} — ${money(o.total)} — ${esc(o.status)}</p>`).join("")||"<p>No orders yet.</p>"}`);
+}
+
+/* PROMOTIONS */
+function promotionsPage(){
+ return `${heading("Promotions and discounts","Manage special offers and customer discounts.")}
+ <section class="panel"><h3>Current discount</h3><h1 style="color:var(--primary)">${db.discount}% OFF</h1>
+ <form id="discountForm"><div class="field-group"><label>SET DISCOUNT PERCENTAGE</label><input class="field" type="number" name="discount" min="0" max="90" value="${db.discount}" required></div>
+ <button class="btn">Update promotion</button></form>
+ <p class="muted">Discount display is promotional in this demo. It does not automatically change checkout prices.</p></section>`;
+}
+
+/* REPORTS */
+function reportsPage(){
+ const revenue=db.orders.filter(o=>o.status!=="Cancelled").reduce((n,o)=>n+o.total,0);
+ return `${heading("Store reports","Overview of BlossomGifts performance.")}
+ <div class="stats">
+ <div class="stat"><small>TOTAL REVENUE</small><strong>${money(revenue)}</strong></div>
+ <div class="stat"><small>TOTAL ORDERS</small><strong>${db.orders.length}</strong></div>
+ <div class="stat"><small>CUSTOMERS</small><strong>${db.customers.length}</strong></div>
+ <div class="stat"><small>PRODUCTS</small><strong>${db.products.length}</strong></div>
+ </div><section class="panel"><h3>Product stock value</h3><br>
+ <table><thead><tr><th>Product</th><th>Stock</th><th>Stock value</th></tr></thead>
+ <tbody>${db.products.map(p=>`<tr><td>${esc(p.name)}</td><td>${p.stock}</td><td>${money(p.price*p.stock)}</td></tr>`).join("")}</tbody></table></section>`;
+}
+
+/* PROFILE */
+function profilePage(){
+ const c=db.customers.find(x=>x.email===session.email);
+ return `${heading("My profile","Manage your BlossomGifts account.")}
+ <section class="panel" style="max-width:550px"><h3>Account details</h3><br>
+ <p>Name: <b>${esc(c.name)}</b></p><p>Email: <b>${esc(c.email)}</b></p><p>Phone: <b>${esc(c.phone)}</b></p>
+ <button class="btn" onclick="editProfile()">Edit profile</button></section>`;
+}
+function editProfile(){
+ const c=db.customers.find(x=>x.email===session.email);
+ modal("Edit profile",`<form id="profileForm">${field("Name","name",c.name)}${field("Phone","phone",c.phone)}<button class="btn full">Save changes</button></form>`);
+ $("#profileForm").onsubmit=e=>{e.preventDefault();Object.assign(c,Object.fromEntries(new FormData(e.target)));save();closeModal();render();notify("Profile updated.")};
+}
+
+/* TABLE SEARCH */
+function filterRows(input,id){
+ const q=input.value.toLowerCase();
+ document.querySelectorAll("#"+id+" tbody tr").forEach(r=>r.style.display=r.innerText.toLowerCase().includes(q)?"":"none");
+}
+
+/* PAGE RENDERER */
+function render(){
+ const pages={
+ home:homePage,shop:shopPage,products:productsPage,inventory:inventoryPage,
+ customers:customersPage,orders:ordersPage,history:historyPage,
+ cart:cartPage,wishlist:wishlistPage,promotions:promotionsPage,
+ reports:reportsPage,profile:profilePage
+ };
+ $("#content").innerHTML=pages[page]?pages[page]():"<div class='panel empty'>Page not found.</div>";
+ if(page==="shop")renderShop();
+ if(page==="promotions"){
+  $("#discountForm").onsubmit=e=>{
+   e.preventDefault();db.discount=Number(new FormData(e.target).get("discount"));
+   save();render();notify("Promotion updated.");
+  };
+ }
+}
+</script>
+</body>
+</html>

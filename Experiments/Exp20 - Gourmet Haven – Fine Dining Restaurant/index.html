@@ -1,0 +1,439 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gourmet Haven | Fine Dining Experience</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+ --dark:#171713;--gold:#c8a66a;--cream:#f8f5ef;--white:#fff;
+ --muted:#aaa69d;--border:#ded8cb;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark)}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.container{width:min(1160px,91%);margin:auto}
+header{position:sticky;top:0;z-index:20;background:#171713f5;color:white;border-bottom:1px solid #ffffff18}
+.nav{height:78px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Playfair Display',serif;font-size:27px;letter-spacing:1px;color:var(--gold)}
+.logo span{color:white}
+.navlinks{display:flex;align-items:center;gap:27px}
+.navlinks a{color:#e9e5dc;text-decoration:none;font-size:12px;letter-spacing:1px;text-transform:uppercase}
+.navlinks a:hover{color:var(--gold)}
+.nav-cta,.gold-btn{background:var(--gold);color:#171713;border:0;padding:13px 21px;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase}
+.menu-toggle{display:none;color:white;background:none;border:0;font-size:26px}
+.hero{height:650px;position:relative;background:#222;overflow:hidden;color:white}
+.hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 1s}
+.hero-slide.active{opacity:1}
+.hero-slide img{width:100%;height:100%;object-fit:cover}
+.hero-slide:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#000b,#0004 65%,#0003)}
+.hero-content{position:absolute;z-index:2;top:50%;left:10%;transform:translateY(-50%);max-width:620px}
+.eyebrow{color:var(--gold);font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(45px,7vw,78px);line-height:1.08;margin:22px 0}
+.hero p{color:#e1ded6;font-size:15px;line-height:1.9;max-width:480px;margin-bottom:30px}
+.hero-controls{position:absolute;z-index:3;right:8%;bottom:35px;display:flex;gap:10px}
+.hero-controls button{width:43px;height:43px;border:1px solid #fff8;background:#17171380;color:white;font-size:20px}
+.hero-dots{position:absolute;z-index:3;bottom:50px;left:10%;display:flex;gap:8px}
+.dot{width:24px;height:3px;background:#ffffff70;border:0}
+.dot.active{background:var(--gold)}
+section{padding:85px 0}
+.section-heading{text-align:center;margin-bottom:45px}
+.section-heading h2{font-family:'Playfair Display',serif;font-size:clamp(31px,4vw,45px);margin:12px 0}
+.section-heading p{font-size:13px;color:#817d73}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:55px;align-items:center}
+.about-image{position:relative}
+.about-image img{width:100%;height:440px;object-fit:cover}
+.about-image:after{content:"";position:absolute;top:18px;left:18px;right:-18px;bottom:-18px;border:1px solid var(--gold);z-index:-1}
+.about-text h2{font-family:'Playfair Display',serif;font-size:43px;line-height:1.2;margin:13px 0 20px}
+.about-text p{color:#77736a;font-size:14px;line-height:1.9;margin-bottom:15px}
+.signature{font-family:'Playfair Display',serif;font-style:italic;color:#9a7744;font-size:20px;margin-top:24px}
+.menu-section{background:#201f19;color:white}
+.menu-section .section-heading p{color:#aaa69d}
+.menu-tabs{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-bottom:35px}
+.tab{border:1px solid #6e685b;background:none;color:#ddd;padding:11px 21px;font-size:12px;letter-spacing:1px}
+.tab.active,.tab:hover{background:var(--gold);color:#171713;border-color:var(--gold)}
+.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.menu-item{display:flex;gap:17px;padding:20px 0;border-bottom:1px solid #ffffff25}
+.menu-item img{width:105px;height:105px;object-fit:cover}
+.menu-info{flex:1}
+.menu-title{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.menu-title h3{font-family:'Playfair Display',serif;font-size:19px;font-weight:500}
+.price{color:var(--gold);font-weight:700;white-space:nowrap}
+.menu-info p{color:#aaa69d;font-size:12px;line-height:1.7;margin-top:9px}
+.tag{font-size:9px;letter-spacing:1px;color:var(--gold);margin-top:7px;display:inline-block}
+.reservation{background:#eee9df}
+.reservation-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:55px;align-items:center}
+.reservation-image img{width:100%;height:500px;object-fit:cover}
+.reservation-copy h2{font-family:'Playfair Display',serif;font-size:42px;line-height:1.2;margin:13px 0}
+.reservation-copy>p{color:#77736a;font-size:13px;line-height:1.8;margin-bottom:25px}
+.booking-form{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.field label{display:block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:7px}
+.field input,.field select,.field textarea{width:100%;padding:13px;background:#fff;border:1px solid #d8d0c1;outline:none;color:#28251e;border-radius:0}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold)}
+.field.full{grid-column:1/-1}
+.booking-form .gold-btn{grid-column:1/-1;padding:16px}
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.team-card{text-align:center}
+.team-card img{width:100%;height:320px;object-fit:cover}
+.team-card h3{font-family:'Playfair Display',serif;font-size:21px;margin-top:15px}
+.team-card p{font-size:11px;color:#99815d;letter-spacing:1px;text-transform:uppercase;margin-top:5px}
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:190px;gap:12px}
+.gallery-grid img{height:100%;width:100%;object-fit:cover;cursor:pointer;transition:.3s}
+.gallery-grid img:hover{filter:brightness(.75)}
+.gallery-grid img:first-child{grid-column:span 2;grid-row:span 2}
+.gallery-grid img:nth-child(4){grid-column:span 2}
+.contact-section{background:#201f19;color:white}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px}
+.contact-details h2{font-family:'Playfair Display',serif;font-size:40px;margin:12px 0 18px}
+.contact-details>p{color:#aaa69d;font-size:13px;line-height:1.8;margin-bottom:30px}
+.contact-line{display:flex;gap:15px;margin:20px 0;align-items:flex-start}
+.contact-icon{color:var(--gold);font-size:20px}
+.contact-line strong{display:block;font-size:13px;margin-bottom:4px}
+.contact-line span{font-size:12px;color:#aaa69d}
+.contact-form{background:#2b2a23;padding:30px}
+.contact-form h3{font-family:'Playfair Display',serif;font-size:25px;margin-bottom:20px}
+.contact-form input,.contact-form textarea{width:100%;padding:13px;margin-bottom:13px;background:#1e1e19;border:1px solid #514d41;color:white;outline:none}
+.contact-form textarea{height:120px;resize:vertical}
+footer{background:#11110e;color:#aaa69d;padding:35px 0;text-align:center}
+.footer-logo{font-family:'Playfair Display',serif;font-size:27px;color:var(--gold)}
+footer p{font-size:11px;margin-top:10px}
+.footer-links{display:flex;justify-content:center;gap:20px;margin:18px 0}
+.footer-links a{color:#ccc;font-size:11px;text-decoration:none}
+.modal{display:none;position:fixed;inset:0;background:#000d;z-index:60;align-items:center;justify-content:center;padding:20px}
+.modal.show{display:flex}
+.modal-box{background:var(--cream);color:var(--dark);max-width:520px;width:100%;padding:35px;position:relative}
+.modal-box h2{font-family:'Playfair Display',serif;font-size:30px;margin-bottom:12px}
+.modal-box p{font-size:13px;color:#77736a;line-height:1.7;margin-bottom:15px}
+.modal-close{position:absolute;right:14px;top:10px;background:none;border:0;font-size:27px}
+.toast{position:fixed;bottom:20px;right:20px;background:#171713;color:white;padding:14px 20px;font-size:13px;z-index:100;display:none;border-left:3px solid var(--gold)}
+@media(max-width:800px){
+ .navlinks{display:none;position:absolute;top:78px;left:0;right:0;background:#171713;padding:25px;flex-direction:column;align-items:flex-start}
+ .navlinks.open{display:flex}.menu-toggle{display:block}.nav-cta{display:none}
+ .hero{height:570px}.hero-content{left:6%;right:6%}.hero-dots{left:6%}
+ .about-grid,.reservation-grid,.contact-grid{grid-template-columns:1fr}
+ .about-image img{height:350px}
+ .reservation-image img{height:330px}
+ .team-grid{grid-template-columns:repeat(2,1fr)}
+ .gallery-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:520px){
+ section{padding:60px 0}
+ .menu-grid{grid-template-columns:1fr}
+ .team-grid{grid-template-columns:1fr}
+ .team-card img{height:360px}
+ .gallery-grid{grid-auto-rows:140px}
+ .booking-form{grid-template-columns:1fr}
+ .field.full{grid-column:auto}
+ .booking-form .gold-btn{grid-column:auto}
+ .about-text h2,.reservation-copy h2{font-size:34px}
+ .hero-controls{right:6%;bottom:25px}
+ .hero-dots{bottom:45px}
+ .menu-item img{width:85px;height:90px}
+ .menu-title h3{font-size:16px}
+ .contact-form{padding:20px}
+}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="container nav">
+  <a href="#home" class="logo">GOURMET <span>HAVEN</span></a>
+  <nav class="navlinks" id="navlinks">
+   <a href="#home">Home</a>
+   <a href="#about">Our Story</a>
+   <a href="#menu">Menu</a>
+   <a href="#team">Our Chefs</a>
+   <a href="#gallery">Gallery</a>
+   <a href="#contact">Contact</a>
+  </nav>
+  <button class="nav-cta" onclick="goReservation()">Reserve a Table</button>
+  <button class="menu-toggle" onclick="document.getElementById('navlinks').classList.toggle('open')">☰</button>
+ </div>
+</header>
+
+<section class="hero" id="home">
+ <div class="hero-slide active">
+  <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1800" alt="Luxury fine dining restaurant">
+ </div>
+ <div class="hero-slide">
+  <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1800" alt="Elegant restaurant interior">
+ </div>
+ <div class="hero-slide">
+  <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1800" alt="Gourmet cuisine">
+ </div>
+ <div class="hero-content">
+  <div class="eyebrow">An extraordinary culinary journey</div>
+  <h1>Where Every Meal<br>Becomes a Memory.</h1>
+  <p>Discover exceptional flavours, carefully crafted dishes and an atmosphere designed for unforgettable moments.</p>
+  <button class="gold-btn" onclick="goReservation()">Reserve Your Experience →</button>
+ </div>
+ <div class="hero-dots">
+  <button class="dot active" onclick="showSlide(0)"></button>
+  <button class="dot" onclick="showSlide(1)"></button>
+  <button class="dot" onclick="showSlide(2)"></button>
+ </div>
+ <div class="hero-controls">
+  <button onclick="changeSlide(-1)">‹</button>
+  <button onclick="changeSlide(1)">›</button>
+ </div>
+</section>
+
+<section id="about">
+ <div class="container about-grid">
+  <div class="about-image">
+   <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=1000" alt="Restaurant dining experience">
+  </div>
+  <div class="about-text">
+   <div class="eyebrow">Our story · Since 2012</div>
+   <h2>A Passion for<br>Exceptional Dining.</h2>
+   <p>Welcome to Gourmet Haven, where culinary creativity meets timeless elegance. Our restaurant was founded with a simple vision: to transform every meal into an extraordinary experience.</p>
+   <p>We combine carefully selected ingredients, innovative cooking techniques and warm hospitality to create dishes that celebrate flavour, freshness and artistry.</p>
+   <p>Whether you are celebrating a special occasion or enjoying an intimate dinner, our team is dedicated to making every visit memorable.</p>
+   <div class="signature">The Gourmet Haven Team</div>
+  </div>
+ </div>
+</section>
+
+<section class="menu-section" id="menu">
+ <div class="container">
+  <div class="section-heading">
+   <div class="eyebrow">Discover our creations</div>
+   <h2>Our Signature Menu</h2>
+   <p>Seasonal ingredients. Thoughtful preparation. Unforgettable flavours.</p>
+  </div>
+  <div class="menu-tabs">
+   <button class="tab active" onclick="showMenu('All',this)">All Dishes</button>
+   <button class="tab" onclick="showMenu('Starters',this)">Starters</button>
+   <button class="tab" onclick="showMenu('Main Course',this)">Main Course</button>
+   <button class="tab" onclick="showMenu('Desserts',this)">Desserts</button>
+   <button class="tab" onclick="showMenu('Drinks',this)">Drinks</button>
+  </div>
+  <div class="menu-grid" id="menuGrid"></div>
+ </div>
+</section>
+
+<section class="reservation" id="reservation">
+ <div class="container reservation-grid">
+  <div class="reservation-image">
+   <img src="https://images.unsplash.com/photo-1515003197210-e0cd7184f8b5?w=1000" alt="Beautiful restaurant table setting">
+  </div>
+  <div class="reservation-copy">
+   <div class="eyebrow">Your table awaits</div>
+   <h2>Make a Reservation</h2>
+   <p>Join us for an exceptional dining experience. Choose your preferred date and time, and our team will be delighted to welcome you.</p>
+   <form class="booking-form" id="bookingForm" onsubmit="bookTable(event)">
+    <div class="field"><label>Full Name</label><input id="guestName" type="text" placeholder="Your name" required></div>
+    <div class="field"><label>Email Address</label><input id="guestEmail" type="email" placeholder="Your email" required></div>
+    <div class="field"><label>Phone Number</label><input id="guestPhone" type="tel" placeholder="Phone number" required></div>
+    <div class="field"><label>Number of Guests</label>
+     <select id="guestCount" required>
+      <option value="">Select guests</option>
+      <option>1 Guest</option><option>2 Guests</option><option>3 Guests</option>
+      <option>4 Guests</option><option>5 Guests</option><option>6 Guests</option>
+      <option>7 Guests</option><option>8 Guests</option>
+     </select>
+    </div>
+    <div class="field"><label>Reservation Date</label><input id="bookingDate" type="date" required></div>
+    <div class="field"><label>Preferred Time</label>
+     <select id="bookingTime" required>
+      <option value="">Choose time</option>
+      <option>12:00 PM</option><option>12:30 PM</option><option>1:00 PM</option>
+      <option>1:30 PM</option><option>6:00 PM</option><option>6:30 PM</option>
+      <option>7:00 PM</option><option>7:30 PM</option><option>8:00 PM</option>
+      <option>8:30 PM</option><option>9:00 PM</option>
+     </select>
+    </div>
+    <div class="field full"><label>Special Requests</label><textarea id="bookingNotes" rows="3" placeholder="Any special occasion or dietary requirements?"></textarea></div>
+    <button class="gold-btn" type="submit">Confirm Reservation →</button>
+   </form>
+  </div>
+ </div>
+</section>
+
+<section id="team">
+ <div class="container">
+  <div class="section-heading">
+   <div class="eyebrow">The people behind the flavours</div>
+   <h2>Meet Our Culinary Team</h2>
+   <p>Passionate professionals bringing creativity and excellence to every plate.</p>
+  </div>
+  <div class="team-grid">
+   <div class="team-card"><img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=700" alt="Head chef"><h3>Chef Alexander James</h3><p>Executive Chef</p></div>
+   <div class="team-card"><img src="https://images.unsplash.com/photo-1583394293214-28ded15ee548?w=700" alt="Sous chef"><h3>Chef Olivia Martin</h3><p>Sous Chef</p></div>
+   <div class="team-card"><img src="https://images.unsplash.com/photo-1574966739987-65e38e4f6ab5?w=700" alt="Pastry chef"><h3>Chef Daniel Wilson</h3><p>Pastry Chef</p></div>
+  </div>
+ </div>
+</section>
+
+<section id="gallery">
+ <div class="container">
+  <div class="section-heading">
+   <div class="eyebrow">A glimpse of Gourmet Haven</div>
+   <h2>Our Gallery</h2>
+   <p>Explore the atmosphere, artistry and flavours that define our restaurant.</p>
+  </div>
+  <div class="gallery-grid">
+   <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=900" alt="Fine dining table">
+   <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=700" alt="Fresh gourmet dish">
+   <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=700" alt="Restaurant interior">
+   <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=900" alt="Restaurant atmosphere">
+   <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=700" alt="Food presentation">
+   <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=700" alt="Gourmet meal">
+  </div>
+ </div>
+</section>
+
+<section class="contact-section" id="contact">
+ <div class="container contact-grid">
+  <div class="contact-details">
+   <div class="eyebrow">We would love to hear from you</div>
+   <h2>Get in Touch</h2>
+   <p>Have a question, planning a special celebration or need assistance with your reservation? Contact our team.</p>
+   <div class="contact-line"><div class="contact-icon">⌖</div><div><strong>Our Location</strong><span>12 Grand Avenue, City Centre, Chennai, India</span></div></div>
+   <div class="contact-line"><div class="contact-icon">☎</div><div><strong>Phone</strong><span>+91 98765 43210</span></div></div>
+   <div class="contact-line"><div class="contact-icon">✉</div><div><strong>Email</strong><span>hello@gourmethaven.example</span></div></div>
+   <div class="contact-line"><div class="contact-icon">◷</div><div><strong>Opening Hours</strong><span>Tuesday – Sunday: 12:00 PM – 10:30 PM<br>Monday: Closed</span></div></div>
+  </div>
+  <form class="contact-form" onsubmit="sendMessage(event)">
+   <h3>Send Us a Message</h3>
+   <input id="contactName" type="text" placeholder="Your full name" required>
+   <input id="contactEmail" type="email" placeholder="Your email address" required>
+   <input id="contactSubject" type="text" placeholder="Subject" required>
+   <textarea id="contactMessage" placeholder="Write your message..." required></textarea>
+   <button class="gold-btn" type="submit">Send Message →</button>
+  </form>
+ </div>
+</section>
+
+<footer>
+ <div class="container">
+  <div class="footer-logo">GOURMET HAVEN</div>
+  <p>Exceptional flavours. Elegant moments. Unforgettable experiences.</p>
+  <div class="footer-links">
+   <a href="#home">Home</a><a href="#about">About</a><a href="#menu">Menu</a><a href="#reservation">Reservations</a><a href="#contact">Contact</a>
+  </div>
+  <p>© 2026 Gourmet Haven. All rights reserved.</p>
+ </div>
+</footer>
+
+<div class="modal" id="modal">
+ <div class="modal-box">
+  <button class="modal-close" onclick="closeModal()">×</button>
+  <div id="modalContent"></div>
+ </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const menuItems=[
+ {name:"Truffle Mushroom Soup",category:"Starters",price:"₹450",desc:"Creamy wild mushroom soup finished with aromatic truffle oil.",image:"https://images.unsplash.com/photo-1547592180-85f173990554?w=500",tag:"CHEF'S SPECIAL"},
+ {name:"Burrata Garden Salad",category:"Starters",price:"₹520",desc:"Fresh burrata, cherry tomatoes, basil and balsamic glaze.",image:"https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500",tag:"VEGETARIAN"},
+ {name:"Pan-Seared Salmon",category:"Main Course",price:"₹1,250",desc:"Perfectly seared salmon served with seasonal vegetables and lemon butter.",image:"https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=500",tag:"POPULAR"},
+ {name:"Herb-Crusted Chicken",category:"Main Course",price:"₹950",desc:"Tender chicken with fresh herbs, roasted potatoes and creamy sauce.",image:"https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=500",tag:"HOUSE SPECIAL"},
+ {name:"Wild Mushroom Risotto",category:"Main Course",price:"₹850",desc:"Slow-cooked Arborio rice with wild mushrooms and parmesan.",image:"https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=500",tag:"VEGETARIAN"},
+ {name:"Classic Chocolate Fondant",category:"Desserts",price:"₹480",desc:"Warm chocolate cake with a rich molten centre and vanilla cream.",image:"https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500",tag:"BEST SELLER"},
+ {name:"Berry Cheesecake",category:"Desserts",price:"₹420",desc:"Silky cheesecake topped with fresh seasonal berries.",image:"https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=500",tag:"FRESH"},
+ {name:"Signature Citrus Cooler",category:"Drinks",price:"₹280",desc:"A refreshing blend of citrus fruits, mint and sparkling water.",image:"https://images.unsplash.com/photo-1513558161293-cdaf765edfd4?w=500",tag:"REFRESHING"},
+ {name:"Classic Cappuccino",category:"Drinks",price:"₹220",desc:"Freshly brewed espresso with smooth steamed milk.",image:"https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=500",tag:"CLASSIC"}
+];
+function renderMenu(category="All"){
+ const list=category==="All"?menuItems:menuItems.filter(x=>x.category===category);
+ document.getElementById("menuGrid").innerHTML=list.map(item=>`
+ <article class="menu-item">
+  <img src="${item.image}" alt="${item.name}">
+  <div class="menu-info">
+   <div class="menu-title"><h3>${item.name}</h3><span class="price">${item.price}</span></div>
+   <p>${item.desc}</p><span class="tag">${item.tag}</span>
+  </div>
+ </article>`).join("");
+}
+function showMenu(category,button){
+ renderMenu(category);
+ document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
+ button.classList.add("active");
+}
+let currentSlide=0;
+const slides=document.querySelectorAll(".hero-slide");
+const dots=document.querySelectorAll(".dot");
+function showSlide(index){
+ currentSlide=(index+slides.length)%slides.length;
+ slides.forEach((s,i)=>s.classList.toggle("active",i===currentSlide));
+ dots.forEach((d,i)=>d.classList.toggle("active",i===currentSlide));
+}
+function changeSlide(direction){showSlide(currentSlide+direction)}
+setInterval(()=>changeSlide(1),5000);
+function goReservation(){
+ document.getElementById("reservation").scrollIntoView({behavior:"smooth"});
+ document.getElementById("navlinks").classList.remove("open");
+}
+function toast(message){
+ const t=document.getElementById("toast");
+ t.textContent=message;t.style.display="block";
+ setTimeout(()=>t.style.display="none",3500);
+}
+function openModal(content){
+ document.getElementById("modalContent").innerHTML=content;
+ document.getElementById("modal").classList.add("show");
+}
+function closeModal(){document.getElementById("modal").classList.remove("show")}
+document.getElementById("modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+
+const today=new Date();
+const localDate=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().split("T")[0];
+document.getElementById("bookingDate").min=localDate;
+
+function bookTable(e){
+ e.preventDefault();
+ const date=document.getElementById("bookingDate").value;
+ if(date<localDate){toast("Please choose a future date.");return}
+ const booking={
+  reference:"GH"+Date.now().toString().slice(-7),
+  name:document.getElementById("guestName").value.trim(),
+  email:document.getElementById("guestEmail").value.trim(),
+  phone:document.getElementById("guestPhone").value.trim(),
+  guests:document.getElementById("guestCount").value,
+  date,time:document.getElementById("bookingTime").value,
+  notes:document.getElementById("bookingNotes").value.trim()
+ };
+ let bookings=JSON.parse(localStorage.getItem("gh_bookings")||"[]");
+ bookings.push(booking);
+ localStorage.setItem("gh_bookings",JSON.stringify(bookings));
+ document.getElementById("bookingForm").reset();
+ document.getElementById("bookingDate").min=localDate;
+ openModal(`<div class="eyebrow">Reservation request received</div>
+ <h2>Thank You, ${escapeHTML(booking.name)}!</h2>
+ <p>Your reservation request has been saved in this demo.</p>
+ <p><strong>Reference:</strong> ${booking.reference}<br>
+ <strong>Date:</strong> ${booking.date}<br>
+ <strong>Time:</strong> ${booking.time}<br>
+ <strong>Guests:</strong> ${booking.guests}</p>
+ <p>In a live restaurant website, the team would confirm availability and send you a booking confirmation.</p>
+ <button class="gold-btn" onclick="closeModal()">Done</button>`);
+}
+function sendMessage(e){
+ e.preventDefault();
+ const msg={
+  name:document.getElementById("contactName").value.trim(),
+  email:document.getElementById("contactEmail").value.trim(),
+  subject:document.getElementById("contactSubject").value.trim(),
+  message:document.getElementById("contactMessage").value.trim()
+ };
+ let messages=JSON.parse(localStorage.getItem("gh_messages")||"[]");
+ messages.push(msg);
+ localStorage.setItem("gh_messages",JSON.stringify(messages));
+ e.target.reset();
+ toast("Your message has been saved successfully!");
+}
+function escapeHTML(str){
+ return str.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+renderMenu();
+</script>
+</body>
+</html>

@@ -1,0 +1,390 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TaxWise - Income Tax Calculator</title>
+<style>
+:root{
+  --primary:#2563eb;--dark:#14213d;--bg:#f4f7fc;
+  --muted:#718096;--border:#e5eaf2;--green:#059669;
+  --white:#fff;--shadow:0 10px 35px rgba(20,33,61,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--dark)}
+header{background:#fff;border-bottom:1px solid var(--border);padding:17px 6%;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+.logo{font-size:23px;font-weight:800;color:var(--primary)}
+.logo span{color:var(--dark)}
+header a{color:var(--muted);text-decoration:none;font-size:14px}
+.hero{padding:45px 6% 35px;background:linear-gradient(120deg,#14213d,#1e40af);color:white}
+.hero h1{font-size:clamp(27px,4vw,39px);margin-bottom:10px}
+.hero p{color:#dbeafe;max-width:650px;line-height:1.6}
+.container{max-width:1200px;margin:30px auto;padding:0 20px}
+.layout{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:start}
+.card{background:white;border:1px solid var(--border);border-radius:16px;padding:24px;box-shadow:var(--shadow);margin-bottom:20px}
+.card h2{font-size:19px;margin-bottom:7px}
+.sub{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.5}
+.section-title{font-size:14px;font-weight:700;color:#334155;margin:22px 0 13px;padding-bottom:9px;border-bottom:1px solid var(--border)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.field label{display:block;font-size:13px;font-weight:600;margin-bottom:7px;color:#475569}
+.field input,.field select{width:100%;padding:12px 13px;border:1px solid #dbe2ec;border-radius:9px;font-size:14px;outline:none;background:#fff;color:var(--dark)}
+.field input:focus,.field select:focus{border-color:var(--primary);box-shadow:0 0 0 3px #2563eb18}
+.field small{font-size:11px;color:var(--muted);display:block;margin-top:5px}
+.full{grid-column:1/-1}
+.regime{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.regime label{border:1px solid var(--border);padding:15px;border-radius:11px;cursor:pointer;display:flex;gap:10px;align-items:center}
+.regime label:has(input:checked){border-color:var(--primary);background:#eff6ff}
+.regime input{accent-color:var(--primary)}
+.btn{border:0;border-radius:9px;padding:13px 19px;background:var(--primary);color:white;font-weight:700;cursor:pointer;font-size:14px}
+.btn:hover{background:#1d4ed8}
+.btn.secondary{background:#eaf0ff;color:var(--primary)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.result{position:sticky;top:90px}
+.result-top{background:linear-gradient(130deg,#1d4ed8,#4338ca);color:#fff;border-radius:14px;padding:23px;margin-bottom:16px}
+.result-top small{color:#dbeafe}
+.tax-value{font-size:35px;font-weight:800;margin:8px 0}
+.result-top p{font-size:12px;color:#dbeafe}
+.metric{display:flex;justify-content:space-between;gap:10px;padding:13px 0;border-bottom:1px solid var(--border);font-size:13px}
+.metric:last-child{border:0}
+.metric span{color:var(--muted)}
+.metric strong{text-align:right}
+.green{color:var(--green)}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.compare-box{background:#f8fafc;border:1px solid var(--border);padding:14px;border-radius:11px}
+.compare-box small{color:var(--muted);font-size:11px}
+.compare-box h3{font-size:19px;margin-top:7px}
+.winner{font-size:12px;color:var(--green);font-weight:700;margin-top:8px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:400px}
+th,td{padding:12px;text-align:left;border-bottom:1px solid var(--border)}
+th{background:#f8fafc;color:#475569}
+.note{background:#eff6ff;color:#1e40af;padding:14px;border-radius:10px;font-size:12px;line-height:1.6;margin-top:15px}
+footer{text-align:center;color:var(--muted);padding:30px 15px;font-size:12px}
+.hidden{display:none}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.result{position:static}}
+@media(max-width:520px){header{padding:15px 5%}.hero{padding:35px 5%}.container{padding:0 13px}.card{padding:17px}.grid{grid-template-columns:1fr}.full{grid-column:auto}.tax-value{font-size:29px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Tax<span>Wise.</span></div>
+  <a href="#calculator">Income Tax Calculator</a>
+</header>
+
+<section class="hero">
+  <h1>Smart Income Tax Calculator</h1>
+  <p>Calculate your estimated income tax, compare tax regimes and understand your take-home income with a simple and transparent calculator.</p>
+</section>
+
+<main class="container" id="calculator">
+<div class="layout">
+
+<section>
+<div class="card">
+  <h2>Personal Information</h2>
+  <p class="sub">Enter your details to calculate your estimated income tax.</p>
+
+  <div class="grid">
+    <div class="field">
+      <label>Full Name</label>
+      <input id="name" type="text" placeholder="Enter your name">
+    </div>
+    <div class="field">
+      <label>Age Category</label>
+      <select id="age">
+        <option value="below">Below 60 years</option>
+        <option value="senior">60 to 79 years</option>
+        <option value="super">80 years and above</option>
+      </select>
+    </div>
+    <div class="field full">
+      <label>Residential Status</label>
+      <select id="resident">
+        <option value="resident">Resident Individual</option>
+        <option value="nonresident">Non-Resident Individual</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Income Details</h2>
+  <p class="sub">Enter your annual income in Indian Rupees.</p>
+
+  <div class="grid">
+    <div class="field">
+      <label>Annual Salary (₹)</label>
+      <input id="salary" type="number" min="0" value="900000">
+    </div>
+    <div class="field">
+      <label>Other Income (₹)</label>
+      <input id="other" type="number" min="0" value="0">
+      <small>Interest, rental and other normal income</small>
+    </div>
+    <div class="field">
+      <label>Business / Professional Income (₹)</label>
+      <input id="business" type="number" min="0" value="0">
+    </div>
+    <div class="field">
+      <label>Other Taxable Income (₹)</label>
+      <input id="extra" type="number" min="0" value="0">
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Select Tax Regime</h2>
+  <p class="sub">Choose a regime or compare both regimes to find the estimated lower tax.</p>
+  <div class="regime">
+    <label><input type="radio" name="regime" value="new" checked> <span><b>New Regime</b><br><small>Lower slab rates</small></span></label>
+    <label><input type="radio" name="regime" value="old"> <span><b>Old Regime</b><br><small>Eligible deductions</small></span></label>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Old Regime Deductions</h2>
+  <p class="sub">Enter eligible deductions. These are applied only when calculating the old regime.</p>
+
+  <div class="grid">
+    <div class="field">
+      <label>Section 80C (₹)</label>
+      <input id="d80c" type="number" min="0" max="150000" value="150000">
+      <small>Maximum eligible limit ₹1,50,000</small>
+    </div>
+    <div class="field">
+      <label>Section 80D (₹)</label>
+      <input id="d80d" type="number" min="0" value="25000">
+      <small>Enter the eligible amount</small>
+    </div>
+    <div class="field">
+      <label>HRA Exemption (₹)</label>
+      <input id="hra" type="number" min="0" value="0">
+    </div>
+    <div class="field">
+      <label>Home Loan Interest (₹)</label>
+      <input id="home" type="number" min="0" value="0">
+      <small>Eligible self-occupied house limit generally ₹2,00,000</small>
+    </div>
+    <div class="field full">
+      <label>Other Eligible Deductions (₹)</label>
+      <input id="otherDed" type="number" min="0" value="0">
+    </div>
+  </div>
+
+  <div class="note">Deduction eligibility and limits depend on your circumstances. Enter only amounts you are legally eligible to claim. The new regime generally does not allow these deductions.</div>
+
+  <div class="actions">
+    <button class="btn" onclick="calculate()">Calculate Income Tax</button>
+    <button class="btn secondary" onclick="resetForm()">Reset</button>
+  </div>
+</div>
+</section>
+
+<aside class="result">
+<div class="card">
+  <div class="result-top">
+    <small>Estimated Total Tax Payable</small>
+    <div class="tax-value" id="totalTax">₹0</div>
+    <p id="resultSubtitle">Select your details and calculate</p>
+  </div>
+
+  <h2>Tax Summary</h2>
+  <div class="metric"><span>Gross Annual Income</span><strong id="gross">₹0</strong></div>
+  <div class="metric"><span>Standard Deduction</span><strong id="standard">₹0</strong></div>
+  <div class="metric"><span>Other Deductions</span><strong id="deductions">₹0</strong></div>
+  <div class="metric"><span>Taxable Income</span><strong id="taxable">₹0</strong></div>
+  <div class="metric"><span>Income Tax</span><strong id="baseTax">₹0</strong></div>
+  <div class="metric"><span>Rebate</span><strong class="green" id="rebate">₹0</strong></div>
+  <div class="metric"><span>Surcharge</span><strong id="surcharge">₹0</strong></div>
+  <div class="metric"><span>Health & Education Cess (4%)</span><strong id="cess">₹0</strong></div>
+  <div class="metric"><span>Monthly Tax Estimate</span><strong id="monthlyTax">₹0</strong></div>
+  <div class="metric"><span>Estimated Annual Take-Home</span><strong class="green" id="takeHome">₹0</strong></div>
+
+  <div class="compare">
+    <div class="compare-box">
+      <small>New Regime Tax</small>
+      <h3 id="newTax">₹0</h3>
+    </div>
+    <div class="compare-box">
+      <small>Old Regime Tax</small>
+      <h3 id="oldTax">₹0</h3>
+    </div>
+  </div>
+  <div class="winner" id="recommendation">Calculate to compare regimes</div>
+
+  <div class="actions">
+    <button class="btn" style="flex:1" onclick="window.print()">Print Report</button>
+  </div>
+</div>
+</aside>
+</div>
+
+<div class="card">
+  <h2>Income Tax Slabs – FY 2026–27</h2>
+  <p class="sub">Indicative normal slab rates for individual taxpayers.</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Taxable Income</th><th>New Regime</th><th>Old Regime (Below 60)</th></tr></thead>
+    <tbody>
+      <tr><td>Up to ₹2,50,000</td><td>0%</td><td>0%</td></tr>
+      <tr><td>₹2,50,001 – ₹4,00,000</td><td>0%</td><td>5%</td></tr>
+      <tr><td>₹4,00,001 – ₹5,00,000</td><td>5%</td><td>5%</td></tr>
+      <tr><td>₹5,00,001 – ₹8,00,000</td><td>5% / 10%</td><td>20%</td></tr>
+      <tr><td>₹8,00,001 – ₹10,00,000</td><td>10%</td><td>20%</td></tr>
+      <tr><td>₹10,00,001 – ₹12,00,000</td><td>10%</td><td>30%</td></tr>
+      <tr><td>₹12,00,001 – ₹16,00,000</td><td>15%</td><td>30%</td></tr>
+      <tr><td>₹16,00,001 – ₹20,00,000</td><td>20%</td><td>30%</td></tr>
+      <tr><td>₹20,00,001 – ₹24,00,000</td><td>25%</td><td>30%</td></tr>
+      <tr><td>Above ₹24,00,000</td><td>30%</td><td>30%</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note">This is an educational estimator for ordinary income of individuals. It does not calculate special-rate income such as capital gains, lottery winnings, or all possible surcharge and marginal-relief cases. Verify the final tax with the official Income Tax Department portal or a tax professional.</div>
+</div>
+</main>
+
+<footer>
+  © 2026 TaxWise Income Tax Calculator. For educational and estimation purposes only.
+</footer>
+
+<script>
+const money = n => "₹" + Math.round(n || 0).toLocaleString("en-IN");
+const val = id => Math.max(0, Number(document.getElementById(id).value) || 0);
+
+function slabTax(income, slabs) {
+  let tax = 0;
+  let previous = 0;
+  for (const [limit, rate] of slabs) {
+    if (income <= previous) break;
+    const amount = Math.min(income, limit) - previous;
+    tax += amount * rate;
+    previous = limit;
+  }
+  return Math.round(tax);
+}
+
+const newSlabs = [
+  [400000,0],[800000,.05],[1200000,.10],
+  [1600000,.15],[2000000,.20],[2400000,.25],[Infinity,.30]
+];
+
+function oldSlabs(age) {
+  if (age === "senior") {
+    return [[300000,0],[500000,.05],[1000000,.20],[Infinity,.30]];
+  }
+  if (age === "super") {
+    return [[500000,0],[1000000,.20],[Infinity,.30]];
+  }
+  return [[250000,0],[500000,.05],[1000000,.20],[Infinity,.30]];
+}
+
+function surchargeRate(income, regime) {
+  if (income <= 5000000) return 0;
+  if (income <= 10000000) return .10;
+  if (income <= 20000000) return .15;
+  if (income <= 50000000) return .25;
+  return regime === "new" ? .25 : .37;
+}
+
+function calculateRegime(gross, regime, age, resident, salary) {
+  const standard = regime === "new" ? Math.min(salary,75000) : Math.min(salary,50000);
+
+  let deductions = 0;
+  if (regime === "old") {
+    deductions = Math.min(val("d80c"),150000)
+      + val("d80d")
+      + val("hra")
+      + Math.min(val("home"),200000)
+      + val("otherDed");
+  }
+
+  const taxable = Math.max(0,Math.floor(gross-standard-deductions));
+  let tax = slabTax(taxable, regime === "new" ? newSlabs : oldSlabs(age));
+
+  let rebate = 0;
+  if (resident === "resident") {
+    if (regime === "new" && taxable <= 1200000) {
+      rebate = Math.min(tax,60000);
+    } else if (regime === "new" && taxable > 1200000) {
+      // Marginal relief near the ₹12 lakh rebate threshold.
+      rebate = Math.min(tax,Math.max(0,tax-(taxable-1200000)));
+    } else if (regime === "old" && taxable <= 500000) {
+      rebate = Math.min(tax,12500);
+    }
+  }
+
+  let afterRebate = Math.max(0,tax-rebate);
+  const surcharge = Math.round(afterRebate*surchargeRate(taxable,regime));
+  const cess = Math.round((afterRebate+surcharge)*.04);
+  const total = afterRebate+surcharge+cess;
+
+  return {standard,deductions,taxable,tax,rebate,surcharge,cess,total};
+}
+
+function calculate() {
+  const salary = val("salary");
+  const gross = salary + val("other") + val("business") + val("extra");
+  const age = document.getElementById("age").value;
+  const resident = document.getElementById("resident").value;
+  const selected = document.querySelector('input[name="regime"]:checked').value;
+
+  const newer = calculateRegime(gross,"new",age,resident,salary);
+  const older = calculateRegime(gross,"old",age,resident,salary);
+  const result = selected === "new" ? newer : older;
+
+  document.getElementById("totalTax").textContent = money(result.total);
+  document.getElementById("resultSubtitle").textContent =
+    (selected === "new" ? "New Tax Regime" : "Old Tax Regime") + " · FY 2026–27";
+
+  document.getElementById("gross").textContent = money(gross);
+  document.getElementById("standard").textContent = money(result.standard);
+  document.getElementById("deductions").textContent = money(result.deductions);
+  document.getElementById("taxable").textContent = money(result.taxable);
+  document.getElementById("baseTax").textContent = money(result.tax);
+  document.getElementById("rebate").textContent = "− " + money(result.rebate);
+  document.getElementById("surcharge").textContent = money(result.surcharge);
+  document.getElementById("cess").textContent = money(result.cess);
+  document.getElementById("monthlyTax").textContent = money(result.total/12);
+  document.getElementById("takeHome").textContent = money(gross-result.total);
+
+  document.getElementById("newTax").textContent = money(newer.total);
+  document.getElementById("oldTax").textContent = money(older.total);
+
+  let recommendation = "";
+  if (newer.total < older.total) {
+    recommendation = "✓ New Regime has the lower estimated tax";
+  } else if (older.total < newer.total) {
+    recommendation = "✓ Old Regime has the lower estimated tax";
+  } else {
+    recommendation = "Both regimes have the same estimated tax";
+  }
+  document.getElementById("recommendation").textContent = recommendation;
+}
+
+function resetForm() {
+  document.getElementById("name").value = "";
+  document.getElementById("age").value = "below";
+  document.getElementById("resident").value = "resident";
+  document.getElementById("salary").value = 900000;
+  document.getElementById("other").value = 0;
+  document.getElementById("business").value = 0;
+  document.getElementById("extra").value = 0;
+  document.getElementById("d80c").value = 150000;
+  document.getElementById("d80d").value = 25000;
+  document.getElementById("hra").value = 0;
+  document.getElementById("home").value = 0;
+  document.getElementById("otherDed").value = 0;
+  document.querySelector('input[name="regime"][value="new"]').checked = true;
+  calculate();
+}
+
+document.querySelectorAll("input,select").forEach(el => {
+  el.addEventListener("input",calculate);
+  el.addEventListener("change",calculate);
+});
+calculate();
+</script>
+</body>
+</html>

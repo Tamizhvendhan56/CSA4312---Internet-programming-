@@ -1,0 +1,351 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wanderly — Travel Stories & Adventures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#18332f;--green:#246b59;--mint:#e9f3ed;--cream:#faf9f5;--orange:#e88b55;--muted:#75817c;--white:#fff;--shadow:0 12px 35px #18332f12}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);line-height:1.6}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+img{display:block;width:100%;object-fit:cover}
+.container{width:min(1160px,92%);margin:auto}
+header{height:78px;background:#fff;display:flex;align-items:center;position:sticky;top:0;z-index:20;border-bottom:1px solid #edf0ec}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.logo{font-family:'Playfair Display',serif;font-size:27px;font-weight:700;letter-spacing:-1px}
+.logo span{color:var(--orange)}
+.navlinks{display:flex;gap:27px;align-items:center}
+.navlinks a{font-size:13px;font-weight:700;color:#53635d}
+.navlinks a:hover{color:var(--green)}
+.navbtn,.primary{border:0;background:var(--green);color:#fff;padding:12px 19px;border-radius:7px;font-weight:700;font-size:13px}
+.menu{display:none;background:none;border:0;font-size:25px;color:var(--ink)}
+.hero{padding:35px 0 55px}
+.hero-grid{display:grid;grid-template-columns:1fr 1.25fr;gap:22px;align-items:stretch}
+.hero-copy{background:var(--mint);border-radius:16px;padding:48px 38px;display:flex;flex-direction:column;justify-content:center}
+.eyebrow{font-size:11px;letter-spacing:2px;color:var(--green);font-weight:800;text-transform:uppercase}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(38px,5vw,62px);line-height:1.1;margin:18px 0}
+.hero h1 em{color:var(--green);font-weight:500}
+.hero-copy p{color:#61716a;font-size:14px;max-width:390px;margin-bottom:25px}
+.hero-image{position:relative;min-height:430px;border-radius:16px;overflow:hidden}
+.hero-image img{height:100%;position:absolute;inset:0}
+.image-label{position:absolute;bottom:20px;left:20px;background:#fff;padding:12px 17px;border-radius:8px;font-size:12px;font-weight:700}
+.section{padding:48px 0}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:15px;margin-bottom:24px}
+.section-head h2{font-family:'Playfair Display',serif;font-size:34px}
+.section-head p{color:var(--muted);font-size:13px;margin-top:4px}
+.text-link{color:var(--green);font-size:13px;font-weight:800;border:0;background:none}
+.category-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.category{height:190px;position:relative;border-radius:12px;overflow:hidden;cursor:pointer}
+.category img{height:100%;transition:.4s}
+.category:hover img{transform:scale(1.06)}
+.category:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent,#0009)}
+.category span{position:absolute;bottom:17px;left:17px;color:#fff;font-family:'Playfair Display',serif;font-size:21px;z-index:1}
+.filters{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:24px}
+.filter{border:1px solid #dce5de;background:white;color:#53635d;padding:9px 15px;border-radius:30px;font-size:12px;font-weight:700}
+.filter.active,.filter:hover{background:var(--green);border-color:var(--green);color:#fff}
+.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.post{background:#fff;border-radius:13px;overflow:hidden;box-shadow:var(--shadow);transition:.25s}
+.post:hover{transform:translateY(-4px)}
+.post img{height:215px}
+.post-content{padding:20px}
+.post-meta{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-bottom:10px}
+.post h3{font-family:'Playfair Display',serif;font-size:21px;line-height:1.3;margin-bottom:9px}
+.post p{font-size:12px;color:var(--muted);margin-bottom:16px}
+.read{border:0;background:none;color:var(--green);font-weight:800;font-size:12px}
+.map-section{background:#eaf2ec;padding:55px 0}
+.map-layout{display:grid;grid-template-columns:1fr 1.15fr;gap:35px;align-items:center}
+.map-copy h2{font-family:'Playfair Display',serif;font-size:37px;line-height:1.2;margin:13px 0}
+.map-copy p{color:#65736b;font-size:14px;margin-bottom:18px}
+.map-card{background:#fff;border-radius:15px;padding:15px;box-shadow:var(--shadow)}
+.map-card img{height:310px;border-radius:10px}
+.destination-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
+.destination{padding:10px;background:#f4f7f3;border-radius:8px;font-size:12px;font-weight:700}
+.destination small{display:block;color:var(--muted);font-weight:400}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.about-grid img{height:390px;border-radius:14px}
+.about-grid h2{font-family:'Playfair Display',serif;font-size:38px;line-height:1.2;margin:12px 0}
+.about-grid p{font-size:14px;color:var(--muted);margin-bottom:15px}
+.stats{display:flex;gap:35px;margin-top:24px}
+.stats strong{display:block;font-family:'Playfair Display',serif;font-size:27px;color:var(--green)}
+.stats span{font-size:11px;color:var(--muted)}
+.resource-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.resource{padding:24px;background:#fff;border-radius:12px;box-shadow:var(--shadow)}
+.resource .emoji{font-size:27px}
+.resource h3{font-family:'Playfair Display',serif;font-size:20px;margin:12px 0 7px}
+.resource p{font-size:12px;color:var(--muted);margin-bottom:15px}
+.resource button{border:0;background:var(--mint);color:var(--green);padding:9px 13px;border-radius:6px;font-weight:700;font-size:12px}
+.newsletter{background:var(--green);color:#fff;border-radius:15px;padding:45px 25px;text-align:center;margin:45px auto}
+.newsletter h2{font-family:'Playfair Display',serif;font-size:32px}
+.newsletter p{font-size:13px;color:#d5e6dc;margin:8px 0 20px}
+.newsletter form{display:flex;max-width:430px;margin:auto;gap:8px}
+.newsletter input{flex:1;min-width:0;padding:13px;border:0;border-radius:6px;outline:none}
+.newsletter button{background:var(--orange);color:#fff;border:0;padding:12px 18px;border-radius:6px;font-weight:700}
+footer{background:#142d29;color:#fff;padding:45px 0 20px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:30px}
+footer p,footer a{font-size:12px;color:#b8c8c0}
+footer h4{margin-bottom:13px}
+footer a{display:block;margin:8px 0}
+.copyright{border-top:1px solid #ffffff20;margin-top:30px;padding-top:18px;font-size:11px;color:#9eafa6}
+.modal{position:fixed;inset:0;background:#10221dcc;z-index:50;display:none;overflow:auto;padding:30px 15px}
+.modal.show{display:block}
+.modal-box{background:#fff;max-width:760px;margin:25px auto;border-radius:14px;overflow:hidden;position:relative}
+.modal-box img{height:300px}
+.modal-body{padding:27px}
+.modal-body h2{font-family:'Playfair Display',serif;font-size:32px;margin:8px 0}
+.modal-body p{color:#66736d;font-size:14px;margin:12px 0}
+.close{position:absolute;right:14px;top:14px;background:#fff;border:0;width:36px;height:36px;border-radius:50%;font-size:22px;z-index:2}
+.tip{background:var(--mint);padding:16px;border-radius:8px;margin:17px 0;font-size:13px}
+.comment-box{border-top:1px solid #e6ebe7;margin-top:22px;padding-top:20px}
+.comment-box input,.comment-box textarea{width:100%;padding:12px;border:1px solid #dce5de;border-radius:7px;margin:7px 0}
+.comment-box textarea{min-height:85px;resize:vertical}
+.comment{padding:12px;background:#f5f7f4;border-radius:8px;margin:10px 0;font-size:13px}
+.checklist{display:grid;gap:12px;margin-top:15px}
+.checklist label{display:flex;gap:10px;align-items:center;font-size:14px}
+.toast{position:fixed;bottom:20px;right:20px;background:#18332f;color:#fff;padding:13px 18px;border-radius:8px;display:none;z-index:80;font-size:13px}
+@media(max-width:800px){
+ .navlinks{display:none;position:absolute;top:78px;left:0;right:0;background:#fff;padding:20px;flex-direction:column;align-items:flex-start;box-shadow:var(--shadow)}
+ .navlinks.open{display:flex}.menu{display:block}.navbtn{display:none}
+ .hero-grid,.map-layout,.about-grid{grid-template-columns:1fr}
+ .hero-copy{padding:35px 25px}.hero-image{min-height:300px}
+ .category-grid{grid-template-columns:repeat(2,1fr)}
+ .blog-grid{grid-template-columns:repeat(2,1fr)}
+ .resource-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:520px){
+ .blog-grid,.resource-grid{grid-template-columns:1fr}
+ .section-head{align-items:start;flex-direction:column}
+ .category{height:150px}.category span{font-size:18px}
+ .about-grid img{height:270px}
+ .footer-grid{grid-template-columns:1fr 1fr}
+ .footer-grid>div:first-child{grid-column:1/-1}
+ .newsletter form{flex-direction:column}
+ .stats{gap:20px}
+}
+</style>
+</head>
+<body>
+<header>
+ <div class="container nav">
+  <a class="logo" href="#">wander<span>ly.</span></a>
+  <nav class="navlinks" id="navlinks">
+   <a href="#home">Home</a><a href="#stories">Stories</a><a href="#destinations">Destinations</a><a href="#about">About</a><a href="#resources">Resources</a>
+  </nav>
+  <button class="navbtn" onclick="document.getElementById('newsletter').scrollIntoView({behavior:'smooth'})">Join the journey ↗</button>
+  <button class="menu" onclick="document.getElementById('navlinks').classList.toggle('open')">☰</button>
+ </div>
+</header>
+
+<main>
+<section class="hero container" id="home">
+ <div class="hero-grid">
+  <div class="hero-copy">
+   <div class="eyebrow">✦ A journal of journeys</div>
+   <h1>Collect moments,<br><em>not things.</em></h1>
+   <p>Stories from the road, hidden places, local flavours and unforgettable experiences. Come explore the world with me.</p>
+   <div><a href="#stories" class="primary">Explore stories →</a></div>
+  </div>
+  <div class="hero-image">
+   <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200" alt="Beautiful mountain landscape">
+   <div class="image-label">📍 Dolomites, Italy · 2026</div>
+  </div>
+ </div>
+</section>
+
+<section class="section container" id="destinations">
+ <div class="section-head"><div><div class="eyebrow">Explore by interest</div><h2>Find your inspiration</h2><p>Every destination has a story waiting to be discovered.</p></div></div>
+ <div class="category-grid">
+  <div class="category" onclick="filterPosts('Destinations')"><img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?w=600" alt="Greek island"><span>Destinations ↗</span></div>
+  <div class="category" onclick="filterPosts('Travel Guides')"><img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600" alt="Lake travel"><span>Travel Guides ↗</span></div>
+  <div class="category" onclick="filterPosts('Food')"><img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600" alt="Local food"><span>Food Experiences ↗</span></div>
+  <div class="category" onclick="filterPosts('Culture')"><img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=600" alt="Indian culture"><span>Culture & People ↗</span></div>
+ </div>
+</section>
+
+<section class="section container" id="stories">
+ <div class="section-head"><div><div class="eyebrow">The travel journal</div><h2>Latest adventures</h2><p>Personal stories and practical tips from around the world.</p></div><button class="text-link" onclick="filterPosts('All')">View all stories →</button></div>
+ <div class="filters">
+  <button class="filter active" onclick="filterPosts('All',this)">All stories</button>
+  <button class="filter" onclick="filterPosts('Destinations',this)">Destinations</button>
+  <button class="filter" onclick="filterPosts('Travel Guides',this)">Travel guides</button>
+  <button class="filter" onclick="filterPosts('Food',this)">Food</button>
+  <button class="filter" onclick="filterPosts('Culture',this)">Culture</button>
+ </div>
+ <div class="blog-grid" id="blogGrid"></div>
+</section>
+
+<section class="map-section">
+ <div class="container map-layout">
+  <div class="map-copy">
+   <div class="eyebrow">✦ The journey so far</div>
+   <h2>Little pins.<br>Big memories.</h2>
+   <p>From mountain trails to colourful city streets, explore the places I've visited and the stories I've collected along the way.</p>
+   <div class="stats"><div><strong>18+</strong><span>Countries explored</span></div><div><strong>64</strong><span>Stories shared</span></div><div><strong>120k</strong><span>Travel memories</span></div></div>
+  </div>
+  <div class="map-card">
+   <img src="https://images.unsplash.com/photo-1524666041070-9c8769035b6e?w=1000" alt="World map showing travel destinations">
+   <div class="destination-list">
+    <div class="destination">🇮🇹 Italy <small>Mountains & art</small></div>
+    <div class="destination">🇯🇵 Japan <small>Tradition & modern life</small></div>
+    <div class="destination">🇮🇳 India <small>Culture & cuisine</small></div>
+    <div class="destination">🇹🇭 Thailand <small>Islands & street food</small></div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section class="section container" id="about">
+ <div class="about-grid">
+  <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=900" alt="Travel backpack and map">
+  <div><div class="eyebrow">A little about me</div><h2>Hello, fellow explorer!</h2>
+   <p>I'm Alex, a curious traveller, storyteller and photographer who believes the best journeys are measured in experiences, not miles.</p>
+   <p>Wanderly began as a small travel diary and grew into a space where I share honest travel stories, useful guides, local discoveries and lessons learned on the road.</p>
+   <p>My goal is simple: inspire you to explore thoughtfully, connect with people and make memories that last a lifetime.</p>
+   <a href="#resources" class="primary">Travel with me →</a>
+  </div>
+ </div>
+</section>
+
+<section class="section container" id="resources">
+ <div class="section-head"><div><div class="eyebrow">Travel smarter</div><h2>Useful travel resources</h2><p>My favourite tools and checklists to help you plan your next adventure.</p></div></div>
+ <div class="resource-grid">
+  <div class="resource"><div class="emoji">🎒</div><h3>Packing checklist</h3><p>Keep your essentials organised before every trip.</p><button onclick="openResource('packing')">Open checklist →</button></div>
+  <div class="resource"><div class="emoji">🗺️</div><h3>Trip planning</h3><p>Plan routes, save places and organise your itinerary.</p><button onclick="openResource('planning')">View planning tips →</button></div>
+  <div class="resource"><div class="emoji">✈️</div><h3>Booking essentials</h3><p>Useful platforms for flights, stays and activities.</p><button onclick="openResource('booking')">Explore resources →</button></div>
+ </div>
+</section>
+
+<section class="container newsletter" id="newsletter">
+ <h2>Postcards from the world 🌍</h2>
+ <p>Get new travel stories, destination guides and inspiration in your inbox.</p>
+ <form onsubmit="subscribe(event)">
+  <input id="email" type="email" placeholder="Enter your email address" required>
+  <button type="submit">Subscribe ↗</button>
+ </form>
+</section>
+</main>
+
+<footer>
+ <div class="container">
+  <div class="footer-grid">
+   <div><div class="logo">wander<span style="color:var(--orange)">ly.</span></div><p style="max-width:280px;margin-top:12px">A travel journal for curious souls. Discover new places, collect experiences and find your next adventure.</p></div>
+   <div><h4>Explore</h4><a href="#stories">Travel stories</a><a href="#destinations">Destinations</a><a href="#about">About me</a></div>
+   <div><h4>Connect</h4><a href="#" onclick="shareSite(event)">Share this blog ↗</a><a href="#newsletter">Newsletter</a><a href="#resources">Travel resources</a></div>
+  </div>
+  <div class="copyright">© 2026 Wanderly Travel Blog. Made for the love of exploring. <span style="float:right">Instagram · Pinterest · YouTube</span></div>
+ </div>
+</footer>
+
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
+ <div class="modal-box">
+  <button class="close" onclick="closeModal()">×</button>
+  <div id="modalContent"></div>
+ </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const posts=[
+ {id:1,title:"A week among the Italian Dolomites",category:"Destinations",date:"Nov 18, 2026",place:"Dolomites, Italy",image:"https://images.unsplash.com/photo-1519681393784-d120267933ba?w=900",excerpt:"A journey through dramatic peaks, quiet alpine villages and trails that make you stop and stare.",body:"The Dolomites are a dream for anyone who loves the outdoors. Every morning brought a new landscape: mist rolling across the valleys, mountain lakes reflecting the peaks and little villages waking up slowly. I spent my days hiking scenic trails, stopping at mountain huts and enjoying the simple pleasure of being surrounded by nature.",tips:["Visit early in the morning for quieter trails.","Carry water, snacks and a light rain jacket.","Check local transport schedules before hiking."]},
+ {id:2,title:"The colourful streets of Kyoto",category:"Culture",date:"Nov 10, 2026",place:"Kyoto, Japan",image:"https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=900",excerpt:"Discover peaceful temples, traditional streets and the beauty of Japanese everyday life.",body:"Kyoto is a city where old traditions and modern life exist side by side. Walking through its historic lanes, I discovered small tea houses, beautiful gardens and peaceful temples. The best moments were often the unplanned ones: a quiet street, a friendly shopkeeper or a cup of matcha after a long walk.",tips:["Start temple visits early to avoid crowds.","Wear comfortable shoes for walking.","Respect local customs and photography rules."]},
+ {id:3,title:"Street food adventures in Bangkok",category:"Food",date:"Nov 02, 2026",place:"Bangkok, Thailand",image:"https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=900",excerpt:"A delicious journey through night markets, local kitchens and unforgettable flavours.",body:"Bangkok comes alive through its food. From sizzling street stalls to busy night markets, every corner offers something new to taste. I loved discovering local noodle dishes, fresh fruit and fragrant curries. Food became a way to connect with the city and its people.",tips:["Choose busy stalls with fresh food turnover.","Carry small cash for market purchases.","Ask about ingredients if you have dietary needs."]},
+ {id:4,title:"A slow weekend in the Greek islands",category:"Travel Guides",date:"Oct 22, 2026",place:"Santorini, Greece",image:"https://images.unsplash.com/photo-1533105079780-92b9be482077?w=900",excerpt:"A relaxed island escape with blue seas, white villages and beautiful sunsets.",body:"The Greek islands are perfect for slowing down. I spent a weekend wandering narrow streets, enjoying seaside views and watching the sun set over the water. The best way to experience the island was to leave room in the schedule for spontaneous discoveries.",tips:["Book accommodation early during peak season.","Use local buses to explore nearby villages.","Carry sun protection and comfortable footwear."]},
+ {id:5,title:"Finding the soul of Rajasthan",category:"Culture",date:"Oct 14, 2026",place:"Jaipur, India",image:"https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?w=900",excerpt:"Colourful bazaars, historic forts and the warmth of everyday life in Rajasthan.",body:"Rajasthan is a place full of stories. The architecture, crafts, music and food all reflect a rich cultural history. Exploring Jaipur gave me a deeper appreciation for the people and traditions that make each destination unique.",tips:["Visit forts early to enjoy cooler weather.","Support local craft shops and artisans.","Dress comfortably for warm afternoons."]},
+ {id:6,title:"The perfect first-time travel plan",category:"Travel Guides",date:"Oct 05, 2026",place:"Travel Guide",image:"https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=900",excerpt:"Simple steps to plan a trip that feels exciting, organised and stress-free.",body:"Planning your first big trip does not need to be complicated. Start with the experience you want, decide on a realistic budget and build a flexible itinerary. Keep copies of important documents, understand local transport and leave time for unexpected discoveries.",tips:["Set a daily budget before booking.","Keep digital and printed document copies.","Avoid overloading your itinerary."]}
+];
+let comments=JSON.parse(localStorage.getItem("wanderly_comments")||"{}");
+let activePost=null;
+function renderPosts(category="All"){
+ const grid=document.getElementById("blogGrid");
+ const filtered=category==="All"?posts:posts.filter(p=>p.category===category);
+ grid.innerHTML=filtered.map(p=>`<article class="post">
+ <img src="${p.image}" alt="${p.title}">
+ <div class="post-content"><div class="post-meta"><span>${p.category}</span><span>${p.date}</span></div>
+ <h3>${p.title}</h3><p>${p.excerpt}</p>
+ <button class="read" onclick="openPost(${p.id})">Read story →</button></div></article>`).join("");
+}
+function filterPosts(category,button){
+ renderPosts(category);
+ document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));
+ if(button)button.classList.add("active");
+ document.getElementById("stories").scrollIntoView({behavior:"smooth"});
+}
+function openPost(id){
+ activePost=posts.find(p=>p.id===id);
+ const list=comments[id]||[];
+ document.getElementById("modalContent").innerHTML=`
+ <img src="${activePost.image}" alt="${activePost.title}">
+ <div class="modal-body">
+ <div class="eyebrow">${activePost.category} · ${activePost.place}</div>
+ <h2>${activePost.title}</h2><small style="color:#84918a">${activePost.date}</small>
+ <p>${activePost.body}</p>
+ <div class="tip"><strong>✦ Travel tips</strong><ul style="padding-left:20px;margin-top:8px">${activePost.tips.map(t=>`<li>${t}</li>`).join("")}</ul></div>
+ <button class="primary" onclick="sharePost()">Share this story ↗</button>
+ <div class="comment-box"><h3>Join the conversation</h3>
+ <div id="commentsList">${list.map(c=>`<div class="comment"><strong>${escapeHTML(c.name)}</strong><p>${escapeHTML(c.message)}</p></div>`).join("")||'<p>No comments yet. Be the first to share your thoughts!</p>'}</div>
+ <form onsubmit="addComment(event)">
+ <input id="commentName" placeholder="Your name" required maxlength="50">
+ <textarea id="commentText" placeholder="Write your comment or question..." required maxlength="500"></textarea>
+ <button class="primary" type="submit">Post comment</button></form>
+ </div></div>`;
+ document.getElementById("modal").classList.add("show");
+}
+function addComment(e){
+ e.preventDefault();
+ const name=document.getElementById("commentName").value.trim();
+ const message=document.getElementById("commentText").value.trim();
+ if(!name||!message)return;
+ if(!comments[activePost.id])comments[activePost.id]=[];
+ comments[activePost.id].push({name,message});
+ localStorage.setItem("wanderly_comments",JSON.stringify(comments));
+ openPost(activePost.id);
+}
+function escapeHTML(str){return str.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function closeModal(){document.getElementById("modal").classList.remove("show")}
+function sharePost(){
+ const url=location.href.split("#")[0]+"#stories";
+ if(navigator.share)navigator.share({title:activePost.title,text:activePost.excerpt,url}).catch(()=>{});
+ else if(navigator.clipboard)navigator.clipboard.writeText(url).then(()=>toast("Story link copied!"));
+ else toast("Copy the website address to share this story.");
+}
+function shareSite(e){
+ e.preventDefault();
+ if(navigator.share)navigator.share({title:"Wanderly Travel Blog",url:location.href}).catch(()=>{});
+ else if(navigator.clipboard)navigator.clipboard.writeText(location.href).then(()=>toast("Website link copied!"));
+ else toast("Copy the website address to share.");
+}
+function openResource(type){
+ let content="";
+ if(type==="packing"){
+ const items=["Passport and travel documents","Wallet, cards and cash","Phone and charger","Power bank and travel adapter","Clothing and comfortable shoes","Personal toiletries","Basic first-aid kit","Reusable water bottle","Sunglasses and sunscreen","Camera and headphones"];
+ content=`<div class="modal-body"><div class="eyebrow">Travel essentials</div><h2>🎒 Packing checklist</h2><p>Tick off each item as you prepare for your next adventure.</p><div class="checklist">${items.map((x,i)=>`<label><input type="checkbox"> ${x}</label>`).join("")}</div></div>`;
+ }else if(type==="planning"){
+ content=`<div class="modal-body"><div class="eyebrow">Plan with confidence</div><h2>🗺️ Trip planning tips</h2><p>1. Choose your destination and travel dates.</p><p>2. Set a realistic budget for transport, stay and activities.</p><p>3. Research local transport, weather and entry requirements.</p><p>4. Save important addresses and offline maps.</p><p>5. Keep your itinerary flexible for unexpected discoveries.</p></div>`;
+ }else{
+ content=`<div class="modal-body"><div class="eyebrow">Helpful websites</div><h2>✈️ Booking essentials</h2><p><strong>Flights:</strong> <a style="color:#246b59" href="https://www.google.com/travel/flights" target="_blank" rel="noopener">Google Flights ↗</a></p><p><strong>Accommodation:</strong> <a style="color:#246b59" href="https://www.booking.com" target="_blank" rel="noopener">Booking.com ↗</a></p><p><strong>Experiences:</strong> <a style="color:#246b59" href="https://www.getyourguide.com" target="_blank" rel="noopener">GetYourGuide ↗</a></p><p><strong>Maps:</strong> <a style="color:#246b59" href="https://maps.google.com" target="_blank" rel="noopener">Google Maps ↗</a></p><div class="tip">Compare prices, check cancellation policies and verify travel requirements before making a booking.</div></div>`;
+ }
+ document.getElementById("modalContent").innerHTML=content;
+ document.getElementById("modal").classList.add("show");
+}
+function subscribe(e){
+ e.preventDefault();
+ const email=document.getElementById("email").value.trim();
+ let subs=JSON.parse(localStorage.getItem("wanderly_subscribers")||"[]");
+ if(subs.includes(email)){toast("You are already subscribed!");return}
+ subs.push(email);
+ localStorage.setItem("wanderly_subscribers",JSON.stringify(subs));
+ e.target.reset();toast("Thanks for subscribing! 🌍");
+}
+function toast(msg){
+ const t=document.getElementById("toast");t.textContent=msg;t.style.display="block";
+ setTimeout(()=>t.style.display="none",3000);
+}
+renderPosts();
+</script>
+</body>
+</html>

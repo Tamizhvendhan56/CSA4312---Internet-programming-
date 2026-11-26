@@ -1,0 +1,569 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FlavorBook | Digital Recipe Platform</title>
+<style>
+:root{
+ --primary:#e66b35;--primary-dark:#c95121;--dark:#242b35;
+ --muted:#7b8490;--bg:#faf8f5;--white:#fff;--line:#eee9e3;
+ --green:#21865c;--shadow:0 8px 30px rgba(50,35,20,.07)
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--dark)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.nav{max-width:1250px;margin:auto;min-height:72px;padding:12px 22px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.logo{font-size:25px;font-weight:850;color:var(--primary);letter-spacing:-1px}
+.logo span{color:var(--dark)}
+.navlinks{display:flex;gap:22px;align-items:center}
+.navlinks button{border:0;background:none;color:#59616b;font-size:13px;font-weight:650}
+.navlinks button:hover{color:var(--primary)}
+.navright{display:flex;align-items:center;gap:12px}
+.user{font-size:12px;color:var(--muted)}
+.avatar{width:34px;height:34px;border-radius:50%;background:#ffeadf;color:var(--primary);display:grid;place-items:center;font-weight:800}
+.btn{background:var(--primary);color:white;border:0;border-radius:9px;padding:11px 17px;font-size:13px;font-weight:750}
+.btn:hover{background:var(--primary-dark)}
+.btn.light{background:#fff0e8;color:var(--primary)}
+.btn.outline{background:white;border:1px solid var(--line);color:var(--dark)}
+.btn.danger{background:#fff0f0;color:#c43d3d}
+.btn.small{padding:7px 11px;font-size:11px}
+.hero{background:linear-gradient(105deg,#34271fdd,#34271f77),url("https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=1600") center/cover;color:white;padding:76px 22px}
+.hero-inner{max-width:1200px;margin:auto}
+.hero h1{font-family:Georgia,serif;font-size:clamp(35px,5vw,57px);line-height:1.1;max-width:660px;margin-bottom:17px}
+.hero p{color:#f8e8dc;max-width:550px;line-height:1.7;font-size:14px;margin-bottom:24px}
+.searchbox{background:white;border-radius:11px;padding:7px;display:flex;max-width:570px;gap:8px}
+.searchbox input{border:0;outline:none;flex:1;min-width:0;padding:10px;color:var(--dark);font-size:13px}
+.container{max-width:1200px;margin:35px auto;padding:0 22px}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:15px;margin-bottom:19px}
+.section-head h2{font-family:Georgia,serif;font-size:26px}
+.section-head p{color:var(--muted);font-size:12px;margin-top:6px}
+.category-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:25px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:30px;padding:9px 15px;font-size:12px;color:#59616b}
+.chip.active,.chip:hover{background:#fff0e8;border-color:#ffd5c1;color:var(--primary)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.recipe-card{background:white;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);transition:.2s}
+.recipe-card:hover{transform:translateY(-4px)}
+.recipe-img{height:195px;background:#eee;position:relative;overflow:hidden}
+.recipe-img img{width:100%;height:100%;object-fit:cover;display:block}
+.recipe-img .tag{position:absolute;top:12px;left:12px;background:white;padding:6px 10px;border-radius:20px;font-size:10px;font-weight:750;color:var(--primary)}
+.recipe-body{padding:16px}
+.recipe-body h3{font-family:Georgia,serif;font-size:19px;margin-bottom:7px}
+.recipe-body p{font-size:12px;color:var(--muted);line-height:1.5;min-height:36px}
+.meta{display:flex;gap:13px;flex-wrap:wrap;margin-top:13px;font-size:11px;color:#707986}
+.card-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:15px}
+.rating{color:#d88a24;font-size:12px;font-weight:800}
+.page{display:none}
+.page.active{display:block}
+.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:23px;margin-bottom:20px;box-shadow:var(--shadow)}
+.panel h2{font-family:Georgia,serif;font-size:24px;margin-bottom:8px}
+.desc{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:20px}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{margin-bottom:13px}
+.field label{display:block;font-size:12px;font-weight:750;color:#4b5563;margin-bottom:7px}
+.field input,.field select,.field textarea{width:100%;border:1px solid #e4e0da;border-radius:8px;padding:11px 12px;outline:none;background:#fff;font-size:13px;color:var(--dark)}
+.field textarea{min-height:100px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px #e66b3517}
+.full{grid-column:1/-1}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+.empty{text-align:center;padding:40px;color:var(--muted);font-size:13px}
+.detail-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:25px}
+.detail-img{width:100%;height:340px;object-fit:cover;border-radius:13px}
+.detail-title{font-family:Georgia,serif;font-size:34px;margin:15px 0 9px}
+.ingredient-list{list-style:none}
+.ingredient-list li{padding:10px 0;border-bottom:1px solid var(--line);font-size:13px;display:flex;gap:10px;align-items:center}
+.ingredient-list input{accent-color:var(--primary)}
+.steps{padding-left:20px}
+.steps li{padding:8px 0 8px 4px;font-size:13px;line-height:1.6;color:#515b67}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:20px}
+.stat{background:#fff;padding:19px;border:1px solid var(--line);border-radius:12px}
+.stat small{font-size:11px;color:var(--muted)}
+.stat strong{display:block;font-size:25px;margin-top:8px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:12px}
+th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line)}
+th{background:#fbf9f6;color:#667085}
+.status{display:inline-block;background:#e9f8ef;color:var(--green);border-radius:30px;padding:5px 9px;font-size:10px;font-weight:750}
+.day{border:1px solid var(--line);border-radius:11px;padding:14px;margin-bottom:12px;background:#fff}
+.day h3{font-size:14px;margin-bottom:10px;color:var(--primary)}
+.meal{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:12px}
+.meal button{border:0;background:none;color:#c43d3d;font-size:11px}
+.shopping-item{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}
+.shopping-item input{accent-color:var(--primary)}
+.modal-bg{position:fixed;inset:0;background:#161616a6;display:none;align-items:center;justify-content:center;padding:18px;z-index:40}
+.modal-bg.show{display:flex}
+.modal{background:white;width:100%;max-width:480px;max-height:90vh;overflow:auto;border-radius:15px;padding:24px}
+.modal h2{font-family:Georgia,serif;font-size:24px;margin-bottom:8px}
+.notice{padding:12px;border-radius:8px;background:#fff1e9;color:#a64a22;font-size:12px;line-height:1.5;margin:12px 0}
+.notice.success{background:#eaf8ef;color:#14794c}
+.login-screen{min-height:100vh;background:linear-gradient(120deg,#30251e,#b85c2f);display:grid;place-items:center;padding:20px}
+.login-card{background:#fff;border-radius:17px;padding:30px;width:100%;max-width:420px}
+.login-card h1{font-family:Georgia,serif;font-size:29px;margin:18px 0 8px}
+.login-card p{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:20px}
+.link{color:var(--primary);font-size:12px;font-weight:750;cursor:pointer}
+.hidden{display:none!important}
+footer{text-align:center;padding:30px;color:var(--muted);font-size:11px}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.detail-layout{grid-template-columns:1fr}.detail-img{height:280px}.navlinks{gap:10px}}
+@media(max-width:600px){.nav{flex-wrap:wrap}.navlinks{order:3;width:100%;justify-content:space-between;gap:6px}.navlinks button{font-size:11px}.navright .user{display:none}.hero{padding:55px 20px}.container{padding:0 13px}.grid,.two,.stats,.formgrid{grid-template-columns:1fr}.full{grid-column:auto}.recipe-img{height:210px}.panel{padding:17px}.detail-title{font-size:27px}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<section id="loginScreen" class="login-screen">
+ <div class="login-card">
+  <div class="logo">Flavor<span>Book.</span></div>
+  <h1 id="authTitle">Welcome to FlavorBook</h1>
+  <p id="authDesc">Discover delicious recipes, save your favorites and share your cooking creations.</p>
+  <form id="authForm">
+   <div id="registerFields" class="hidden">
+    <div class="field"><label>Full Name</label><input id="regName" required placeholder="Your name"></div>
+   </div>
+   <div class="field"><label>Email Address</label><input id="authEmail" type="email" required placeholder="name@example.com"></div>
+   <div class="field"><label>Password</label><input id="authPassword" type="password" required minlength="4" placeholder="Enter password"></div>
+   <button class="btn" id="authButton" style="width:100%">Sign In</button>
+  </form>
+  <div id="authMessage" class="notice hidden"></div>
+  <p style="text-align:center;margin:18px 0 0">
+   <span id="switchText">New to FlavorBook?</span>
+   <span class="link" id="switchLink" onclick="toggleAuth()">Create Account</span>
+  </p>
+  <div class="notice" style="margin-top:20px">
+   Demo user: user@flavorbook.demo / user123<br>
+   Demo admin: admin@flavorbook.demo / admin123
+  </div>
+ </div>
+</section>
+
+<!-- APPLICATION -->
+<div id="app" class="hidden">
+<header>
+ <div class="nav">
+  <div class="logo">Flavor<span>Book.</span></div>
+  <nav class="navlinks">
+   <button onclick="go('home')">Home</button>
+   <button onclick="go('favorites')">Favorites</button>
+   <button onclick="go('myrecipes')">My Recipes</button>
+   <button onclick="go('planner')">Meal Planner</button>
+   <button onclick="go('shopping')">Shopping List</button>
+   <button id="adminLink" class="hidden" onclick="go('admin')">Admin</button>
+  </nav>
+  <div class="navright">
+   <span class="user" id="userName"></span>
+   <div class="avatar" id="avatar">U</div>
+   <button class="btn light small" onclick="logout()">Logout</button>
+  </div>
+ </div>
+</header>
+
+<section class="hero">
+ <div class="hero-inner">
+  <h1>Good food brings<br>people together.</h1>
+  <p>Explore recipes, discover new flavors and turn everyday ingredients into something special. Your next favorite meal starts here.</p>
+  <div class="searchbox">
+   <input id="searchInput" placeholder="Search recipes, ingredients or cuisine..." oninput="renderHome()">
+   <button class="btn" onclick="renderHome()">Search</button>
+  </div>
+ </div>
+</section>
+
+<main class="container">
+
+<!-- HOME -->
+<section id="homePage" class="page active">
+ <div class="section-head">
+  <div><h2>Explore Recipes</h2><p>Handpicked dishes for every food lover.</p></div>
+  <button class="btn" onclick="go('add')">＋ Share a Recipe</button>
+ </div>
+ <div class="category-row" id="categories">
+  <button class="chip active" onclick="setCategory('All',this)">All Recipes</button>
+  <button class="chip" onclick="setCategory('Indian',this)">Indian</button>
+  <button class="chip" onclick="setCategory('Italian',this)">Italian</button>
+  <button class="chip" onclick="setCategory('Chinese',this)">Chinese</button>
+  <button class="chip" onclick="setCategory('Vegetarian',this)">Vegetarian</button>
+  <button class="chip" onclick="setCategory('Non-Vegetarian',this)">Non-Vegetarian</button>
+  <button class="chip" onclick="setCategory('Dessert',this)">Desserts</button>
+ </div>
+ <div class="grid" id="recipeGrid"></div>
+</section>
+
+<!-- RECIPE DETAIL -->
+<section id="detailPage" class="page">
+ <button class="btn outline" onclick="go('home')">← Back to Recipes</button>
+ <div id="detailContent" style="margin-top:20px"></div>
+ <div class="panel" style="margin-top:22px">
+  <h2>Reviews & Comments</h2>
+  <p class="desc">Share your experience with this recipe.</p>
+  <div class="field">
+   <label>Your Rating</label>
+   <select id="reviewRating"><option value="5">★★★★★ – Excellent</option><option value="4">★★★★ – Very Good</option><option value="3">★★★ – Good</option><option value="2">★★ – Average</option><option value="1">★ – Poor</option></select>
+  </div>
+  <div class="field"><label>Your Comment</label><textarea id="reviewComment" placeholder="Write your review..."></textarea></div>
+  <button class="btn" onclick="addReview()">Submit Review</button>
+  <div id="reviewList" style="margin-top:20px"></div>
+ </div>
+</section>
+
+<!-- ADD RECIPE -->
+<section id="addPage" class="page">
+ <div class="panel">
+  <h2>Share Your Recipe</h2>
+  <p class="desc">Add your own culinary creation to the FlavorBook community.</p>
+  <form id="recipeForm">
+   <div class="formgrid">
+    <div class="field"><label>Recipe Name</label><input id="rName" required placeholder="e.g. Vegetable Biryani"></div>
+    <div class="field"><label>Cuisine</label><select id="rCuisine"><option>Indian</option><option>Italian</option><option>Chinese</option><option>Mexican</option><option>Continental</option><option>Other</option></select></div>
+    <div class="field"><label>Category</label><select id="rCategory"><option>Vegetarian</option><option>Non-Vegetarian</option><option>Dessert</option><option>Vegan</option><option>Breakfast</option><option>Snacks</option></select></div>
+    <div class="field"><label>Difficulty</label><select id="rDifficulty"><option>Easy</option><option>Medium</option><option>Hard</option></select></div>
+    <div class="field"><label>Cooking Time (minutes)</label><input id="rTime" type="number" min="1" required value="30"></div>
+    <div class="field"><label>Servings</label><input id="rServings" type="number" min="1" value="2" required></div>
+    <div class="field full"><label>Recipe Image URL</label><input id="rImage" type="url" placeholder="https://example.com/food-image.jpg"></div>
+    <div class="field full"><label>Short Description</label><textarea id="rDescription" required placeholder="Describe your recipe..."></textarea></div>
+    <div class="field full"><label>Ingredients (one per line, format: quantity|ingredient)</label><textarea id="rIngredients" required placeholder="2|cups of rice&#10;1|onion&#10;2|tomatoes"></textarea></div>
+    <div class="field full"><label>Cooking Instructions (one step per line)</label><textarea id="rSteps" required placeholder="Wash and prepare the ingredients.&#10;Heat oil in a pan.&#10;Cook until ready."></textarea></div>
+   </div>
+   <button class="btn" type="submit">Publish Recipe</button>
+  </form>
+  <div id="recipeMessage" class="notice hidden"></div>
+ </div>
+</section>
+
+<!-- MY RECIPES -->
+<section id="myrecipesPage" class="page">
+ <div class="section-head"><div><h2>My Recipes</h2><p>Your shared culinary creations.</p></div><button class="btn" onclick="go('add')">＋ Add Recipe</button></div>
+ <div class="grid" id="myRecipeGrid"></div>
+</section>
+
+<!-- FAVORITES -->
+<section id="favoritesPage" class="page">
+ <div class="section-head"><div><h2>My Favorites</h2><p>Recipes you have saved for later.</p></div></div>
+ <div class="grid" id="favoriteGrid"></div>
+</section>
+
+<!-- PLANNER -->
+<section id="plannerPage" class="page">
+ <div class="panel">
+  <h2>Weekly Meal Planner</h2>
+  <p class="desc">Organize your breakfast, lunch and dinner for the week.</p>
+  <div class="formgrid">
+   <div class="field"><label>Select Day</label><select id="planDay"><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option></select></div>
+   <div class="field"><label>Meal Type</label><select id="planType"><option>Breakfast</option><option>Lunch</option><option>Dinner</option><option>Snacks</option></select></div>
+   <div class="field full"><label>Select Recipe</label><select id="planRecipe"></select></div>
+  </div>
+  <button class="btn" onclick="addPlan()">Add to Weekly Plan</button>
+ </div>
+ <div class="two">
+  <div id="plannerList"></div>
+  <div class="panel">
+   <h2>Planner Tips</h2>
+   <p class="desc">Plan balanced meals and make your shopping easier.</p>
+   <div class="notice">✓ Include vegetables and fruits in your weekly meals.</div>
+   <div class="notice">✓ Reuse ingredients across different recipes to reduce waste.</div>
+   <div class="notice">✓ Prepare a shopping list before visiting the market.</div>
+  </div>
+ </div>
+</section>
+
+<!-- SHOPPING LIST -->
+<section id="shoppingPage" class="page">
+ <div class="panel">
+  <h2>Shopping List</h2>
+  <p class="desc">Collect ingredients from your planned recipes and manage your shopping.</p>
+  <div class="actions">
+   <button class="btn" onclick="generateShopping()">Generate from Meal Plan</button>
+   <button class="btn outline" onclick="addShoppingItem()">＋ Add Item</button>
+   <button class="btn light" onclick="clearShopping()">Clear List</button>
+  </div>
+  <div id="shoppingList" style="margin-top:20px"></div>
+ </div>
+</section>
+
+<!-- ADMIN -->
+<section id="adminPage" class="page">
+ <div class="stats">
+  <div class="stat"><small>Total Recipes</small><strong id="adminRecipes">0</strong></div>
+  <div class="stat"><small>Registered Users</small><strong id="adminUsers">0</strong></div>
+  <div class="stat"><small>Total Reviews</small><strong id="adminReviews">0</strong></div>
+ </div>
+ <div class="panel">
+  <h2>Recipe Management</h2>
+  <p class="desc">Review and manage recipes published by the community.</p>
+  <div class="tablewrap"><table>
+   <thead><tr><th>Recipe</th><th>Category</th><th>Author</th><th>Action</th></tr></thead>
+   <tbody id="adminRecipeRows"></tbody>
+  </table></div>
+ </div>
+ <div class="panel">
+  <h2>Registered Users</h2>
+  <div class="tablewrap"><table>
+   <thead><tr><th>Name</th><th>Email</th><th>Role</th></tr></thead>
+   <tbody id="adminUserRows"></tbody>
+  </table></div>
+ </div>
+</section>
+
+</main>
+<footer>© 2026 FlavorBook. Discover, Cook, Share and Enjoy.</footer>
+</div>
+
+<!-- SERVING MODAL -->
+<div class="modal-bg" id="servingModal">
+ <div class="modal">
+  <h2>Customize Servings</h2>
+  <p class="desc">Change the serving size to automatically adjust ingredient quantities.</p>
+  <div class="field"><label>Number of Servings</label><input type="number" id="servingInput" min="1" value="2"></div>
+  <div class="actions"><button class="btn" onclick="applyServings()">Update Ingredients</button><button class="btn outline" onclick="closeServing()">Cancel</button></div>
+ </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const read=k=>{try{return JSON.parse(localStorage.getItem(k))||[]}catch{return []}};
+const save=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+const uid=p=>p+Date.now().toString().slice(-8)+Math.floor(Math.random()*90+10);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const defaultRecipes=[
+{id:"R101",name:"South Indian Masala Dosa",cuisine:"Indian",category:"Vegetarian",difficulty:"Medium",time:35,servings:2,description:"Crispy golden dosa filled with flavorful potato masala, served with chutney and sambar.",image:"https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=800",author:"FlavorBook Chef",ingredients:[{qty:"2",name:"cups dosa batter"},{qty:"3",name:"potatoes"},{qty:"1",name:"onion"},{qty:"1",name:"green chilli"},{qty:"1",name:"tsp mustard seeds"},{qty:"2",name:"tbsp oil"}],steps:["Boil and mash the potatoes.","Heat oil and add mustard seeds, onion and chilli.","Add mashed potatoes and spices. Mix well.","Spread dosa batter on a hot pan.","Add potato masala and fold the dosa.","Serve hot with chutney and sambar."]},
+{id:"R102",name:"Creamy Italian Pasta",cuisine:"Italian",category:"Vegetarian",difficulty:"Easy",time:25,servings:2,description:"Delicious creamy pasta with garlic, herbs and a rich cheese sauce.",image:"https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=800",author:"FlavorBook Chef",ingredients:[{qty:"200",name:"g pasta"},{qty:"1",name:"cup milk"},{qty:"3",name:"cloves garlic"},{qty:"2",name:"tbsp butter"},{qty:"1/2",name:"cup cheese"}],steps:["Boil pasta until tender.","Melt butter and sauté garlic.","Add milk and cheese to make a creamy sauce.","Mix pasta with sauce.","Season with herbs and serve."]},
+{id:"R103",name:"Vegetable Fried Rice",cuisine:"Chinese",category:"Vegan",difficulty:"Easy",time:20,servings:2,description:"Quick and tasty fried rice packed with fresh vegetables and savory flavors.",image:"https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=800",author:"FlavorBook Chef",ingredients:[{qty:"2",name:"cups cooked rice"},{qty:"1/2",name:"cup carrots"},{qty:"1/2",name:"cup beans"},{qty:"2",name:"tbsp soy sauce"},{qty:"2",name:"tbsp oil"}],steps:["Prepare cooked and cooled rice.","Heat oil in a wok.","Add vegetables and stir-fry.","Add rice and soy sauce.","Mix well and serve hot."]},
+{id:"R104",name:"Chocolate Lava Cake",cuisine:"Continental",category:"Dessert",difficulty:"Medium",time:30,servings:2,description:"A soft chocolate cake with a warm, flowing chocolate center.",image:"https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800",author:"FlavorBook Chef",ingredients:[{qty:"100",name:"g dark chocolate"},{qty:"50",name:"g butter"},{qty:"2",name:"eggs"},{qty:"2",name:"tbsp sugar"},{qty:"2",name:"tbsp flour"}],steps:["Melt chocolate and butter together.","Whisk eggs and sugar.","Fold in chocolate mixture and flour.","Pour into greased ramekins.","Bake until edges are set and center remains soft.","Serve warm."]},
+{id:"R105",name:"Paneer Butter Masala",cuisine:"Indian",category:"Vegetarian",difficulty:"Medium",time:40,servings:3,description:"Soft paneer cubes in a rich, creamy tomato gravy with aromatic spices.",image:"https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=800",author:"FlavorBook Chef",ingredients:[{qty:"250",name:"g paneer"},{qty:"3",name:"tomatoes"},{qty:"1",name:"onion"},{qty:"2",name:"tbsp butter"},{qty:"1/2",name:"cup cream"}],steps:["Prepare a smooth tomato and onion gravy.","Heat butter and cook the gravy with spices.","Add paneer cubes.","Stir in cream and simmer gently.","Serve with naan or rice."]},
+{id:"R106",name:"Grilled Chicken Bowl",cuisine:"Continental",category:"Non-Vegetarian",difficulty:"Easy",time:35,servings:2,description:"A wholesome meal with grilled chicken, fresh vegetables and seasoned rice.",image:"https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=800",author:"FlavorBook Chef",ingredients:[{qty:"250",name:"g chicken"},{qty:"1",name:"cup rice"},{qty:"1",name:"cucumber"},{qty:"1",name:"tomato"},{qty:"1",name:"tbsp olive oil"}],steps:["Season chicken with spices.","Grill chicken until fully cooked.","Prepare rice and chop vegetables.","Arrange everything in a bowl.","Serve with your preferred dressing."]}
+];
+let users=read("fb_users"),recipes=read("fb_recipes"),favorites=read("fb_favorites"),plans=read("fb_plans"),shopping=read("fb_shopping"),currentUser=null,currentRecipe=null,categoryFilter="All",servingRecipe=null;
+if(!users.length){users=[{id:"A1001",name:"Admin",email:"admin@flavorbook.demo",password:"admin123",role:"admin"},{id:"U1001",name:"Demo User",email:"user@flavorbook.demo",password:"user123",role:"user"}];save("fb_users",users)}
+if(!recipes.length){recipes=defaultRecipes;save("fb_recipes",recipes)}
+if(!read("fb_reviews").length)save("fb_reviews",[]);
+favorites=read("fb_favorites");plans=read("fb_plans");shopping=read("fb_shopping");
+
+let authMode="login";
+function toggleAuth(){
+ authMode=authMode==="login"?"register":"login";
+ $("authTitle").textContent=authMode==="login"?"Welcome to FlavorBook":"Create Your Account";
+ $("authDesc").textContent=authMode==="login"?"Discover delicious recipes and save your favorites.":"Join the FlavorBook community and share your recipes.";
+ $("registerFields").classList.toggle("hidden",authMode!=="register");
+ $("authButton").textContent=authMode==="login"?"Sign In":"Create Account";
+ $("switchText").textContent=authMode==="login"?"Already have an account?":"Already registered?";
+ $("switchLink").textContent=authMode==="login"?"Create Account":"Sign In";
+}
+$("authForm").addEventListener("submit",e=>{
+ e.preventDefault();users=read("fb_users");
+ const email=$("authEmail").value.trim().toLowerCase(),password=$("authPassword").value;
+ if(authMode==="register"){
+  const name=$("regName").value.trim();
+  if(!name){authMessage("Enter your name.");return}
+  if(users.some(u=>u.email===email)){authMessage("Email already registered.");return}
+  const user={id:uid("U"),name,email,password,role:"user"};
+  users.push(user);save("fb_users",users);login(user);
+ }else{
+  const user=users.find(u=>u.email===email&&u.password===password);
+  if(!user){authMessage("Invalid email or password.");return}
+  login(user);
+ }
+});
+function authMessage(s){$("authMessage").textContent=s;$("authMessage").classList.remove("hidden")}
+function login(u){
+ currentUser=u;$("loginScreen").classList.add("hidden");$("app").classList.remove("hidden");
+ $("userName").textContent=u.name;$("avatar").textContent=u.name[0].toUpperCase();
+ $("adminLink").classList.toggle("hidden",u.role!=="admin");go("home");
+}
+function logout(){currentUser=null;$("app").classList.add("hidden");$("loginScreen").classList.remove("hidden");$("authForm").reset()}
+function go(p){
+ if(p==="admin"&&currentUser.role!=="admin")return;
+ document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+ $(p+"Page").classList.add("active");
+ if(p==="home")renderHome();
+ if(p==="favorites")renderFavorites();
+ if(p==="myrecipes")renderMyRecipes();
+ if(p==="planner")renderPlanner();
+ if(p==="shopping")renderShopping();
+ if(p==="admin")renderAdmin();
+ if(p==="add")$("recipeForm").reset();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function setCategory(c,el){
+ categoryFilter=c;
+ document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));
+ el.classList.add("active");renderHome();
+}
+function recipeCard(r){
+ const fav=favorites.includes(r.id);
+ return `<article class="recipe-card">
+ <div class="recipe-img"><img src="${esc(r.image||defaultRecipes[0].image)}" alt="${esc(r.name)}" onerror="this.src='https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=800'"><span class="tag">${esc(r.cuisine)}</span></div>
+ <div class="recipe-body"><h3>${esc(r.name)}</h3><p>${esc(r.description)}</p>
+ <div class="meta"><span>◷ ${esc(r.time)} min</span><span>♨ ${esc(r.difficulty)}</span><span>🍽 ${esc(r.servings)} servings</span></div>
+ <div class="card-bottom"><span class="rating">★ ${averageRating(r.id)}</span><div style="display:flex;gap:7px"><button class="btn light small" onclick="toggleFavorite('${esc(r.id)}')">${fav?"♥":"♡"}</button><button class="btn small" onclick="openRecipe('${esc(r.id)}')">View Recipe</button></div></div>
+ </div></article>`;
+}
+function renderHome(){
+ recipes=read("fb_recipes");
+ const q=$("searchInput").value.toLowerCase().trim();
+ const filtered=recipes.filter(r=>(categoryFilter==="All"||r.cuisine===categoryFilter||r.category===categoryFilter)&&[r.name,r.cuisine,r.category,r.description,...r.ingredients.map(i=>i.name)].join(" ").toLowerCase().includes(q));
+ $("recipeGrid").innerHTML=filtered.map(recipeCard).join("")||'<div class="empty" style="grid-column:1/-1">No recipes found. Try another search.</div>';
+}
+function averageRating(id){
+ const reviews=read("fb_reviews").filter(x=>x.recipeId===id);
+ return reviews.length?(reviews.reduce((a,x)=>a+x.rating,0)/reviews.length).toFixed(1):"New";
+}
+function toggleFavorite(id){
+ favorites=read("fb_favorites");
+ favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];
+ save("fb_favorites",favorites);
+ if($("homePage").classList.contains("active"))renderHome();
+ if($("favoritesPage").classList.contains("active"))renderFavorites();
+}
+function renderFavorites(){
+ recipes=read("fb_recipes");favorites=read("fb_favorites");
+ const list=recipes.filter(r=>favorites.includes(r.id));
+ $("favoriteGrid").innerHTML=list.map(recipeCard).join("")||'<div class="empty" style="grid-column:1/-1">No favorites saved yet. Explore recipes and tap the heart icon.</div>';
+}
+function renderMyRecipes(){
+ const list=read("fb_recipes").filter(r=>r.authorId===currentUser.id);
+ $("myRecipeGrid").innerHTML=list.map(r=>recipeCard(r)+`<div style="margin-top:-10px;margin-bottom:15px"><button class="btn danger small" onclick="deleteRecipe('${esc(r.id)}')">Delete Recipe</button></div>`).join("")||'<div class="empty" style="grid-column:1/-1">You have not published any recipes yet.</div>';
+}
+function openRecipe(id){
+ currentRecipe=read("fb_recipes").find(r=>r.id===id);
+ if(!currentRecipe)return;
+ const r=currentRecipe;
+ $("detailContent").innerHTML=`
+ <div class="detail-layout">
+ <div><img class="detail-img" src="${esc(r.image)}" onerror="this.src='https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=800'">
+ <h1 class="detail-title">${esc(r.name)}</h1>
+ <p class="desc">${esc(r.description)}</p>
+ <div class="meta"><span>★ ${averageRating(r.id)} rating</span><span>◷ ${esc(r.time)} minutes</span><span>${esc(r.difficulty)}</span><span>By ${esc(r.author)}</span></div>
+ <div class="actions"><button class="btn light" onclick="toggleFavorite('${esc(r.id)}')">${favorites.includes(r.id)?"♥ Saved":"♡ Save Favorite"}</button><button class="btn outline" onclick="openServing('${esc(r.id)}')">Adjust Servings</button><button class="btn outline" onclick="addRecipeToPlan('${esc(r.id)}')">＋ Meal Planner</button></div>
+ </div>
+ <div class="panel">
+ <h2>Ingredients</h2><p class="desc" id="servingLabel">For ${r.servings} servings</p>
+ <ul class="ingredient-list" id="ingredientList">${r.ingredients.map(i=>`<li><input type="checkbox"><span>${esc(i.qty)} ${esc(i.name)}</span></li>`).join("")}</ul>
+ </div></div>
+ <div class="panel" style="margin-top:20px"><h2>Cooking Instructions</h2><p class="desc">Follow these steps to prepare your dish.</p><ol class="steps">${r.steps.map(s=>`<li>${esc(s)}</li>`).join("")}</ol></div>`;
+ renderReviews();
+ go("detail");
+}
+function renderReviews(){
+ const reviews=read("fb_reviews").filter(x=>x.recipeId===currentRecipe.id);
+ $("reviewList").innerHTML=reviews.map(x=>`<div style="padding:13px 0;border-bottom:1px solid var(--line)"><b style="font-size:13px">${esc(x.name)}</b><span class="rating" style="margin-left:9px">${"★".repeat(x.rating)}</span><p style="font-size:12px;color:#68717d;margin-top:7px">${esc(x.comment)}</p></div>`).join("")||'<p class="empty">No reviews yet. Be the first to share your thoughts!</p>';
+}
+function addReview(){
+ const comment=$("reviewComment").value.trim(),rating=Number($("reviewRating").value);
+ if(!comment){alert("Please write a comment.");return}
+ const reviews=read("fb_reviews");
+ reviews.unshift({id:uid("REV"),recipeId:currentRecipe.id,userId:currentUser.id,name:currentUser.name,rating,comment});
+ save("fb_reviews",reviews);$("reviewComment").value="";renderReviews();
+}
+$("recipeForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const parseIngredients=$("rIngredients").value.split("\n").map(line=>{
+  const parts=line.split("|");return {qty:(parts.shift()||"").trim(),name:parts.join("|").trim()};
+ }).filter(x=>x.name);
+ const steps=$("rSteps").value.split("\n").map(x=>x.trim()).filter(Boolean);
+ if(!parseIngredients.length||!steps.length){$("recipeMessage").textContent="Add at least one ingredient and one instruction.";return}
+ const recipe={
+  id:uid("R"),name:$("rName").value.trim(),cuisine:$("rCuisine").value,category:$("rCategory").value,
+  difficulty:$("rDifficulty").value,time:Number($("rTime").value),servings:Number($("rServings").value),
+  image:$("rImage").value.trim()||"https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=800",
+  description:$("rDescription").value.trim(),ingredients:parseIngredients,steps,
+  author:currentUser.name,authorId:currentUser.id
+ };
+ const list=read("fb_recipes");list.unshift(recipe);save("fb_recipes",list);
+ $("recipeMessage").textContent="Recipe published successfully!";
+ $("recipeMessage").classList.remove("hidden");$("recipeForm").reset();
+ setTimeout(()=>go("myrecipes"),700);
+});
+function deleteRecipe(id){
+ if(!confirm("Delete this recipe?"))return;
+ const list=read("fb_recipes");
+ save("fb_recipes",list.filter(r=>r.id!==id));
+ save("fb_favorites",read("fb_favorites").filter(x=>x!==id));
+ renderMyRecipes();
+}
+function openServing(id){
+ servingRecipe=read("fb_recipes").find(r=>r.id===id);
+ $("servingInput").value=servingRecipe.servings;
+ $("servingModal").classList.add("show");
+}
+function closeServing(){$("servingModal").classList.remove("show")}
+function applyServings(){
+ const n=Number($("servingInput").value);
+ if(!Number.isInteger(n)||n<1||n>100){alert("Enter a serving count from 1 to 100.");return}
+ const r=servingRecipe;
+ const factor=n/r.servings;
+ $("ingredientList").innerHTML=r.ingredients.map(i=>{
+  const quantity=Number(i.qty);
+  const adjusted=Number.isFinite(quantity)?String(Math.round(quantity*factor*100)/100):i.qty;
+  return `<li><input type="checkbox"><span>${esc(adjusted)} ${esc(i.name)}</span></li>`;
+ }).join("");
+ $("servingLabel").textContent="For "+n+" servings (original recipe: "+r.servings+")";
+ closeServing();
+}
+function addPlan(){
+ const id=$("planRecipe").value;
+ if(!id){alert("Select a recipe.");return}
+ const r=read("fb_recipes").find(x=>x.id===id);
+ plans=read("fb_plans");
+ plans.push({id:uid("P"),day:$("planDay").value,type:$("planType").value,recipeId:id,name:r.name});
+ save("fb_plans",plans);renderPlanner();
+}
+function addRecipeToPlan(id){
+ go("planner");$("planRecipe").value=id;
+}
+function renderPlanner(){
+ const list=read("fb_recipes");
+ $("planRecipe").innerHTML=list.map(r=>`<option value="${esc(r.id)}">${esc(r.name)}</option>`).join("");
+ plans=read("fb_plans");
+ const days=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+ $("plannerList").innerHTML=days.map(day=>{
+  const items=plans.filter(p=>p.day===day);
+  return `<div class="day"><h3>${day}</h3>${items.map(p=>`<div class="meal"><span><b>${esc(p.type)}:</b> ${esc(p.name)}</span><button onclick="removePlan('${esc(p.id)}')">Remove</button></div>`).join("")||'<p style="font-size:11px;color:#89909b">No meals planned.</p>'}</div>`;
+ }).join("");
+}
+function removePlan(id){save("fb_plans",read("fb_plans").filter(p=>p.id!==id));renderPlanner()}
+function generateShopping(){
+ const all=read("fb_plans"),allRecipes=read("fb_recipes");
+ const map={};
+ all.forEach(p=>{
+  const r=allRecipes.find(x=>x.id===p.recipeId);
+  if(r)r.ingredients.forEach(i=>{
+   const key=i.name.toLowerCase();
+   if(!map[key])map[key]={name:i.name,qty:[]};
+   map[key].qty.push(i.qty);
+  });
+ });
+ shopping=Object.values(map).map(x=>({id:uid("S"),name:x.name,quantity:x.qty.join(" + "),checked:false}));
+ save("fb_shopping",shopping);renderShopping();
+}
+function addShoppingItem(){
+ const name=prompt("Enter shopping item:");
+ if(!name||!name.trim())return;
+ shopping=read("fb_shopping");
+ shopping.push({id:uid("S"),name:name.trim(),quantity:"",checked:false});
+ save("fb_shopping",shopping);renderShopping();
+}
+function renderShopping(){
+ shopping=read("fb_shopping");
+ $("shoppingList").innerHTML=shopping.map(x=>`<div class="shopping-item"><input type="checkbox" ${x.checked?"checked":""} onchange="toggleShopping('${esc(x.id)}',this.checked)"><span style="flex:1;${x.checked?"text-decoration:line-through;color:#9299a2":""}">${esc(x.name)} ${x.quantity?"– "+esc(x.quantity):""}</span><button class="btn danger small" onclick="deleteShopping('${esc(x.id)}')">Delete</button></div>`).join("")||'<div class="empty">Your shopping list is empty. Generate it from your meal plan or add an item.</div>';
+}
+function toggleShopping(id,checked){shopping=read("fb_shopping");const x=shopping.find(i=>i.id===id);if(x)x.checked=checked;save("fb_shopping",shopping);renderShopping()}
+function deleteShopping(id){save("fb_shopping",read("fb_shopping").filter(x=>x.id!==id));renderShopping()}
+function clearShopping(){if(confirm("Clear the entire shopping list?")){save("fb_shopping",[]);renderShopping()}}
+function renderAdmin(){
+ const all=read("fb_recipes"),u=read("fb_users"),reviews=read("fb_reviews");
+ $("adminRecipes").textContent=all.length;$("adminUsers").textContent=u.length;$("adminReviews").textContent=reviews.length;
+ $("adminRecipeRows").innerHTML=all.map(r=>`<tr><td>${esc(r.name)}</td><td>${esc(r.category)}</td><td>${esc(r.author)}</td><td><button class="btn danger small" onclick="adminDeleteRecipe('${esc(r.id)}')">Delete</button></td></tr>`).join("");
+ $("adminUserRows").innerHTML=u.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.email)}</td><td>${esc(x.role)}</td></tr>`).join("");
+}
+function adminDeleteRecipe(id){
+ if(!confirm("Remove this recipe from the platform?"))return;
+ save("fb_recipes",read("fb_recipes").filter(r=>r.id!==id));
+ save("fb_favorites",read("fb_favorites").filter(x=>x!==id));
+ save("fb_reviews",read("fb_reviews").filter(x=>x.recipeId!==id));
+ renderAdmin();
+}
+</script>
+</body>
+</html>

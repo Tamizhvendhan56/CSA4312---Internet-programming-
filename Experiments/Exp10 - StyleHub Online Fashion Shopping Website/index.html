@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StyleHub | Fashion Store</title>
+<style>
+:root{
+ --dark:#202020;--pink:#d94f78;--lightpink:#fff0f4;
+ --bg:#f8f7f8;--white:#fff;--muted:#888;
+ --border:#ece7ea;--green:#16875d;--red:#d94f60;
+ --shadow:0 8px 28px rgba(40,20,30,.07)
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--dark)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+a{text-decoration:none;color:inherit}
+.btn{border:0;background:var(--pink);color:white;padding:11px 17px;border-radius:7px;font-weight:bold}
+.btn:hover{filter:brightness(.93)}
+.btn.light{background:var(--lightpink);color:var(--pink)}
+.btn.dark{background:var(--dark)}
+.btn.danger{background:#fff0f0;color:var(--red)}
+.btn.green{background:#e6f7ef;color:var(--green)}
+.btn.small{padding:7px 10px;font-size:11px}
+.btn.full{width:100%}
+.field{width:100%;padding:12px;border:1px solid var(--border);border-radius:7px;outline:none;background:white}
+.field:focus{border-color:var(--pink)}
+label{font-size:11px;font-weight:bold;display:block;margin-bottom:7px}
+.field-group{margin:15px 0}
+.muted{color:var(--muted)}
+.logo{font-size:27px;font-weight:900;letter-spacing:1px}
+.logo span{color:var(--pink)}
+.auth{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:white}
+.auth-art{background:linear-gradient(140deg,#301a28,#a74365,#ed9bb1);color:white;padding:10%;display:flex;flex-direction:column;justify-content:center}
+.auth-art h1{font-size:54px;line-height:1.1;margin:35px 0 12px}
+.auth-art p{line-height:1.8;color:#ffe8ef;max-width:420px}
+.auth-panel{display:grid;place-items:center;padding:25px}
+.auth-card{width:min(400px,100%)}
+.auth-card h2{font-size:29px;margin-bottom:5px}
+.auth-links{display:flex;justify-content:space-between;gap:12px;font-size:12px;margin-top:20px}
+.auth-links a{color:var(--pink)}
+.app{min-height:100vh}
+.topbar{height:70px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 5%;position:sticky;top:0;z-index:5}
+.top-actions{display:flex;align-items:center;gap:12px}
+.top-actions button{font-size:12px}
+.role{background:var(--lightpink);color:var(--pink);padding:7px 11px;border-radius:20px;font-size:10px;font-weight:bold}
+.avatar{width:34px;height:34px;border-radius:50%;background:#f8dce5;color:#a53b61;display:grid;place-items:center;font-weight:bold}
+.navbar{background:white;border-bottom:1px solid var(--border);padding:0 5%;display:flex;gap:25px;overflow-x:auto}
+.navbar button{background:none;border:0;padding:15px 2px;color:#555;white-space:nowrap;border-bottom:2px solid transparent}
+.navbar button.active,.navbar button:hover{color:var(--pink);border-color:var(--pink)}
+main{max-width:1250px;margin:auto;padding:25px 25px 50px}
+.hero{min-height:270px;border-radius:14px;background:linear-gradient(100deg,#301d29dd,#5a2b42aa),url('https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1500') center/cover;color:white;padding:45px;display:flex;flex-direction:column;justify-content:center;margin-bottom:25px}
+.hero h1{font-size:40px;margin:10px 0}
+.hero p{max-width:460px;line-height:1.7;color:#fbeaf0}
+.eyebrow{font-size:10px;letter-spacing:2px;color:var(--pink);font-weight:bold}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin:25px 0 15px;gap:12px}
+.section-head h2{font-size:21px;margin:0}
+.categories{display:grid;grid-template-columns:repeat(6,1fr);gap:13px}
+.category{background:white;border:1px solid var(--border);border-radius:10px;text-align:center;padding:20px 8px;cursor:pointer;transition:.2s}
+.category:hover{transform:translateY(-3px);border-color:var(--pink)}
+.category .emoji{font-size:34px;display:block;margin-bottom:9px}
+.category b{font-size:13px}
+.subcategories{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0}
+.chip{border:1px solid var(--border);background:white;border-radius:20px;padding:8px 13px;font-size:11px;cursor:pointer}
+.chip.active,.chip:hover{background:var(--lightpink);color:var(--pink);border-color:#f2c1d0}
+.products{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.product{background:white;border:1px solid var(--border);border-radius:11px;overflow:hidden;transition:.2s}
+.product:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.product-image{height:230px;background:#f0e9eb;position:relative;overflow:hidden}
+.product-image img{width:100%;height:100%;object-fit:cover}
+.heart{position:absolute;right:11px;top:11px;border:0;border-radius:50%;width:34px;height:34px;background:white;font-size:18px}
+.product-info{padding:13px}
+.product-info h3{font-size:14px;margin:7px 0}
+.product-info p{font-size:11px;color:var(--muted);margin:6px 0}
+.price{font-size:17px;font-weight:bold;margin:10px 0}
+.old-price{text-decoration:line-through;color:#999;font-size:11px;margin-left:6px}
+.product-buttons{display:flex;gap:7px}
+.product-buttons button{flex:1}
+.panel{background:white;border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:18px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:17px}
+.toolbar .search{flex:1;min-width:180px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:20px}
+.stat{background:white;border:1px solid var(--border);padding:18px;border-radius:11px}
+.stat small{color:var(--muted)}
+.stat strong{display:block;font-size:25px;margin-top:10px}
+table{border-collapse:collapse;width:100%;white-space:nowrap}
+th{text-align:left;font-size:10px;color:#999;padding:12px;border-bottom:1px solid var(--border)}
+td{font-size:12px;padding:13px 12px;border-bottom:1px solid #f2eef0}
+.table-wrap{overflow:auto}
+.status{font-size:10px;padding:5px 9px;border-radius:20px;font-weight:bold}
+.status.processing{background:#fff3dd;color:#9c731c}
+.status.delivered{background:#e6f7ef;color:var(--green)}
+.status.cancelled{background:#fff0f0;color:var(--red)}
+.status.pending{background:#eef1ff;color:#5368bd}
+.empty{text-align:center;padding:35px;color:var(--muted)}
+.qty{display:flex;align-items:center;gap:8px}
+.qty button{border:0;background:var(--lightpink);color:var(--pink);padding:5px 9px;border-radius:5px}
+.total-line{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.total-line.final{font-size:20px;font-weight:bold;border:0}
+.modal-bg{position:fixed;inset:0;background:#0008;display:grid;place-items:center;padding:15px;z-index:20}
+.modal{background:white;border-radius:13px;padding:22px;width:min(550px,100%);max-height:90vh;overflow:auto}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+.close{border:0;background:#f2eef0;border-radius:6px;padding:8px 11px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.toast{position:fixed;right:20px;bottom:20px;background:#25202a;color:white;padding:14px 19px;border-radius:9px;z-index:30}
+.stars{color:#e5a52e;letter-spacing:2px}
+.footer{background:#211b20;color:#cfc4ca;padding:30px 5%;text-align:center;font-size:12px}
+.size-guide{width:100%;border-collapse:collapse}
+.size-guide td,.size-guide th{border:1px solid var(--border);text-align:center}
+@media(max-width:950px){.products{grid-template-columns:repeat(3,1fr)}.categories{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:650px){
+ .auth{grid-template-columns:1fr}.auth-art{display:none}
+ .topbar{padding:0 12px}.navbar{padding:0 12px;gap:17px}
+ main{padding:15px 12px 30px}
+ .hero{padding:25px;min-height:240px}.hero h1{font-size:30px}
+ .products{grid-template-columns:repeat(2,1fr);gap:10px}
+ .product-image{height:165px}.categories{grid-template-columns:repeat(3,1fr)}
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .form-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<section id="auth" class="auth">
+ <div class="auth-art">
+  <div class="logo">Style<span>Hub.</span></div>
+  <div class="eyebrow" style="color:#ffd8e5;margin-top:50px">YOUR STYLE. YOUR STORY.</div>
+  <h1>Fashion that<br>defines you.</h1>
+  <p>Discover the latest trends in clothing, footwear and accessories. Find your style and shop your favourites at StyleHub.</p>
+ </div>
+ <div class="auth-panel">
+  <div class="auth-card">
+   <div class="eyebrow">STYLEHUB ACCOUNT</div>
+   <h2 id="authTitle">Welcome back!</h2>
+   <p class="muted" id="authDesc">Login to continue shopping.</p>
+   <form id="loginForm">
+    <div class="field-group"><label>LOGIN AS</label>
+     <select class="field" id="loginRole"><option value="customer">Customer</option><option value="admin">Administrator</option></select>
+    </div>
+    <div class="field-group"><label>EMAIL ADDRESS</label><input class="field" id="loginEmail" type="email" required placeholder="Enter your email"></div>
+    <div class="field-group"><label>PASSWORD</label><input class="field" id="loginPassword" type="password" required placeholder="Enter password"></div>
+    <button class="btn full">Login →</button>
+   </form>
+   <div class="auth-links"><a href="#" id="registerLink">Create customer account</a></div>
+  </div>
+ </div>
+</section>
+
+<!-- STORE APPLICATION -->
+<div id="app" class="app hidden">
+ <header class="topbar">
+  <div class="logo">Style<span>Hub.</span></div>
+  <div class="top-actions">
+   <span class="role" id="roleBadge">CUSTOMER</span>
+   <span class="avatar" id="avatar">S</span>
+   <button class="btn dark small" id="logout">Logout</button>
+  </div>
+ </header>
+ <nav class="navbar" id="navigation"></nav>
+ <main id="content"></main>
+ <footer class="footer">STYLEHUB © 2026 | Fashion for Everyone | All Rights Reserved</footer>
+</div>
+
+<div id="modalRoot"></div>
+<div id="toastRoot"></div>
+
+<script>
+"use strict";
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const initialProducts=[
+{id:1,name:"Floral Summer Dress",category:"Women",sub:"Casual Wear",price:1499,old:1999,stock:15,size:"S,M,L,XL",image:"https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=700",description:"Beautiful floral summer dress with a comfortable fit.",rating:5},
+{id:2,name:"Men's Casual Shirt",category:"Men",sub:"Casual Wear",price:999,old:1299,stock:20,size:"S,M,L,XL,XXL",image:"https://images.unsplash.com/photo-1603252109303-2751441dd157?w=700",description:"Stylish everyday casual cotton shirt.",rating:4},
+{id:3,name:"Classic Sneakers",category:"Footwear",sub:"Casual Shoes",price:1799,old:2299,stock:12,size:"6,7,8,9,10",image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=700",description:"Comfortable sneakers for everyday fashion.",rating:5},
+{id:4,name:"Leather Handbag",category:"Accessories",sub:"Bags",price:2199,old:2799,stock:8,size:"Free Size",image:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=700",description:"Elegant handbag for work and casual outings.",rating:4},
+{id:5,name:"Kids Party Outfit",category:"Kids",sub:"Party Wear",price:1299,old:1699,stock:10,size:"2Y,4Y,6Y,8Y",image:"https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=700",description:"Comfortable and stylish party outfit for kids.",rating:5},
+{id:6,name:"Formal Blazer",category:"Men",sub:"Formal Wear",price:3499,old:4299,stock:7,size:"S,M,L,XL",image:"https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=700",description:"Premium formal blazer for special occasions.",rating:5},
+{id:7,name:"Women's Handbag",category:"Women",sub:"Accessories",price:1599,old:1999,stock:13,size:"Free Size",image:"https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=700",description:"Modern handbag with spacious storage.",rating:4},
+{id:8,name:"Sports Shoes",category:"Footwear",sub:"Sports Shoes",price:1999,old:2499,stock:0,size:"6,7,8,9,10",image:"https://images.unsplash.com/photo-1552346154-21d32810aba3?w=700",description:"Lightweight sports shoes for active lifestyles.",rating:4},
+{id:9,name:"Women's Top",category:"Women",sub:"Casual Wear",price:799,old:999,stock:25,size:"S,M,L,XL",image:"https://images.unsplash.com/photo-1551163943-3f6a855d1153?w=700",description:"Trendy everyday top with a comfortable fit.",rating:4},
+{id:10,name:"Kids Casual T-Shirt",category:"Kids",sub:"Casual Wear",price:499,old:699,stock:18,size:"2Y,4Y,6Y,8Y",image:"https://images.unsplash.com/photo-1503919005314-30d93d07d823?w=700",description:"Soft cotton T-shirt for children.",rating:5},
+{id:11,name:"Leather Belt",category:"Accessories",sub:"Accessories",price:599,old:799,stock:30,size:"Free Size",image:"https://images.unsplash.com/photo-1624222247344-550fb8d5b4f7?w=700",description:"Classic belt to complete your outfit.",rating:4},
+{id:12,name:"Women's Formal Suit",category:"Women",sub:"Formal Wear",price:2999,old:3599,stock:6,size:"S,M,L,XL",image:"https://images.unsplash.com/photo-1591369822096-ffd140ec948f?w=700",description:"Elegant formal suit for office and events.",rating:5}
+];
+
+const defaults={
+ products:initialProducts,
+ customers:[{id:1,name:"Demo Customer",email:"customer@stylehub.demo",password:"customer123",phone:"9876543210"}],
+ orders:[],reviews:[],returns:[],nextOrder:1001
+};
+function load(){
+ try{return {...JSON.parse(localStorage.getItem("stylehub_data")),products:JSON.parse(localStorage.getItem("stylehub_data"))?.products||structuredClone(initialProducts)}}
+ catch(e){return JSON.parse(JSON.stringify(defaults))}
+}
+let db=load();
+if(!db.customers)db.customers=defaults.customers;
+if(!db.orders)db.orders=[];
+if(!db.reviews)db.reviews=[];
+if(!db.returns)db.returns=[];
+if(!db.nextOrder)db.nextOrder=1001;
+
+let session=null,cart=[],wishlist=[],page="home",categoryFilter="",subFilter="";
+
+function save(){localStorage.setItem("stylehub_data",JSON.stringify(db))}
+function money(n){return "₹"+Number(n).toLocaleString("en-IN")}
+function notify(msg){
+ $("#toastRoot").innerHTML=`<div class="toast">${esc(msg)}</div>`;
+ setTimeout(()=>$("#toastRoot").innerHTML="",2600);
+}
+function modal(title,body){
+ $("#modalRoot").innerHTML=`<div class="modal-bg" id="modalBg"><div class="modal">
+ <div class="modal-head"><h3>${title}</h3><button class="close" onclick="closeModal()">✕</button></div>${body}
+ </div></div>`;
+ $("#modalBg").onclick=e=>{if(e.target.id==="modalBg")closeModal()};
+}
+function closeModal(){$("#modalRoot").innerHTML=""}
+function field(label,name,value="",type="text"){
+ return `<div class="field-group"><label>${label.toUpperCase()}</label><input class="field" name="${name}" type="${type}" value="${esc(value)}" required></div>`;
+}
+function heading(title,desc,action=""){
+ return `<div class="section-head"><div><div class="eyebrow">STYLEHUB / FASHION STORE</div><h2>${title}</h2><p class="muted" style="font-size:12px">${desc}</p></div>${action}</div>`;
+}
+function status(s){
+ const c=s==="Delivered"?"delivered":s==="Cancelled"?"cancelled":s==="Return Requested"?"pending":"processing";
+ return `<span class="status ${c}">${esc(s)}</span>`;
+}
+
+/* AUTH */
+$("#loginForm").onsubmit=e=>{
+ e.preventDefault();
+ const role=$("#loginRole").value,email=$("#loginEmail").value.trim().toLowerCase(),pass=$("#loginPassword").value;
+ if(role==="admin"){
+  if(email!=="admin@stylehub.demo"||pass!=="admin123")return notify("Invalid admin login.");
+  startSession("admin",email);
+ }else{
+  const c=db.customers.find(x=>x.email.toLowerCase()===email&&x.password===pass);
+  if(!c)return notify("Incorrect customer email or password.");
+  startSession("customer",email);
+ }
+};
+$("#registerLink").onclick=e=>{
+ e.preventDefault();
+ modal("Create customer account",`<form id="registerForm">
+ ${field("Full name","name")}${field("Email address","email","","email")}
+ ${field("Phone number","phone")}${field("Password","password","","password")}
+ <button class="btn full">Register</button></form>`);
+ $("#registerForm").onsubmit=e=>{
+  e.preventDefault();const d=Object.fromEntries(new FormData(e.target));
+  if(db.customers.some(c=>c.email.toLowerCase()===d.email.toLowerCase()))return notify("Email already exists.");
+  db.customers.push({...d,id:Date.now()});save();closeModal();
+  $("#loginEmail").value=d.email;notify("Registration successful. Please login.");
+ };
+};
+function startSession(role,email){
+ session={role,email};cart=[];wishlist=[];
+ $("#auth").classList.add("hidden");$("#app").classList.remove("hidden");
+ $("#roleBadge").textContent=role.toUpperCase();$("#avatar").textContent=email[0].toUpperCase();
+ page="home";navigation();render();
+}
+$("#logout").onclick=()=>{
+ session=null;cart=[];$("#app").classList.add("hidden");$("#auth").classList.remove("hidden");
+ $("#loginForm").reset();notify("Logged out successfully.");
+};
+
+/* NAVIGATION */
+const adminNav=[["home","Home"],["products","Products"],["inventory","Inventory"],["customers","Customers"],["orders","All Orders"],["returns","Returns"],["reports","Reports"]];
+const customerNav=[["home","Home"],["shop","Shop"],["wishlist","Wishlist"],["cart","Cart 🛍"],["orders","My Orders"],["history","Order History"],["returns","Returns"],["profile","My Profile"]];
+function navigation(){
+ const list=session.role==="admin"?adminNav:customerNav;
+ $("#navigation").innerHTML=list.map(([id,name])=>`<button class="${page===id?"active":""}" onclick="go('${id}')">${name}</button>`).join("");
+}
+function go(p){page=p;navigation();render();window.scrollTo(0,0)}
+
+/* PRODUCT CARD */
+function card(p){
+ const wished=wishlist.includes(p.id);
+ return `<article class="product">
+ <div class="product-image"><img src="${esc(p.image)}" alt="${esc(p.name)}" onerror="this.src='https://placehold.co/500x500/f5e9ed/9c536c?text=StyleHub'">
+ <button class="heart" onclick="toggleWish(${p.id})">${wished?"♥":"♡"}</button></div>
+ <div class="product-info"><span class="eyebrow">${esc(p.category)} / ${esc(p.sub)}</span>
+ <h3>${esc(p.name)}</h3><div class="stars">${"★".repeat(p.rating||4)}${"☆".repeat(5-(p.rating||4))}</div>
+ <div class="price">${money(p.price)} <span class="old-price">${money(p.old||p.price)}</span></div>
+ <p>${p.stock>0?`<span style="color:var(--green)">● ${p.stock} available</span>`:'<span style="color:var(--red)">● Out of stock</span>'}</p>
+ <div class="product-buttons"><button class="btn light small" onclick="details(${p.id})">Details</button>
+ ${session.role==="customer"?`<button class="btn small" onclick="addCart(${p.id})" ${p.stock<=0?"disabled":""}>Add to cart</button>`:""}
+ </div></div></article>`;
+}
+
+/* HOME PAGE */
+function homePage(){
+ if(session.role==="admin")return adminHome();
+ const categories=[["Women","👗"],["Men","👔"],["Kids","🧒"],["Footwear","👟"],["Accessories","👜"]];
+ return `${`<section class="hero"><div class="eyebrow" style="color:#ffd8e5">NEW SEASON COLLECTION</div>
+ <h1>Wear Your<br>Confidence.</h1>
+ <p>Explore the latest fashion trends. Discover clothing, footwear and accessories for every occasion.</p>
+ <div><button class="btn" onclick="go('shop')">Shop Collection →</button></div></section>`}
+ ${heading("Shop by category","Explore all our fashion collections")}
+ <div class="categories">${categories.map(([name,icon])=>`<div class="category" onclick="selectCategory('${name}')"><span class="emoji">${icon}</span><b>${name}</b></div>`).join("")}</div>
+ ${heading("Explore subcategories","Choose the style you are looking for")}
+ <div class="subcategories">${["Casual Wear","Formal Wear","Party Wear","Seasonal Collection","Sports Shoes","Casual Shoes","Bags","Accessories"].map(s=>`<button class="chip" onclick="selectSub('${s}')">${s}</button>`).join("")}</div>
+ <div class="section-head"><h2>Trending collections</h2><button class="btn light small" onclick="go('shop')">View all</button></div>
+ <div class="products">${db.products.slice(0,4).map(card).join("")}</div>
+ <section class="panel" style="margin-top:25px;text-align:center;background:var(--lightpink)">
+ <h2>Special StyleHub Offer!</h2><p>Get exclusive discounts on selected fashion collections.</p>
+ <button class="btn" onclick="go('shop')">Explore Offers</button></section>`;
+}
+function selectCategory(c){categoryFilter=c;subFilter="";go("shop")}
+function selectSub(s){categoryFilter="";subFilter=s;go("shop")}
+
+/* ADMIN HOME */
+function adminHome(){
+ const revenue=db.orders.filter(o=>o.status!=="Cancelled").reduce((n,o)=>n+o.total,0);
+ return `${heading("Admin dashboard","Manage your StyleHub fashion store.")}
+ <section class="hero"><div class="eyebrow" style="color:#ffd8e5">STORE MANAGEMENT</div><h1>Welcome, Administrator.</h1><p>Manage products, customers, inventory, orders and returns.</p>
+ <button class="btn" style="width:max-content" onclick="go('products')">Manage products →</button></section>
+ <div class="stats">
+ <div class="stat"><small>TOTAL PRODUCTS</small><strong>${db.products.length}</strong></div>
+ <div class="stat"><small>CUSTOMERS</small><strong>${db.customers.length}</strong></div>
+ <div class="stat"><small>TOTAL ORDERS</small><strong>${db.orders.length}</strong></div>
+ <div class="stat"><small>REVENUE</small><strong>${money(revenue)}</strong></div>
+ </div>
+ <div class="panel"><div class="section-head"><h2>Recent orders</h2><button class="btn light small" onclick="go('orders')">View all</button></div>${orderTable(db.orders.slice().reverse().slice(0,5))}</div>
+ <div class="panel"><h3>Quick actions</h3><br>
+ <button class="btn" onclick="openProduct()">＋ Add product</button>
+ <button class="btn light" onclick="go('customers')">View customers</button>
+ <button class="btn light" onclick="go('inventory')">Manage stock</button></div>`;
+}
+
+/* SHOP AND SEARCH */
+function shopPage(){
+ return `${heading("Fashion collection","Browse clothing, footwear and accessories.")}
+ <div class="panel"><div class="toolbar">
+ <input class="field search" id="search" placeholder="Search products..." oninput="renderShop()">
+ <select class="field" id="category" style="max-width:160px" onchange="renderShop()">
+ <option value="">All categories</option>${["Women","Men","Kids","Footwear","Accessories"].map(x=>`<option>${x}</option>`).join("")}</select>
+ <select class="field" id="sort" style="max-width:160px" onchange="renderShop()">
+ <option value="">Sort by</option><option value="low">Price: Low to High</option><option value="high">Price: High to Low</option><option value="name">Name</option></select>
+ </div>
+ <div class="subcategories">${["Casual Wear","Formal Wear","Party Wear","Seasonal Collection","Sports Shoes","Casual Shoes","Bags","Accessories"].map(s=>`<button class="chip ${subFilter===s?"active":""}" onclick="filterSub('${s}')">${s}</button>`).join("")}
+ <button class="chip" onclick="filterSub('')">All</button></div>
+ <div class="products" id="productList"></div></div>`;
+}
+function filterSub(s){subFilter=s;render()}
+function renderShop(){
+ const q=($("#search")?.value||"").toLowerCase();
+ const cat=$("#category")?.value||"";
+ const sort=$("#sort")?.value||"";
+ let list=db.products.filter(p=>(p.name+" "+p.category+" "+p.sub+" "+p.description).toLowerCase().includes(q)&&(!cat||p.category===cat)&&(!categoryFilter||p.category===categoryFilter)&&(!subFilter||p.sub===subFilter));
+ if(sort==="low")list.sort((a,b)=>a.price-b.price);
+ if(sort==="high")list.sort((a,b)=>b.price-a.price);
+ if(sort==="name")list.sort((a,b)=>a.name.localeCompare(b.name));
+ $("#productList").innerHTML=list.map(card).join("")||'<div class="empty">No products found.</div>';
+}
+function details(id){
+ const p=db.products.find(x=>x.id===id);if(!p)return;
+ const reviews=db.reviews.filter(r=>r.productId===id);
+ modal("Product details",`
+ <img src="${esc(p.image)}" style="width:100%;height:230px;object-fit:cover;border-radius:9px" onerror="this.src='https://placehold.co/500x300?text=StyleHub'">
+ <h2>${esc(p.name)}</h2><div class="stars">★★★★★</div>
+ <p class="muted">${esc(p.description)}</p>
+ <h2>${money(p.price)} <small class="old-price">${money(p.old||p.price)}</small></h2>
+ <p>Category: <b>${esc(p.category)}</b> / ${esc(p.sub)}</p>
+ <p>Availability: <b>${p.stock>0?p.stock+" items available":"Out of stock"}</b></p>
+ <p>Sizes: ${esc(p.size)}</p>
+ <button class="btn light full" onclick="sizeGuide()">View size guide</button><br><br>
+ ${session.role==="customer"?`<button class="btn full" onclick="closeModal();chooseSize(${p.id})" ${p.stock<=0?"disabled":""}>Add to cart</button>`:""}
+ <hr><h3>Customer reviews (${reviews.length})</h3>
+ ${reviews.map(r=>`<p><b>${esc(r.name)}</b> <span class="stars">★★★★★</span><br>${esc(r.text)}</p>`).join("")||'<p class="muted">No reviews yet.</p>'}
+ ${session.role==="customer"?`<button class="btn light full" onclick="reviewProduct(${p.id})">Write a review</button>`:""}
+ `);
+}
+function sizeGuide(){
+ modal("Size guide",`<p>Use this general size guide to select your clothing size.</p>
+ <table class="size-guide"><tr><th>Size</th><th>Chest (in)</th><th>Waist (in)</th></tr>
+ <tr><td>S</td><td>34-36</td><td>28-30</td></tr><tr><td>M</td><td>38-40</td><td>32-34</td></tr>
+ <tr><td>L</td><td>42-44</td><td>36-38</td></tr><tr><td>XL</td><td>46-48</td><td>40-42</td></tr></table>
+ <p class="muted">Sizes are indicative. Actual measurements may vary by product.</p>`);
+}
+function chooseSize(id){
+ const p=db.products.find(x=>x.id===id);
+ const sizes=p.size.split(",");
+ modal("Select size",`<form id="sizeForm"><label>CHOOSE YOUR SIZE</label>
+ <select class="field" name="size">${sizes.map(s=>`<option>${esc(s)}</option>`).join("")}</select><br><br>
+ <button class="btn full">Add to cart</button></form>`);
+ $("#sizeForm").onsubmit=e=>{e.preventDefault();const size=new FormData(e.target).get("size");closeModal();addCart(id,size)};
+}
+
+/* PRODUCT REVIEWS */
+function reviewProduct(id){
+ modal("Write a review",`<form id="reviewForm">
+ <div class="field-group"><label>YOUR RATING</label><select class="field" name="rating"><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select></div>
+ <div class="field-group"><label>YOUR REVIEW</label><textarea class="field" name="text" required placeholder="Share your experience"></textarea></div>
+ <button class="btn full">Submit review</button></form>`);
+ $("#reviewForm").onsubmit=e=>{
+  e.preventDefault();const d=Object.fromEntries(new FormData(e.target));
+  db.reviews.push({...d,productId:id,name:session.email,rating:Number(d.rating)});
+  save();closeModal();notify("Review submitted.");};
+}
+
+/* WISHLIST */
+function toggleWish(id){
+ if(wishlist.includes(id))wishlist=wishlist.filter(x=>x!==id);
+ else wishlist.push(id);
+ render();
+}
+function wishlistPage(){
+ return `${heading("My wishlist","Your favourite fashion products.")}
+ <div class="products">${wishlist.map(id=>db.products.find(p=>p.id===id)).filter(Boolean).map(card).join("")||'<div class="panel empty">Your wishlist is empty.</div>'}</div>`;
+}
+
+/* CART */
+function addCart(id,size="Free Size"){
+ const p=db.products.find(x=>x.id===id);
+ if(!p||p.stock<=0)return notify("Product unavailable.");
+ const item=cart.find(x=>x.id===id&&x.size===size);
+ if(item){if(item.qty>=p.stock)return notify("Maximum stock reached.");item.qty++}
+ else cart.push({id,size,qty:1});
+ notify("Item added to cart.");
+}
+function changeQty(id,size,n){
+ const item=cart.find(x=>x.id===id&&x.size===size),p=db.products.find(x=>x.id===id);
+ if(!item||!p)return;
+ if(item.qty+n<=0)cart=cart.filter(x=>x!==item);
+ else if(item.qty+n>p.stock)return notify("Not enough stock.");
+ else item.qty+=n;
+ render();
+}
+function removeCart(id,size){
+ cart=cart.filter(x=>!(x.id===id&&x.size===size));render();notify("Item removed.");
+}
+function total(){
+ return cart.reduce((sum,i)=>sum+db.products.find(p=>p.id===i.id).price*i.qty,0);
+}
+function cartPage(){
+ if(!cart.length)return `${heading("Shopping cart","Review your selected fashion items.")}
+ <section class="panel empty"><h2>🛍</h2><h3>Your cart is empty</h3><button class="btn" onclick="go('shop')">Continue shopping</button></section>`;
+ return `${heading("Shopping cart","Edit quantities and review your items.")}
+ <div class="panel"><div class="table-wrap"><table><thead><tr><th>Product</th><th>Size</th><th>Price</th><th>Quantity</th><th>Total</th><th></th></tr></thead>
+ <tbody>${cart.map(i=>{const p=db.products.find(x=>x.id===i.id);return `<tr><td>${esc(p.name)}</td><td>${esc(i.size)}</td><td>${money(p.price)}</td>
+ <td><div class="qty"><button onclick="changeQty(${p.id},'${esc(i.size)}',-1)">−</button>${i.qty}<button onclick="changeQty(${p.id},'${esc(i.size)}',1)">+</button></div></td>
+ <td><b>${money(p.price*i.qty)}</b></td><td><button class="btn danger small" onclick="removeCart(${p.id},'${esc(i.size)}')">Remove</button></td></tr>`}).join("")}</tbody></table></div>
+ <div style="max-width:330px;margin:20px 0 0 auto">
+ <div class="total-line"><span>Subtotal</span><b>${money(total())}</b></div>
+ <div class="total-line"><span>Delivery</span><b>FREE</b></div>
+ <div class="total-line"><span>Discount</span><b style="color:var(--green)">- ₹0</b></div>
+ <div class="total-line final"><span>Total</span><span>${money(total())}</span></div>
+ <button class="btn full" onclick="checkout()">Proceed to checkout →</button></div></div>`;
+}
+
+/* CHECKOUT */
+function checkout(){
+ if(!cart.length)return notify("Your cart is empty.");
+ if(cart.some(i=>db.products.find(p=>p.id===i.id).stock<i.qty))return notify("Some items are out of stock.");
+ modal("Checkout",`<h3>Order total: ${money(total())}</h3>
+ <form id="checkoutForm">
+ <div class="field-group"><label>DELIVERY ADDRESS</label><textarea class="field" name="address" required placeholder="Enter your complete address"></textarea></div>
+ ${field("Phone number","phone")}
+ <div class="field-group"><label>PAYMENT METHOD</label><select class="field" name="payment"><option>Cash on Delivery</option><option>UPI (Demo)</option><option>Credit/Debit Card (Demo)</option></select></div>
+ <p class="muted" style="font-size:11px">Demo checkout: no actual payment is processed.</p>
+ <button class="btn full">Place order</button></form>`);
+ $("#checkoutForm").onsubmit=e=>{
+  e.preventDefault();
+  const d=Object.fromEntries(new FormData(e.target));
+  for(const i of cart){const p=db.products.find(x=>x.id===i.id);if(!p||p.stock<i.qty){closeModal();return notify("Stock is no longer available.")}}
+  const customer=db.customers.find(c=>c.email===session.email);
+  const order={id:db.nextOrder++,email:session.email,customer:customer?.name||session.email,
+   items:cart.map(i=>({...i,name:db.products.find(p=>p.id===i.id).name,price:db.products.find(p=>p.id===i.id).price})),
+   total:total(),address:d.address,phone:d.phone,payment:d.payment,status:"Processing",date:new Date().toLocaleString()};
+  cart.forEach(i=>db.products.find(p=>p.id===i.id).stock-=i.qty);
+  db.orders.push(order);cart=[];save();closeModal();notify("Order placed successfully!");
+  go("orders");
+ };
+}
+
+/* ORDERS */
+function orderTable(list){
+ return `<div class="table-wrap"><table><thead><tr><th>Order ID</th><th>Customer</th><th>Date</th><th>Total</th><th>Status</th><th>Action</th></tr></thead>
+ <tbody>${list.map(o=>`<tr><td>#${o.id}</td><td>${esc(o.customer)}</td><td>${esc(o.date)}</td><td>${money(o.total)}</td><td>${status(o.status)}</td><td><button class="btn light small" onclick="viewOrder(${o.id})">Details</button></td></tr>`).join("")||'<tr><td colspan="6" class="empty">No orders found.</td></tr>'}</tbody></table></div>`;
+}
+function ordersPage(){
+ const list=session.role==="admin"?db.orders.slice().reverse():db.orders.filter(o=>o.email===session.email).slice().reverse();
+ return `${heading(session.role==="admin"?"All customer orders":"My orders","Track your purchases and order status.")}
+ <section class="panel">${orderTable(list)}</section>`;
+}
+function historyPage(){
+ return `${heading("Order history","Browse all your previous purchases.")}
+ <section class="panel">${orderTable(db.orders.filter(o=>o.email===session.email).slice().reverse())}</section>`;
+}
+function viewOrder(id){
+ const o=db.orders.find(x=>x.id===id);if(!o)return;
+ modal("Order #"+o.id,`<p>Customer: <b>${esc(o.customer)}</b></p>
+ <p>Date: ${esc(o.date)}</p><p>Delivery address: ${esc(o.address)}</p>
+ <p>Payment: ${esc(o.payment)}</p><p>Status: ${status(o.status)}</p>
+ <h3>Items</h3>${o.items.map(i=>`<p>${esc(i.name)} × ${i.qty} (${esc(i.size)}) — ${money(i.price*i.qty)}</p>`).join("")}
+ <h3>Total: ${money(o.total)}</h3>
+ ${session.role==="admin"?`<hr><label>UPDATE STATUS</label><select class="field" id="orderStatus"><option>Processing</option><option>Delivered</option><option>Cancelled</option></select><br><br><button class="btn full" onclick="updateOrder(${o.id})">Save status</button>`:""}
+ `);
+}
+function updateOrder(id){
+ const o=db.orders.find(x=>x.id===id),next=$("#orderStatus").value;
+ if(next==="Cancelled"&&o.status!=="Cancelled")o.items.forEach(i=>{const p=db.products.find(p=>p.id===i.id);if(p)p.stock+=i.qty});
+ o.status=next;save();closeModal();render();notify("Order status updated.");
+}
+
+/* RETURNS AND EXCHANGES */
+function requestReturn(id){
+ const o=db.orders.find(x=>x.id===id);
+ if(!o||o.status!=="Delivered")return notify("Only delivered orders can be returned.");
+ modal("Return or exchange request",`<form id="returnForm">
+ <div class="field-group"><label>REQUEST TYPE</label><select class="field" name="type"><option>Return</option><option>Exchange</option></select></div>
+ <div class="field-group"><label>REASON</label><textarea class="field" name="reason" required placeholder="Explain your reason"></textarea></div>
+ <button class="btn full">Submit request</button></form>`);
+ $("#returnForm").onsubmit=e=>{
+  e.preventDefault();const d=Object.fromEntries(new FormData(e.target));
+  db.returns.push({id:Date.now(),orderId:id,email:session.email,...d,status:"Pending"});
+  o.status="Return Requested";save();closeModal();render();notify("Return request submitted.");
+ };
+}
+function returnsPage(){
+ const list=session.role==="admin"?db.returns:db.returns.filter(r=>r.email===session.email);
+ return `${heading("Returns and exchanges","Manage product return and exchange requests.")}
+ <section class="panel"><div class="table-wrap"><table><thead><tr><th>Request ID</th><th>Order</th><th>Type</th><th>Reason</th><th>Status</th>${session.role==="admin"?"<th>Action</th>":""}</tr></thead>
+ <tbody>${list.map(r=>`<tr><td>${r.id}</td><td>#${r.orderId}</td><td>${esc(r.type)}</td><td>${esc(r.reason)}</td><td>${status(r.status)}</td>
+ ${session.role==="admin"?`<td><button class="btn light small" onclick="updateReturn(${r.id})">Update</button></td>`:""}</tr>`).join("")||'<tr><td colspan="6" class="empty">No return requests.</td></tr>'}</tbody></table></div>
+ ${session.role==="customer"?`<h3>Eligible orders</h3>${db.orders.filter(o=>o.email===session.email&&o.status==="Delivered").map(o=>`<p>Order #${o.id} <button class="btn light small" onclick="requestReturn(${o.id})">Request return/exchange</button></p>`).join("")||'<p class="muted">No delivered orders eligible for return.</p>'}`:""}
+ </section>`;
+}
+function updateReturn(id){
+ const r=db.returns.find(x=>x.id===id);
+ modal("Update return request",`<select class="field" id="returnStatus"><option>Pending</option><option>Approved</option><option>Rejected</option><option>Completed</option></select><br><br>
+ <button class="btn full" onclick="saveReturn(${id})">Save</button>`);
+}
+function saveReturn(id){
+ const r=db.returns.find(x=>x.id===id);r.status=$("#returnStatus").value;
+ save();closeModal();render();notify("Return status updated.");
+}
+
+/* ADMIN PRODUCT MANAGEMENT */
+function productsPage(){
+ return `${heading("Product management","Add, edit and remove fashion products.",
+ '<button class="btn" onclick="openProduct()">＋ Add product</button>')}
+ <section class="panel"><div class="toolbar"><input class="field" placeholder="Search products..." oninput="filterRows(this,'adminProducts')"></div>
+ <div class="table-wrap" id="adminProducts"><table><thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Actions</th></tr></thead>
+ <tbody>${db.products.map(p=>`<tr><td>${esc(p.name)}</td><td>${esc(p.category)} / ${esc(p.sub)}</td><td>${money(p.price)}</td><td>${p.stock}</td>
+ <td><button class="btn light small" onclick="openProduct(${p.id})">Edit</button> <button class="btn danger small" onclick="deleteProduct(${p.id})">Delete</button></td></tr>`).join("")}</tbody></table></div></section>`;
+}
+function openProduct(id){
+ const p=db.products.find(x=>x.id===id)||{};
+ modal(id?"Edit product":"Add new product",`<form id="productForm">
+ <div class="form-grid">
+ ${field("Product name","name",p.name)}
+ <div class="field-group"><label>CATEGORY</label><select class="field" name="category">${["Women","Men","Kids","Footwear","Accessories"].map(x=>`<option ${p.category===x?"selected":""}>${x}</option>`).join("")}</select></div>
+ ${field("Subcategory","sub",p.sub)}
+ ${field("Price (₹)","price",p.price||"","number")}
+ ${field("Old price (₹)","old",p.old||"","number")}
+ ${field("Stock quantity","stock",p.stock??"","number")}
+ ${field("Sizes (comma separated)","size",p.size||"Free Size")}
+ ${field("Image URL","image",p.image||"")}
+ ${field("Rating (1-5)","rating",p.rating||5,"number")}
+ </div>
+ <div class="field-group"><label>DESCRIPTION</label><textarea class="field" name="description" required>${esc(p.description)}</textarea></div>
+ <button class="btn full">Save product</button></form>`);
+ $("#productForm").onsubmit=e=>{
+  e.preventDefault();const d=Object.fromEntries(new FormData(e.target));
+  d.price=Number(d.price);d.old=Number(d.old);d.stock=Number(d.stock);d.rating=Math.min(5,Math.max(1,Number(d.rating)));
+  if(d.price<=0||d.stock<0)return notify("Enter valid price and stock.");
+  if(id)Object.assign(p,d);else db.products.push({...d,id:Date.now()});
+  save();closeModal();render();notify("Product saved successfully.");
+ };
+}
+function deleteProduct(id){
+ if(!confirm("Are you sure you want to delete this product?"))return;
+ db.products=db.products.filter(p=>p.id!==id);save();render();notify("Product deleted.");
+}
+
+/* INVENTORY */
+function inventoryPage(){
+ return `${heading("Inventory management","Check and update available stock.")}
+ <section class="panel"><div class="table-wrap"><table><thead><tr><th>Product</th><th>Category</th><th>Stock</th><th>Availability</th><th>Action</th></tr></thead>
+ <tbody>${db.products.map(p=>`<tr><td>${esc(p.name)}</td><td>${esc(p.category)}</td><td>${p.stock}</td><td>${p.stock>0?'<span class="status delivered">Available</span>':'<span class="status cancelled">Out of stock</span>'}</td>
+ <td><button class="btn light small" onclick="updateStock(${p.id})">Update stock</button></td></tr>`).join("")}</tbody></table></div></section>`;
+}
+function updateStock(id){
+ const p=db.products.find(x=>x.id===id);
+ modal("Update stock",`<form id="stockForm"><div class="field-group"><label>NEW STOCK</label><input class="field" name="stock" type="number" min="0" value="${p.stock}" required></div><button class="btn full">Update</button></form>`);
+ $("#stockForm").onsubmit=e=>{e.preventDefault();p.stock=Number(new FormData(e.target).get("stock"));save();closeModal();render();notify("Stock updated.")};
+}
+
+/* CUSTOMERS */
+function customersPage(){
+ return `${heading("Customer information","View customer details and checkout information.")}
+ <section class="panel"><div class="table-wrap"><table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Orders</th><th>Details</th></tr></thead>
+ <tbody>${db.customers.map(c=>`<tr><td>${esc(c.name)}</td><td>${esc(c.email)}</td><td>${esc(c.phone)}</td><td>${db.orders.filter(o=>o.email===c.email).length}</td><td><button class="btn light small" onclick="customerDetails(${c.id})">View</button></td></tr>`).join("")}</tbody></table></div></section>`;
+}
+function customerDetails(id){
+ const c=db.customers.find(x=>x.id===id);
+ modal("Customer details",`<h3>${esc(c.name)}</h3><p>Email: ${esc(c.email)}</p><p>Phone: ${esc(c.phone)}</p><h3>Checkout orders</h3>
+ ${db.orders.filter(o=>o.email===c.email).map(o=>`<p>Order #${o.id} — ${money(o.total)} — ${esc(o.status)}</p>`).join("")||"<p>No orders yet.</p>"}`);
+}
+
+/* REPORTS */
+function reportsPage(){
+ const revenue=db.orders.filter(o=>o.status!=="Cancelled").reduce((n,o)=>n+o.total,0);
+ return `${heading("Store reports","Sales and shopping activity overview.")}
+ <div class="stats">
+ <div class="stat"><small>TOTAL REVENUE</small><strong>${money(revenue)}</strong></div>
+ <div class="stat"><small>ORDERS</small><strong>${db.orders.length}</strong></div>
+ <div class="stat"><small>CUSTOMERS</small><strong>${db.customers.length}</strong></div>
+ <div class="stat"><small>PRODUCTS</small><strong>${db.products.length}</strong></div>
+ </div><section class="panel"><h3>Product stock value</h3><br>
+ <table><thead><tr><th>Product</th><th>Quantity</th><th>Stock value</th></tr></thead>
+ <tbody>${db.products.map(p=>`<tr><td>${esc(p.name)}</td><td>${p.stock}</td><td>${money(p.price*p.stock)}</td></tr>`).join("")}</tbody></table></section>`;
+}
+
+/* PROFILE */
+function profilePage(){
+ const c=db.customers.find(x=>x.email===session.email);
+ return `${heading("My profile","Manage your StyleHub account.")}
+ <section class="panel" style="max-width:550px"><h3>Account details</h3><br>
+ <p>Name: <b>${esc(c.name)}</b></p><p>Email: <b>${esc(c.email)}</b></p><p>Phone: <b>${esc(c.phone)}</b></p>
+ <button class="btn" onclick="editProfile()">Edit profile</button></section>`;
+}
+function editProfile(){
+ const c=db.customers.find(x=>x.email===session.email);
+ modal("Edit profile",`<form id="profileForm">${field("Name","name",c.name)}${field("Phone","phone",c.phone)}
+ <button class="btn full">Save changes</button></form>`);
+ $("#profileForm").onsubmit=e=>{e.preventDefault();Object.assign(c,Object.fromEntries(new FormData(e.target)));save();closeModal();render();notify("Profile updated.")};
+}
+
+/* TABLE SEARCH */
+function filterRows(input,id){
+ const q=input.value.toLowerCase();
+ document.querySelectorAll("#"+id+" tbody tr").forEach(r=>r.style.display=r.innerText.toLowerCase().includes(q)?"":"none");
+}
+
+/* PAGE RENDERER */
+function render(){
+ const pages={
+ home:homePage,shop:shopPage,products:productsPage,inventory:inventoryPage,
+ customers:customersPage,orders:ordersPage,history:historyPage,
+ cart:cartPage,wishlist:wishlistPage,returns:returnsPage,
+ reports:reportsPage,profile:profilePage
+ };
+ $("#content").innerHTML=pages[page]?pages[page]():"<div class='panel empty'>Page not found.</div>";
+ if(page==="shop")renderShop();
+}
+</script>
+</body>
+</html>

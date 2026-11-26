@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkyBook - Luxury Flight Booking, Live Seat Selection & Web Check-In</title>
+  <meta name="description" content="Experience seamless flight booking with real-time airplane cabin seat maps, instant e-tickets, web check-in, and curated international routes.">
+
+  <!-- Google Fonts: Outfit & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ==========================================================================
+       SITE HEADER & NAVIGATION
+       ========================================================================== -->
+  <header class="site-header">
+    <div class="header-container">
+      <!-- Brand Logo -->
+      <div class="brand-logo" onclick="showPage('home')">
+        <div class="logo-icon">
+          <i class="fa-solid fa-plane-departure"></i>
+        </div>
+        <span>Sky<span>Book</span></span>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="nav-links" id="primaryNav">
+        <button class="nav-item active" data-page="home" onclick="showPage('home')">
+          <i class="fa-solid fa-compass"></i> Explore
+        </button>
+        <button class="nav-item" data-page="search" onclick="showPage('search')">
+          <i class="fa-solid fa-magnifying-glass"></i> Search Flights
+        </button>
+        <button class="nav-item" data-page="tracker" onclick="showPage('tracker')">
+          <i class="fa-solid fa-tower-broadcast"></i> Flight Tracker
+        </button>
+        <button class="nav-item" data-page="bookings" onclick="showPage('bookings')">
+          <i class="fa-solid fa-ticket"></i> My Bookings
+        </button>
+        <button class="nav-item" data-page="admin" onclick="showPage('admin')">
+          <i class="fa-solid fa-chart-pie"></i> Admin Portal
+        </button>
+      </nav>
+
+      <!-- Header Actions: Currency & Theme Switcher -->
+      <div class="header-actions">
+        <!-- Currency Dropdown -->
+        <div class="currency-select-wrapper">
+          <select id="currencySelector" class="currency-select" title="Change Currency">
+            <option value="INR">₹ INR</option>
+            <option value="USD">$ USD</option>
+            <option value="EUR">€ EUR</option>
+            <option value="GBP">£ GBP</option>
+            <option value="AED">د.إ AED</option>
+          </select>
+          <i class="fa-solid fa-chevron-down currency-icon-chevron"></i>
+        </div>
+
+        <!-- Theme Toggle -->
+        <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+          <i id="themeIcon" class="fa-solid fa-moon"></i>
+        </button>
+
+        <!-- Mobile Menu Hamburger -->
+        <button class="mobile-menu-btn" onclick="toggleMobileNav()" title="Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       MAIN CONTENT CONTAINER
+       ========================================================================== -->
+  <main>
+
+    <!-- =====================================================
+         PAGE 1: HOME & HERO SEARCH WIDGET
+         ===================================================== -->
+    <section id="home" class="page-section active">
+      <!-- Hero Banner -->
+      <div class="hero-wrapper">
+        <div class="hero-bg-overlay"></div>
+        <div class="hero-content">
+          <div class="hero-pill">
+            <span class="pulse-dot"></span>
+            <span>Live Airfare Comparison & Instant Seat Selection</span>
+          </div>
+          <h1 class="hero-title">
+            The Smartest Way To<br><span>Fly Across The Globe</span>
+          </h1>
+          <p class="hero-subtitle">
+            Compare premium carriers, customize your airplane cabin seats in real-time, and get your verified boarding pass in seconds.
+          </p>
+        </div>
+      </div>
+
+      <!-- Floating Smart Flight Search Widget -->
+      <div class="search-widget-container">
+        <div class="search-widget-card">
+          <!-- Trip Type & Class Options -->
+          <div class="search-tabs-row">
+            <div class="trip-type-tabs">
+              <button class="trip-tab-btn active" data-type="oneway" onclick="setTripType('oneway')">
+                <i class="fa-solid fa-arrow-right"></i> One Way
+              </button>
+              <button class="trip-tab-btn" data-type="roundtrip" onclick="setTripType('roundtrip')">
+                <i class="fa-solid fa-repeat"></i> Round Trip
+              </button>
+            </div>
+
+            <div class="search-options-right">
+              <!-- Travel Class Selector -->
+              <div>
+                <select id="homeTravelClass" class="option-badge-select" title="Travel Class">
+                  <option value="economy">Economy Class</option>
+                  <option value="premium">Premium Economy</option>
+                  <option value="business">Business Class</option>
+                  <option value="first">First Class</option>
+                </select>
+              </div>
+
+              <!-- Passengers Selector -->
+              <div>
+                <select id="homePassengers" class="option-badge-select" title="Passengers">
+                  <option value="1">1 Passenger</option>
+                  <option value="2">2 Passengers</option>
+                  <option value="3">3 Passengers</option>
+                  <option value="4">4 Passengers</option>
+                  <option value="5">5 Passengers</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Grid Inputs -->
+          <div class="search-inputs-grid">
+            <!-- Origin -->
+            <div class="search-field-box">
+              <span class="field-label"><i class="fa-solid fa-plane-departure"></i> Leaving From</span>
+              <select id="homeFrom">
+                <option value="Chennai (MAA)">Chennai (MAA) - Chennai Intl</option>
+                <option value="Delhi (DEL)">Delhi (DEL) - Indira Gandhi Intl</option>
+                <option value="Mumbai (BOM)">Mumbai (BOM) - Chhatrapati Shivaji</option>
+                <option value="Bangalore (BLR)">Bangalore (BLR) - Kempegowda</option>
+                <option value="Hyderabad (HYD)">Hyderabad (HYD) - Rajiv Gandhi</option>
+                <option value="Dubai (DXB)">Dubai (DXB) - Dubai Intl</option>
+                <option value="Singapore (SIN)">Singapore (SIN) - Changi Airport</option>
+                <option value="London (LHR)">London (LHR) - Heathrow Airport</option>
+                <option value="New York (JFK)">New York (JFK) - John F. Kennedy</option>
+              </select>
+              <div class="airport-sub">India / International Hubs</div>
+            </div>
+
+            <!-- Route Swap Button -->
+            <button class="swap-route-btn" onclick="swapRoutes()" title="Swap Origin and Destination">
+              <i class="fa-solid fa-right-left"></i>
+            </button>
+
+            <!-- Destination -->
+            <div class="search-field-box">
+              <span class="field-label"><i class="fa-solid fa-plane-arrival"></i> Going To</span>
+              <select id="homeTo">
+                <option value="Delhi (DEL)">Delhi (DEL) - Indira Gandhi Intl</option>
+                <option value="Mumbai (BOM)">Mumbai (BOM) - Chhatrapati Shivaji</option>
+                <option value="Chennai (MAA)">Chennai (MAA) - Chennai Intl</option>
+                <option value="Bangalore (BLR)">Bangalore (BLR) - Kempegowda</option>
+                <option value="Hyderabad (HYD)">Hyderabad (HYD) - Rajiv Gandhi</option>
+                <option value="Dubai (DXB)">Dubai (DXB) - Dubai Intl</option>
+                <option value="Singapore (SIN)">Singapore (SIN) - Changi Airport</option>
+                <option value="London (LHR)">London (LHR) - Heathrow Airport</option>
+                <option value="New York (JFK)">New York (JFK) - John F. Kennedy</option>
+              </select>
+              <div class="airport-sub">India / International Hubs</div>
+            </div>
+
+            <!-- Departure Date -->
+            <div class="search-field-box">
+              <span class="field-label"><i class="fa-solid fa-calendar-days"></i> Departure</span>
+              <input type="date" id="homeDate">
+              <div class="airport-sub">Select travel date</div>
+            </div>
+
+            <!-- Return Date (for roundtrip) -->
+            <div class="search-field-box" id="returnDateBox" style="display:none;">
+              <span class="field-label"><i class="fa-solid fa-calendar-check"></i> Return</span>
+              <input type="date" id="homeReturnDate">
+              <div class="airport-sub">Select return date</div>
+            </div>
+
+            <!-- Search Action CTA -->
+            <div>
+              <button class="btn-search-hero" onclick="executeHeroSearch()" style="width: 100%; justify-content: center;">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>Find Flights</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Bottom Micro-Toggles -->
+          <div class="search-submit-row">
+            <div class="filter-pills-row">
+              <label class="checkbox-pill">
+                <input type="checkbox" id="homeDirectOnly">
+                <span>Non-stop flights only</span>
+              </label>
+              <label class="checkbox-pill">
+                <input type="checkbox" id="homeFreeMeal" checked>
+                <span>Free meal included</span>
+              </label>
+            </div>
+            <div style="font-size:0.85rem; color:var(--text-muted);">
+              <i class="fa-solid fa-shield-halved" style="color:var(--accent-emerald);"></i> 100% Price Match & Real-time Seat Guarantee
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trust Badges & Core Highlights -->
+      <div class="features-grid">
+        <div class="feature-box">
+          <div class="feature-icon-wrapper">
+            <i class="fa-solid fa-bolt"></i>
+          </div>
+          <h3>Lightning Booking</h3>
+          <p>Instant reservation with real-time airline API sync and direct PNR confirmation.</p>
+        </div>
+
+        <div class="feature-box">
+          <div class="feature-icon-wrapper">
+            <i class="fa-solid fa-couch"></i>
+          </div>
+          <h3>Cabin Seat Selector</h3>
+          <p>Pick business recliners, extra legroom rows, or window seats visually before booking.</p>
+        </div>
+
+        <div class="feature-box">
+          <div class="feature-icon-wrapper">
+            <i class="fa-solid fa-shield-heart"></i>
+          </div>
+          <h3>Travel Protection</h3>
+          <p>Comprehensive baggage delay, medical assistance, and flexible cancellation cover.</p>
+        </div>
+
+        <div class="feature-box">
+          <div class="feature-icon-wrapper">
+            <i class="fa-solid fa-qrcode"></i>
+          </div>
+          <h3>Digital Boarding Pass</h3>
+          <p>Download or print your high-definition boarding pass with gate scanner codes.</p>
+        </div>
+      </div>
+
+      <!-- Trending Deals & Popular Destinations -->
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Trending Global Destinations</h2>
+          <p class="section-subtitle">Hand-picked seasonal fares and direct flight specials for you</p>
+        </div>
+        <button class="btn-secondary" onclick="showPage('search')">
+          View All Routes <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+
+      <div class="deals-grid" id="trendingDealsGrid">
+        <!-- Injected via JavaScript -->
+      </div>
+    </section>
+
+    <!-- =====================================================
+         PAGE 2: FLIGHT SEARCH & ADVANCED FILTERS
+         ===================================================== -->
+    <section id="search" class="page-section">
+      <!-- Search Summary & Quick Modifier Bar -->
+      <div class="results-meta-bar">
+        <div class="results-route-summary" id="searchRouteSummary">
+          <h2>Chennai (MAA) → Delhi (DEL)</h2>
+          <p>Showing live available flights</p>
+        </div>
+
+        <div class="sort-options">
+          <span class="sort-label"><i class="fa-solid fa-arrow-down-short-wide"></i> Sort By:</span>
+          <select id="sortSelector" class="sort-select" onchange="filterAndRenderFlights()">
+            <option value="price_asc">Lowest Price First</option>
+            <option value="price_desc">Highest Price First</option>
+            <option value="duration_asc">Shortest Flight Duration</option>
+            <option value="departure_asc">Earliest Departure Time</option>
+            <option value="rating_desc">Top Airline Rating</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Main Layout: Sticky Filters Sidebar + Results Column -->
+      <div class="search-results-page-layout">
+        <!-- Sidebar Filters -->
+        <aside class="filter-sidebar">
+          <div class="filter-sidebar-header">
+            <h3><i class="fa-solid fa-sliders"></i> Filter Flights</h3>
+            <button class="btn-reset-filters" onclick="resetAllFilters()">Reset All</button>
+          </div>
+
+          <!-- Route Quick Selectors in Sidebar -->
+          <div class="filter-group">
+            <div class="filter-group-title">Origin & Destination</div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <select id="searchFrom" class="form-field select" onchange="filterAndRenderFlights()">
+                <option value="ALL">All Origins</option>
+                <option value="Chennai (MAA)" selected>Chennai (MAA)</option>
+                <option value="Delhi (DEL)">Delhi (DEL)</option>
+                <option value="Mumbai (BOM)">Mumbai (BOM)</option>
+                <option value="Bangalore (BLR)">Bangalore (BLR)</option>
+                <option value="Hyderabad (HYD)">Hyderabad (HYD)</option>
+              </select>
+              <select id="searchTo" class="form-field select" onchange="filterAndRenderFlights()">
+                <option value="ALL">All Destinations</option>
+                <option value="Delhi (DEL)" selected>Delhi (DEL)</option>
+                <option value="Mumbai (BOM)">Mumbai (BOM)</option>
+                <option value="Chennai (MAA)">Chennai (MAA)</option>
+                <option value="Bangalore (BLR)">Bangalore (BLR)</option>
+                <option value="Hyderabad (HYD)">Hyderabad (HYD)</option>
+                <option value="Dubai (DXB)">Dubai (DXB)</option>
+                <option value="Singapore (SIN)">Singapore (SIN)</option>
+                <option value="London (LHR)">London (LHR)</option>
+                <option value="New York (JFK)">New York (JFK)</option>
+              </select>
+              <input type="date" id="searchDate" class="form-field input" onchange="filterAndRenderFlights()">
+            </div>
+          </div>
+
+          <!-- Stops Filter -->
+          <div class="filter-group">
+            <div class="filter-group-title">Stops</div>
+            <label class="filter-checkbox-item">
+              <span class="label">
+                <input type="checkbox" id="filterDirectOnly" onchange="filterAndRenderFlights()">
+                Direct Non-Stop Only
+              </span>
+            </label>
+          </div>
+
+          <!-- Max Price Slider -->
+          <div class="filter-group">
+            <div class="filter-group-title">
+              Max Price: <span id="priceRangeValue" style="color:var(--primary-600); font-weight:800;">₹80,000</span>
+            </div>
+            <div class="price-range-wrapper">
+              <input type="range" id="priceRangeInput" class="price-range-slider" min="3000" max="80000" step="500" value="80000" oninput="updatePriceFilterLabel(this.value)">
+              <div class="price-range-labels">
+                <span>₹3,000</span>
+                <span>₹80,000+</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Airline Filter -->
+          <div class="filter-group">
+            <div class="filter-group-title">Airlines</div>
+            <label class="filter-checkbox-item">
+              <span class="label">
+                <input type="checkbox" class="filter-airline-checkbox" value="Air India" onchange="filterAndRenderFlights()">
+                Air India
+              </span>
+            </label>
+            <label class="filter-checkbox-item">
+              <span class="label">
+                <input type="checkbox" class="filter-airline-checkbox" value="IndiGo" onchange="filterAndRenderFlights()">
+                IndiGo
+              </span>
+            </label>
+            <label class="filter-checkbox-item">
+              <span class="label">
+                <input type="checkbox" class="filter-airline-checkbox" value="Vistara" onchange="filterAndRenderFlights()">
+                Vistara
+              </span>
+            </label>
+            <label class="filter-checkbox-item">
+              <span class="label">
+                <input type="checkbox" class="filter-airline-checkbox" value="Air India Express" onchange="filterAndRenderFlights()">
+                Air India Express
+              </span>
+            </label>
+            <label class="filter-checkbox-item">
+              <span class="label">
+                <input type="checkbox" class="filter-airline-checkbox" value="Emirates" onchange="filterAndRenderFlights()">
+                Emirates
+              </span>
+            </label>
+            <label class="filter-checkbox-item">
+              <span class="label">
+                <input type="checkbox" class="filter-airline-checkbox" value="Singapore Airlines" onchange="filterAndRenderFlights()">
+                Singapore Airlines
+              </span>
+            </label>
+            <label class="filter-checkbox-item">
+              <span class="label">
+                <input type="checkbox" class="filter-airline-checkbox" value="British Airways" onchange="filterAndRenderFlights()">
+                British Airways
+              </span>
+            </label>
+            <label class="filter-checkbox-item">
+              <span class="label">
+                <input type="checkbox" class="filter-airline-checkbox" value="Qatar Airways" onchange="filterAndRenderFlights()">
+                Qatar Airways
+              </span>
+            </label>
+          </div>
+
+          <!-- Departure Time Filter -->
+          <div class="filter-group">
+            <div class="filter-group-title">Departure Time</div>
+            <label class="filter-checkbox-item">
+              <span class="label">
+                <input type="checkbox" class="filter-time-checkbox" value="morning" onchange="filterAndRenderFlights()">
+                Morning (06:00 - 12:00)
+              </span>
+            </label>
+            <label class="filter-checkbox-item">
+              <span class="label">
+                <input type="checkbox" class="filter-time-checkbox" value="afternoon" onchange="filterAndRenderFlights()">
+                Afternoon (12:00 - 18:00)
+              </span>
+            </label>
+            <label class="filter-checkbox-item">
+              <span class="label">
+                <input type="checkbox" class="filter-time-checkbox" value="evening" onchange="filterAndRenderFlights()">
+                Evening (18:00 - 24:00)
+              </span>
+            </label>
+            <label class="filter-checkbox-item">
+              <span class="label">
+                <input type="checkbox" class="filter-time-checkbox" value="night" onchange="filterAndRenderFlights()">
+                Night / Early (00:00 - 06:00)
+              </span>
+            </label>
+          </div>
+        </aside>
+
+        <!-- Flight Results List -->
+        <div class="results-content-area" id="flightResultsContainer">
+          <!-- Populated by filterAndRenderFlights() in app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         PAGE 3: LIVE FLIGHT TRACKER / STATUS
+         ===================================================== -->
+    <section id="tracker" class="page-section">
+      <div class="section-header" style="margin-top:0;">
+        <div>
+          <h2 class="section-title">Live Flight Tracker</h2>
+          <p class="section-subtitle">Real-time gate, terminal, boarding status, and arrival schedule</p>
+        </div>
+      </div>
+
+      <div class="tracker-search-box">
+        <div style="display:flex; gap:12px; max-width:600px;">
+          <input type="text" id="flightTrackerInput" class="form-field" placeholder="Enter Flight No (e.g. AI-501, 6E-203, EK-500, SQ-402)" value="AI-501" style="margin-bottom:0; font-size:1.1rem; text-transform:uppercase;">
+          <button class="btn-primary-action" onclick="checkFlightStatus()">
+            <i class="fa-solid fa-radar"></i> Track Flight
+          </button>
+        </div>
+      </div>
+
+      <div id="trackerResultBox">
+        <!-- Rendered by checkFlightStatus() -->
+      </div>
+    </section>
+
+    <!-- =====================================================
+         PAGE 4: MY BOOKINGS & WEB CHECK-IN
+         ===================================================== -->
+    <section id="bookings" class="page-section">
+      <div class="bookings-filter-bar">
+        <div>
+          <h2 class="section-title">Manage Your Bookings</h2>
+          <p class="section-subtitle">Review active tickets, perform free web check-in, or download boarding passes</p>
+        </div>
+
+        <input type="text" id="bookingSearchQuery" class="bookings-search-input" placeholder="Search by PNR or Passenger name..." oninput="loadBookings()">
+      </div>
+
+      <div id="customerBookingsList">
+        <!-- Injected via app.js loadBookings() -->
+      </div>
+    </section>
+
+    <!-- =====================================================
+         PAGE 5: ADMIN PORTAL
+         ===================================================== -->
+    <section id="admin" class="page-section">
+      <div class="section-header" style="margin-top:0;">
+        <div>
+          <h2 class="section-title">Aviation Admin Dashboard</h2>
+          <p class="section-subtitle">Monitor bookings, manage scheduled flights, and view real-time revenue analytics</p>
+        </div>
+        <button class="btn-secondary" onclick="resetToDefaultFlights()">
+          <i class="fa-solid fa-rotate-left"></i> Restore Demo Flights
+        </button>
+      </div>
+
+      <!-- KPI Statistics Cards -->
+      <div class="admin-stats-grid">
+        <div class="admin-stat-card">
+          <div class="admin-stat-icon">
+            <i class="fa-solid fa-plane"></i>
+          </div>
+          <div class="admin-stat-info">
+            <h3 id="adminTotalFlights">12</h3>
+            <p>Scheduled Flights</p>
+          </div>
+        </div>
+
+        <div class="admin-stat-card">
+          <div class="admin-stat-icon">
+            <i class="fa-solid fa-ticket"></i>
+          </div>
+          <div class="admin-stat-info">
+            <h3 id="adminTotalBookings">0</h3>
+            <p>Total Bookings</p>
+          </div>
+        </div>
+
+        <div class="admin-stat-card">
+          <div class="admin-stat-icon">
+            <i class="fa-solid fa-indian-rupee-sign"></i>
+          </div>
+          <div class="admin-stat-info">
+            <h3 id="adminTotalRevenue">₹0</h3>
+            <p>Net Revenue</p>
+          </div>
+        </div>
+
+        <div class="admin-stat-card">
+          <div class="admin-stat-icon">
+            <i class="fa-solid fa-users"></i>
+          </div>
+          <div class="admin-stat-info">
+            <h3 id="adminTotalPassengers">0</h3>
+            <p>Confirmed Passengers</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add New Flight Form -->
+      <div class="admin-card-section">
+        <div class="admin-section-header">
+          <h3><i class="fa-solid fa-plus-circle" style="color:var(--primary-600);"></i> Register New Scheduled Flight</h3>
+        </div>
+
+        <div class="form-grid-3cols">
+          <div class="form-field">
+            <label>Airline Name</label>
+            <input type="text" id="adminAirline" placeholder="e.g. Vistara, IndiGo">
+          </div>
+          <div class="form-field">
+            <label>Flight Number</label>
+            <input type="text" id="adminFlightNo" placeholder="e.g. UK-920">
+          </div>
+          <div class="form-field">
+            <label>Aircraft Model</label>
+            <input type="text" id="adminAircraft" placeholder="Boeing 787 / Airbus A321">
+          </div>
+        </div>
+
+        <div class="form-grid-3cols">
+          <div class="form-field">
+            <label>Departure City (Code)</label>
+            <input type="text" id="adminFrom" placeholder="Chennai (MAA)">
+          </div>
+          <div class="form-field">
+            <label>Arrival City (Code)</label>
+            <input type="text" id="adminTo" placeholder="Delhi (DEL)">
+          </div>
+          <div class="form-field">
+            <label>Base Price (INR)</label>
+            <input type="number" id="adminPrice" placeholder="5200">
+          </div>
+        </div>
+
+        <div class="form-grid-3cols">
+          <div class="form-field">
+            <label>Departure Time</label>
+            <input type="text" id="adminDepTime" placeholder="10:30 AM">
+          </div>
+          <div class="form-field">
+            <label>Arrival Time</label>
+            <input type="text" id="adminArrTime" placeholder="01:15 PM">
+          </div>
+          <div class="form-field">
+            <label>Flight Duration</label>
+            <input type="text" id="adminDuration" placeholder="2h 45m">
+          </div>
+        </div>
+
+        <button class="btn-primary-action" onclick="addFlight()" style="margin-top:10px;">
+          <i class="fa-solid fa-check"></i> Save & Publish Flight
+        </button>
+      </div>
+
+      <!-- Manage Flights Table -->
+      <div class="admin-card-section">
+        <div class="admin-section-header">
+          <h3><i class="fa-solid fa-list-check" style="color:var(--primary-600);"></i> Active Flight Inventory</h3>
+        </div>
+        <div class="table-responsive">
+          <table class="modern-table">
+            <thead>
+              <tr>
+                <th>Airline</th>
+                <th>Flight No</th>
+                <th>Route</th>
+                <th>Departure</th>
+                <th>Price</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="adminFlightsTableBody">
+              <!-- Populated via loadAdmin() -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Manage Bookings Table -->
+      <div class="admin-card-section">
+        <div class="admin-section-header">
+          <h3><i class="fa-solid fa-receipt" style="color:var(--primary-600);"></i> Customer Reservations Log</h3>
+        </div>
+        <div class="table-responsive">
+          <table class="modern-table">
+            <thead>
+              <tr>
+                <th>PNR</th>
+                <th>Passenger</th>
+                <th>Flight & Seat</th>
+                <th>Route</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="adminBookingsTableBody">
+              <!-- Populated via loadAdmin() -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================================================
+       MODAL 1: MULTI-STEP BOOKING & CABIN SEAT SELECTION WIZARD
+       ========================================================================== -->
+  <div id="bookingWizardModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h2><i class="fa-solid fa-plane-circle-check" style="color:var(--primary-600);"></i> Flight Booking Wizard</h2>
+        <button class="btn-close-modal" onclick="closeWizardModal()" title="Close">&times;</button>
+      </div>
+
+      <!-- 4-Step Progress Stepper -->
+      <div class="booking-stepper">
+        <div class="step-node active" data-step="1">
+          <div class="step-circle">1</div>
+          <span>Passenger Info</span>
+        </div>
+        <div class="step-connector-line"></div>
+        <div class="step-node" data-step="2">
+          <div class="step-circle">2</div>
+          <span>Travel Add-ons</span>
+        </div>
+        <div class="step-connector-line"></div>
+        <div class="step-node" data-step="3">
+          <div class="step-circle">3</div>
+          <span>Seat Selection</span>
+        </div>
+        <div class="step-connector-line"></div>
+        <div class="step-node" data-step="4">
+          <div class="step-circle">4</div>
+          <span>Payment</span>
+        </div>
+      </div>
+
+      <!-- Modal Body Steps -->
+      <div class="modal-body">
+        <!-- Selected Flight Strip Summary -->
+        <div class="modal-flight-summary-strip" id="wizardFlightSummary">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <!-- STEP 1: PASSENGER DETAILS -->
+        <div class="booking-step-content active" data-step="1">
+          <h3 class="form-section-title"><i class="fa-solid fa-users"></i> Enter Passenger Information</h3>
+          <div id="passengerFormsContainer">
+            <!-- Dynamically populated based on passenger count -->
+          </div>
+        </div>
+
+        <!-- STEP 2: ADD-ONS & ANCILLARIES -->
+        <div class="booking-step-content" data-step="2">
+          <h3 class="form-section-title"><i class="fa-solid fa-shield-heart"></i> Select Travel Protection & Extras</h3>
+          <div class="addons-grid">
+            <!-- Travel Insurance -->
+            <div class="addon-card" id="addon-insurance" onclick="toggleAddon('insurance')">
+              <div class="addon-icon-circle"><i class="fa-solid fa-shield-virus"></i></div>
+              <div class="addon-info">
+                <h4>Comprehensive Travel Insurance</h4>
+                <p>Medical emergency cover, baggage loss protection up to ₹50,000, and trip delays.</p>
+                <div class="addon-price">+₹499 / passenger</div>
+              </div>
+            </div>
+
+            <!-- In-Flight Meal -->
+            <div class="addon-card" id="addon-meal" onclick="toggleAddon('meal')">
+              <div class="addon-icon-circle"><i class="fa-solid fa-utensils"></i></div>
+              <div class="addon-info">
+                <h4>Chef's Gourmet In-Flight Meal</h4>
+                <p>Choice of Premium Hot Continental, Vegetarian Feast, or Jain Delicacies.</p>
+                <div class="addon-price">+₹350 / passenger</div>
+              </div>
+            </div>
+
+            <!-- Priority Boarding -->
+            <div class="addon-card" id="addon-priority" onclick="toggleAddon('priority')">
+              <div class="addon-icon-circle"><i class="fa-solid fa-crown"></i></div>
+              <div class="addon-info">
+                <h4>Priority Check-in & Fast Track</h4>
+                <p>Dedicated check-in desk, priority luggage tagging, and early aircraft boarding.</p>
+                <div class="addon-price">+₹899 / passenger</div>
+              </div>
+            </div>
+
+            <!-- Extra Baggage -->
+            <div class="addon-card">
+              <div class="addon-icon-circle"><i class="fa-solid fa-cart-flatbed-suitcase"></i></div>
+              <div class="addon-info">
+                <h4>Additional Check-In Baggage</h4>
+                <p>Need extra luggage? Pre-book allowance and save up to 40% vs airport desk.</p>
+                <div style="display:flex; gap:8px; margin-top:8px;">
+                  <button type="button" class="btn-secondary addon-baggage-btn" data-kg="10" onclick="toggleAddon('baggage', 10)" style="padding:4px 10px; font-size:0.75rem;">+10 kg (₹1,200)</button>
+                  <button type="button" class="btn-secondary addon-baggage-btn" data-kg="20" onclick="toggleAddon('baggage', 20)" style="padding:4px 10px; font-size:0.75rem;">+20 kg (₹2,100)</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: INTERACTIVE AIRPLANE CABIN SEAT MAP -->
+        <div class="booking-step-content" data-step="3">
+          <div style="text-align:center; margin-bottom:12px;">
+            <h3 class="form-section-title" style="justify-content:center;">
+              <i class="fa-solid fa-couch"></i> Select Seats on Aircraft Cabin
+            </h3>
+            <p id="seatSelectionStatusText" style="font-size:0.9rem; color:var(--text-secondary);">
+              Click on available seats to assign them to your passengers.
+            </p>
+          </div>
+
+          <!-- Cabin Fuselage & Seat Grid -->
+          <div class="cabin-container" id="cabinSeatGrid">
+            <!-- Rendered by app.js renderCabinSeatMap() -->
+          </div>
+
+          <!-- Seat Legend -->
+          <div class="seat-legend">
+            <div class="legend-item">
+              <div class="legend-color-box" style="background:#fdf4ff; border-color:#d8b4fe;"></div>
+              <span>Business (₹1,500)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color-box" style="background:#f0fdf4; border-color:#86efac;"></div>
+              <span>Extra Legroom (₹500)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color-box" style="background:var(--bg-surface); border-color:var(--border-medium);"></div>
+              <span>Standard (Free)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color-box" style="background:var(--primary-600); border-color:var(--primary-700);"></div>
+              <span>Selected</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color-box" style="background:var(--bg-surface-elevated); opacity:0.5;"></div>
+              <span>Occupied</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4: PAYMENT SIMULATION & PROMO CODE -->
+        <div class="booking-step-content" data-step="4">
+          <!-- Fare Breakdown Card -->
+          <div class="checkout-breakdown-card" id="checkoutBreakdownContainer">
+            <!-- Populated by renderCheckoutBreakdown() -->
+          </div>
+
+          <!-- Coupon Code Input -->
+          <div class="coupon-input-group">
+            <input type="text" id="couponInput" class="form-field" placeholder="HAVE A PROMO CODE? (e.g. SKYFLY20, FESTIVE, FIRSTFLY)" style="margin-bottom:0;">
+            <button class="btn-apply-coupon" onclick="applyCouponCode()">Apply Code</button>
+          </div>
+
+          <!-- Payment Method Selector Tabs -->
+          <div class="payment-tabs">
+            <button class="payment-tab-btn active" data-method="card" onclick="selectPaymentTab('card')">
+              <i class="fa-solid fa-credit-card"></i> Credit / Debit Card
+            </button>
+            <button class="payment-tab-btn" data-method="upi" onclick="selectPaymentTab('upi')">
+              <i class="fa-solid fa-qrcode"></i> Instant UPI / QR
+            </button>
+            <button class="payment-tab-btn" data-method="netbanking" onclick="selectPaymentTab('netbanking')">
+              <i class="fa-solid fa-building-columns"></i> Net Banking
+            </button>
+          </div>
+
+          <!-- Method 1: Credit Card Mockup + Form -->
+          <div id="paymentCardSection">
+            <!-- Live Interactive Card Preview -->
+            <div class="card-visualizer-container">
+              <div class="credit-card-mockup">
+                <div class="card-top-row">
+                  <div class="card-chip"></div>
+                  <div class="card-brand-logo">VISA</div>
+                </div>
+                <div class="card-num-display" id="cardDisplayNumber">•••• •••• •••• ••••</div>
+                <div class="card-bottom-row">
+                  <div>
+                    <span style="opacity:0.6; font-size:0.7rem; text-transform:uppercase;">Cardholder</span>
+                    <div class="card-holder-name" id="cardDisplayName">YOUR NAME</div>
+                  </div>
+                  <div>
+                    <span style="opacity:0.6; font-size:0.7rem; text-transform:uppercase;">Expires</span>
+                    <div style="font-weight:700; font-family:monospace;" id="cardDisplayExp">MM/YY</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Input Fields -->
+            <div class="form-grid-2cols">
+              <div class="form-field">
+                <label>Card Number</label>
+                <input type="text" id="cardNumInput" value="4532 8920 1192 4892" placeholder="4532 8920 1192 4892" maxlength="19" oninput="updateCardPreview()">
+              </div>
+              <div class="form-field">
+                <label>Name on Card</label>
+                <input type="text" id="cardHolderInput" value="JOHNATHAN DOE" placeholder="Johnathan Doe" oninput="updateCardPreview()">
+              </div>
+            </div>
+            <div class="form-grid-2cols">
+              <div class="form-field">
+                <label>Expiry Date</label>
+                <input type="text" id="cardExpInput" value="12/28" placeholder="12/28" maxlength="5" oninput="updateCardPreview()">
+              </div>
+              <div class="form-field">
+                <label>Security Code (CVV)</label>
+                <input type="password" id="cardCvvInput" value="842" placeholder="•••" maxlength="4">
+              </div>
+            </div>
+          </div>
+
+          <!-- Method 2: UPI / QR Code Section -->
+          <div id="paymentUpiSection" style="display:none; text-align:center; padding:20px;">
+            <p style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:14px;">Scan with Google Pay, PhonePe, Paytm, or any BHIM UPI App</p>
+            <div style="display:inline-block; padding:16px; background:white; border-radius:var(--radius-lg); border:1px solid var(--border-medium); box-shadow:var(--card-shadow-sm);">
+              <i class="fa-solid fa-qrcode" style="font-size:8rem; color:#0f172a;"></i>
+            </div>
+            <div style="margin-top:16px; font-weight:700; color:var(--primary-600);">
+              UPI ID: <span style="font-family:monospace;">skybook@icici</span>
+            </div>
+          </div>
+
+          <!-- Method 3: Net Banking Section -->
+          <div id="paymentNetBankingSection" style="display:none; padding:20px;">
+            <label style="font-weight:700; font-size:0.9rem; margin-bottom:10px; display:block;">Select Preferred Bank:</label>
+            <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:12px;">
+              <button type="button" class="btn-secondary" style="text-align:left;"><i class="fa-solid fa-building-columns"></i> HDFC Bank</button>
+              <button type="button" class="btn-secondary" style="text-align:left;"><i class="fa-solid fa-building-columns"></i> State Bank of India</button>
+              <button type="button" class="btn-secondary" style="text-align:left;"><i class="fa-solid fa-building-columns"></i> ICICI Bank</button>
+              <button type="button" class="btn-secondary" style="text-align:left;"><i class="fa-solid fa-building-columns"></i> Axis Bank</button>
+            </div>
+          </div>
+
+          <div style="text-align:center; margin-top:20px;">
+            <button class="btn-primary-action" id="wizardPayButton" onclick="executeBookingPayment()" style="font-size:1.1rem; padding:14px 40px;">
+              <i class="fa-solid fa-lock"></i>
+              <span>Pay <span id="payButtonTotal">₹0</span> & Confirm Ticket</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Navigation Footer -->
+      <div class="modal-footer">
+        <button class="btn-secondary" id="wizardPrevBtn" onclick="wizardGoPrev()" style="visibility:hidden;">
+          <i class="fa-solid fa-arrow-left"></i> Previous
+        </button>
+        <button class="btn-primary-action" id="wizardNextBtn" onclick="wizardGoNext()">
+          <span>Continue</span> <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL 2: DELUXE ELECTRONIC TICKET & BOARDING PASS
+       ========================================================================== -->
+  <div id="ticketModal" class="modal-overlay">
+    <div class="modal-dialog" style="max-width:820px; background:transparent; border:none; box-shadow:none;">
+      <div style="text-align:right; margin-bottom:12px;">
+        <button class="btn-close-modal" onclick="closeTicketModal()" style="display:inline-flex; background:white; color:#0f172a;" title="Close">&times;</button>
+      </div>
+
+      <div id="ticketDisplayContainer">
+        <!-- Rendered by app.js renderBoardingPassTicket() -->
+      </div>
+
+      <div style="display:flex; justify-content:center; gap:16px; margin-top:20px;">
+        <button class="btn-primary-action" onclick="printTicket()">
+          <i class="fa-solid fa-print"></i> Print E-Ticket
+        </button>
+        <button class="btn-secondary" onclick="closeTicketModal()" style="background:white;">
+          <i class="fa-solid fa-check"></i> Done
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       TOAST NOTIFICATION CONTAINER
+       ========================================================================== -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ==========================================================================
+       SITE FOOTER
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand-logo" style="margin-bottom:12px; color:white;">
+            <div class="logo-icon" style="background:linear-gradient(135deg, #3b82f6, #06b6d4);">
+              <i class="fa-solid fa-plane-departure"></i>
+            </div>
+            <span>Sky<span style="color:#60a5fa;">Book</span></span>
+          </div>
+          <p>Next-generation flight ticket reservation and travel management platform with real-time cabin map seat selection and instant electronic boarding passes.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="javascript:showPage('home')">Home & Deals</a></li>
+            <li><a href="javascript:showPage('search')">Flight Search</a></li>
+            <li><a href="javascript:showPage('tracker')">Flight Tracker</a></li>
+            <li><a href="javascript:showPage('bookings')">Web Check-In</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Top Routes</h4>
+          <ul>
+            <li><a href="javascript:quickBookDeal('Chennai (MAA)', 'Delhi (DEL)')">Chennai ➔ Delhi</a></li>
+            <li><a href="javascript:quickBookDeal('Mumbai (BOM)', 'Dubai (DXB)')">Mumbai ➔ Dubai</a></li>
+            <li><a href="javascript:quickBookDeal('Delhi (DEL)', 'Singapore (SIN)')">Delhi ➔ Singapore</a></li>
+            <li><a href="javascript:quickBookDeal('Bangalore (BLR)', 'London (LHR)')">Bangalore ➔ London</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>24/7 Concierge Support</h4>
+          <p style="font-size:0.88rem; color:#94a3b8; margin-bottom:12px;">Need assistance with your booking or airline reschedule?</p>
+          <div style="font-weight:700; color:white; font-size:1.1rem; margin-bottom:6px;">
+            <i class="fa-solid fa-phone" style="color:#38bdf8;"></i> +1 (800) 759-2665
+          </div>
+          <div style="font-size:0.85rem; color:#60a5fa;">support@skybook-flights.com</div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 SkyBook Global Aviation Systems. All rights reserved.</p>
+        <p>IATA Certified Partner • 256-Bit SSL Encrypted Booking Engine</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Logic -->
+  <script src="app.js"></script>
+
+  <script>
+    function toggleMobileNav() {
+      const nav = document.getElementById("primaryNav");
+      if (!nav) return;
+      if (nav.style.display === "flex") {
+        nav.style.display = "none";
+      } else {
+        nav.style.display = "flex";
+        nav.style.flexDirection = "column";
+        nav.style.position = "absolute";
+        nav.style.top = "70px";
+        nav.style.left = "16px";
+        nav.style.right = "16px";
+        nav.style.background = "var(--bg-surface)";
+        nav.style.padding = "16px";
+        nav.style.boxShadow = "var(--card-shadow-lg)";
+      }
+    }
+  </script>
+</body>
+</html>

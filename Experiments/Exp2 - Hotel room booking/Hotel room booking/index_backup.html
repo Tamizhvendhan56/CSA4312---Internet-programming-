@@ -1,0 +1,694 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StayEasy | Online Room Booking</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#f1f5f9;color:#1e293b}
+header{background:#123b68;color:white;padding:18px 5%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px}
+.logo{font-size:25px;font-weight:bold}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+button{border:0;border-radius:7px;padding:11px 15px;background:#1677ff;color:white;cursor:pointer;font-weight:bold}
+button:hover{opacity:.85}
+nav button{background:transparent;color:white}
+nav button.active{background:#1677ff}
+.hero{padding:55px 20px;text-align:center;color:white;background:linear-gradient(#102d4dcc,#102d4dcc),url('https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=1400&q=80') center/cover}
+.hero h1{font-size:clamp(30px,5vw,45px);margin-bottom:12px}
+.hero p{margin-bottom:25px}
+.search{max-width:1100px;margin:auto;background:white;color:#1e293b;border-radius:12px;padding:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
+label{display:block;text-align:left;font-size:13px;font-weight:bold;margin-bottom:6px}
+input,select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:7px;background:white}
+.container{max-width:1200px;margin:30px auto;padding:0 20px}
+h2{color:#123b68;margin-bottom:20px}
+.rooms{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:20px}
+.card{background:white;border-radius:12px;overflow:hidden;box-shadow:0 4px 18px #00000012;transition:.2s}
+.card:hover{transform:translateY(-4px)}
+.card img{width:100%;height:190px;object-fit:cover;background:#e2e8f0}
+.card-content{padding:18px}
+.card-content h3{margin-bottom:10px}
+.card-content p{font-size:14px;color:#64748b;margin:9px 0}
+.price{font-size:21px;font-weight:bold;color:#1263cf;margin:15px 0}
+.card button{width:100%}
+.panel{background:white;padding:24px;border-radius:12px;margin-bottom:25px;box-shadow:0 4px 18px #0000000c}
+.hidden{display:none!important}
+.booking{border:1px solid #dbe3ed;padding:18px;border-radius:9px;margin-top:15px;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+.booking p{font-size:14px;color:#64748b;margin-top:8px}
+.status{display:inline-block;background:#dcfce7;color:#166534;padding:6px 10px;border-radius:20px;font-size:12px;margin-top:10px}
+.cancel{background:#dc2626}
+.secondary{background:#475569}
+.modal{position:fixed;inset:0;background:#0009;display:flex;align-items:center;justify-content:center;padding:15px;z-index:10;overflow:auto}
+.modal-box{background:white;width:100%;max-width:460px;padding:25px;border-radius:14px;margin:auto}
+.modal-box h2{margin-bottom:18px}
+.modal-box label{margin-top:13px}
+.modal-actions{display:flex;gap:10px;margin-top:20px}
+.modal-actions button{flex:1}
+.message{padding:13px;background:#eff6ff;border-radius:8px;margin:15px 0;color:#123b68}
+footer{margin-top:40px;background:#123b68;color:white;text-align:center;padding:25px}
+#notice{display:none;position:fixed;bottom:20px;right:20px;max-width:90%;background:#123b68;color:white;padding:15px;border-radius:8px;z-index:30}
+@media(max-width:600px){header{padding:16px}nav{width:100%}.hero{padding:40px 14px}.panel{padding:16px}}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">🏨 StayEasy</div>
+  <nav>
+    <button class="active" onclick="showPage('home',this)">Home</button>
+    <button onclick="showPage('rooms',this)">Rooms</button>
+    <button onclick="showPage('bookings',this)">My Bookings</button>
+    <button onclick="openAuth()">Login / Register</button>
+  </nav>
+</header>
+
+<section class="hero" id="hero">
+  <h1>Find Your Perfect Stay</h1>
+  <p>Comfortable rooms for solo travellers, couples and families.</p>
+
+  <div class="search">
+    <div>
+      <label for="location">Location</label>
+      <select id="location">
+        <option value="all">All Locations</option>
+        <option>Chennai</option>
+        <option>Bengaluru</option>
+        <option>Coimbatore</option>
+      </select>
+    </div>
+    <div>
+      <label for="checkin">Check-in</label>
+      <input type="date" id="checkin">
+    </div>
+    <div>
+      <label for="checkout">Check-out</label>
+      <input type="date" id="checkout">
+    </div>
+    <div>
+      <label for="guests">Guests</label>
+      <select id="guests">
+        <option value="1">1 Guest</option>
+        <option value="2" selected>2 Guests</option>
+        <option value="3">3 Guests</option>
+        <option value="4">4 Guests</option>
+      </select>
+    </div>
+    <div style="align-self:end">
+      <button style="width:100%" onclick="searchRooms()">Search Rooms</button>
+    </div>
+  </div>
+</section>
+
+<main class="container">
+  <section id="home">
+    <h2>⭐ Featured Rooms</h2>
+    <div class="rooms" id="homeRooms"></div>
+  </section>
+
+  <section id="rooms" class="hidden">
+    <h2>Available Rooms</h2>
+    <div style="max-width:320px;margin-bottom:20px">
+      <label for="roomFilter">Filter by room type</label>
+      <select id="roomFilter" onchange="renderRooms()">
+        <option value="all">All Room Types</option>
+        <option value="Single">Single Room</option>
+        <option value="Double">Double Room</option>
+        <option value="Deluxe">Deluxe Room</option>
+        <option value="Family">Family Room</option>
+      </select>
+    </div>
+    <p id="resultMessage" class="message">Explore our available rooms.</p>
+    <div class="rooms" id="allRooms"></div>
+  </section>
+
+  <section id="bookings" class="hidden">
+    <div class="panel">
+      <h2>📋 My Bookings</h2>
+      <p>View your reservation details and manage your bookings.</p>
+      <div id="bookingList"></div>
+    </div>
+  </section>
+</main>
+
+<!-- BOOKING FORM -->
+<div id="bookingModal" class="modal hidden">
+  <div class="modal-box">
+    <h2>🛎️ Book Your Room</h2>
+    <div id="selectedRoom" class="message"></div>
+
+    <form id="bookingForm">
+      <label for="customerName">Full Name</label>
+      <input id="customerName" required maxlength="100" placeholder="Enter your name">
+
+      <label for="customerEmail">Email</label>
+      <input id="customerEmail" type="email" required maxlength="150" placeholder="Enter your email">
+
+      <label for="bookingGuests">Number of Guests</label>
+      <select id="bookingGuests" required>
+        <option value="1">1 Guest</option>
+        <option value="2">2 Guests</option>
+        <option value="3">3 Guests</option>
+        <option value="4">4 Guests</option>
+      </select>
+
+      <label for="bookingIn">Check-in</label>
+      <input id="bookingIn" type="date" required>
+
+      <label for="bookingOut">Check-out</label>
+      <input id="bookingOut" type="date" required>
+
+      <p id="priceSummary" style="margin-top:15px;font-weight:bold"></p>
+
+      <div class="modal-actions">
+        <button type="submit">Confirm Booking</button>
+        <button type="button" class="secondary" onclick="closeBooking()">Close</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- LOGIN / REGISTER FORM -->
+<div id="authModal" class="modal hidden">
+  <div class="modal-box">
+    <h2 id="authTitle">Login</h2>
+
+    <form id="authForm">
+      <div id="nameField" class="hidden">
+        <label for="authName">Full Name</label>
+        <input id="authName" maxlength="100" placeholder="Enter your name">
+      </div>
+
+      <label for="authEmail">Email</label>
+      <input id="authEmail" type="email" maxlength="150" required placeholder="Enter your email">
+
+      <label for="authPassword">Password</label>
+      <input id="authPassword" type="password" minlength="6" maxlength="100" required placeholder="Minimum 6 characters">
+
+      <div class="modal-actions">
+        <button id="authSubmit" type="submit">Login</button>
+        <button type="button" class="secondary" onclick="closeAuth()">Close</button>
+      </div>
+    </form>
+
+    <p style="margin-top:18px">Don't have an account?</p>
+    <button id="authSwitch" type="button" onclick="toggleAuth()" style="margin-top:10px">Register</button>
+    <p style="font-size:12px;color:#64748b;margin-top:14px">
+      Demonstration only. Do not use real passwords.
+    </p>
+  </div>
+</div>
+
+<footer>
+  <p>StayEasy — Online Room Booking System</p>
+  <p style="margin-top:8px">Search • Book • Stay</p>
+</footer>
+
+<div id="notice" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+
+// Every room is a sample listing with its own capacity and location.
+// Family rooms for four guests are available in all three locations.
+const rooms = [
+  {id:1,type:"Single",name:"Single Room",city:"Chennai",price:1200,capacity:1,
+   image:"https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=700&q=80",
+   description:"A comfortable stay for solo travellers."},
+
+  {id:2,type:"Double",name:"Double Room",city:"Chennai",price:1800,capacity:2,
+   image:"https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=700&q=80",
+   description:"A relaxing room for two guests."},
+
+  {id:3,type:"Deluxe",name:"Deluxe Room",city:"Bengaluru",price:2500,capacity:3,
+   image:"https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=700&q=80",
+   description:"Extra comfort with modern facilities."},
+
+  {id:4,type:"Family",name:"Family Room",city:"Chennai",price:3200,capacity:4,
+   image:"https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=700&q=80",
+   description:"Spacious room for up to four guests."},
+
+  {id:5,type:"Family",name:"Family Suite",city:"Bengaluru",price:3500,capacity:4,
+   image:"https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=700&q=80",
+   description:"A family-friendly suite for four guests."},
+
+  {id:6,type:"Family",name:"Family Comfort Room",city:"Coimbatore",price:3000,capacity:4,
+   image:"https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=700&q=80",
+   description:"A comfortable family stay for four guests."},
+
+  {id:7,type:"Double",name:"Double Comfort Room",city:"Coimbatore",price:1900,capacity:2,
+   image:"https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=700&q=80",
+   description:"A peaceful room for couples or friends."}
+];
+
+const BOOKINGS_KEY = "stayeasy_bookings_v2";
+const USERS_KEY = "stayeasy_users_v2";
+const SESSION_KEY = "stayeasy_session_v2";
+
+function loadArray(key) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key) || "[]");
+    return Array.isArray(value) ? value : [];
+  } catch {
+    return [];
+  }
+}
+
+let bookings = loadArray(BOOKINGS_KEY);
+let users = loadArray(USERS_KEY);
+let currentUser = null;
+let selectedRoom = null;
+let authMode = "login";
+let criteria = null;
+let noticeTimer;
+
+try {
+  const session = JSON.parse(localStorage.getItem(SESSION_KEY) || "null");
+  if (session && typeof session.email === "string") {
+    const user = users.find(u => u.email === session.email);
+    if (user) currentUser = {email:user.email,name:user.name};
+  }
+} catch {
+  currentUser = null;
+}
+
+function esc(value) {
+  return String(value).replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
+
+function notify(message) {
+  const el = document.getElementById("notice");
+  el.textContent = message;
+  el.style.display = "block";
+  clearTimeout(noticeTimer);
+  noticeTimer = setTimeout(() => el.style.display = "none", 3500);
+}
+
+function saveData(key, data) {
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+    return true;
+  } catch {
+    notify("Could not save data. Check browser storage.");
+    return false;
+  }
+}
+
+function today() {
+  const d = new Date();
+  d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+  return d.toISOString().slice(0,10);
+}
+
+function dateNights(start, end) {
+  return Math.round((Date.parse(end+"T00:00:00Z") -
+                     Date.parse(start+"T00:00:00Z")) / 86400000);
+}
+
+function isAvailable(room, start, end, ignoreBookingId = null) {
+  if (!start || !end || end <= start) return false;
+
+  return !bookings.some(b =>
+    b.roomId === room.id &&
+    b.status === "Confirmed" &&
+    b.id !== ignoreBookingId &&
+    start < b.checkout &&
+    end > b.checkin
+  );
+}
+
+document.getElementById("checkin").min = today();
+document.getElementById("bookingIn").min = today();
+
+function setupDateFields(startId, endId) {
+  const start = document.getElementById(startId);
+  const end = document.getElementById(endId);
+
+  start.addEventListener("change", () => {
+    end.min = start.value || today();
+    if (end.value && end.value <= start.value) end.value = "";
+    if (startId === "bookingIn") updatePrice();
+  });
+
+  end.addEventListener("change", () => {
+    if (end.value && start.value && end.value <= start.value) {
+      end.value = "";
+      notify("Check-out must be later than check-in.");
+    }
+    if (startId === "bookingIn") updatePrice();
+  });
+}
+
+setupDateFields("checkin","checkout");
+setupDateFields("bookingIn","bookingOut");
+
+document.getElementById("bookingGuests").addEventListener("change", updatePrice);
+
+function showPage(page, button) {
+  ["home","rooms","bookings"].forEach(id => {
+    document.getElementById(id).classList.toggle("hidden", id !== page);
+  });
+
+  document.getElementById("hero").classList.toggle("hidden", page === "bookings");
+
+  document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
+  if (button) button.classList.add("active");
+
+  if (page === "rooms") renderRooms();
+  if (page === "bookings") renderBookings();
+
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function card(room) {
+  return `
+    <article class="card">
+      <img src="${esc(room.image)}" alt="${esc(room.name)}" loading="lazy">
+      <div class="card-content">
+        <h3>${esc(room.name)}</h3>
+        <p>📍 ${esc(room.city)}</p>
+        <p>👥 Capacity: ${room.capacity} guests</p>
+        <p>${esc(room.description)}</p>
+        <div class="price">₹${room.price.toLocaleString("en-IN")} <small>/ night</small></div>
+        <button onclick="startBooking(${room.id})">Book Now</button>
+      </div>
+    </article>`;
+}
+
+function renderHome() {
+  document.getElementById("homeRooms").innerHTML = rooms
+    .filter(r => r.type === "Family" || r.type === "Deluxe")
+    .map(card).join("");
+}
+
+function renderRooms() {
+  const type = document.getElementById("roomFilter").value;
+  let results = rooms.filter(r => type === "all" || r.type === type);
+
+  if (criteria) {
+    results = results.filter(r =>
+      (criteria.location === "all" || r.city === criteria.location) &&
+      r.capacity >= criteria.guests &&
+      isAvailable(r, criteria.checkin, criteria.checkout)
+    );
+  }
+
+  document.getElementById("resultMessage").textContent = criteria
+    ? `${results.length} room(s) found for ${criteria.guests} guest(s).`
+    : "Select dates and guests to check room availability.";
+
+  document.getElementById("allRooms").innerHTML = results.length
+    ? results.map(card).join("")
+    : `<p>No matching rooms found. Try another location or different dates.</p>`;
+}
+
+function searchRooms() {
+  const location = document.getElementById("location").value;
+  const checkin = document.getElementById("checkin").value;
+  const checkout = document.getElementById("checkout").value;
+  const guests = Number(document.getElementById("guests").value);
+
+  if (!checkin || !checkout) {
+    notify("Please select both check-in and check-out dates.");
+    return;
+  }
+
+  if (checkin < today() || checkout <= checkin) {
+    notify("Please select valid dates.");
+    return;
+  }
+
+  criteria = {location,checkin,checkout,guests};
+  document.getElementById("roomFilter").value = "all";
+  showPage("rooms",document.querySelectorAll("nav button")[1]);
+  notify("Search completed. Check the matching rooms.");
+}
+
+function startBooking(roomId) {
+  selectedRoom = rooms.find(r => r.id === roomId);
+  if (!selectedRoom) return;
+
+  if (!currentUser) {
+    notify("Please register or log in before booking.");
+    openAuth();
+    return;
+  }
+
+  const start = criteria?.checkin || "";
+  const end = criteria?.checkout || "";
+  const guests = criteria?.guests || 2;
+
+  document.getElementById("bookingIn").value = start;
+  document.getElementById("bookingOut").value = end;
+  document.getElementById("bookingOut").min = start || today();
+
+  document.getElementById("bookingGuests").value =
+    String(Math.min(guests,selectedRoom.capacity));
+
+  document.getElementById("customerName").value = currentUser.name;
+  document.getElementById("customerEmail").value = currentUser.email;
+
+  document.getElementById("selectedRoom").innerHTML =
+    `<strong>${esc(selectedRoom.name)}</strong><br>
+     ${esc(selectedRoom.city)} · Up to ${selectedRoom.capacity} guests<br>
+     ₹${selectedRoom.price.toLocaleString("en-IN")} per night`;
+
+  document.getElementById("bookingModal").classList.remove("hidden");
+  updatePrice();
+}
+
+function closeBooking() {
+  document.getElementById("bookingModal").classList.add("hidden");
+}
+
+function updatePrice() {
+  if (!selectedRoom) return;
+
+  const start = document.getElementById("bookingIn").value;
+  const end = document.getElementById("bookingOut").value;
+  const guests = Number(document.getElementById("bookingGuests").value);
+  const summary = document.getElementById("priceSummary");
+
+  if (guests > selectedRoom.capacity) {
+    summary.textContent = `This room supports up to ${selectedRoom.capacity} guests.`;
+    return;
+  }
+
+  if (!start || !end || end <= start) {
+    summary.textContent = "Choose valid check-in and check-out dates.";
+    return;
+  }
+
+  const nights = dateNights(start,end);
+  summary.textContent =
+    `${nights} night(s) × ₹${selectedRoom.price.toLocaleString("en-IN")} = ₹${(nights*selectedRoom.price).toLocaleString("en-IN")}`;
+}
+
+document.getElementById("bookingForm").addEventListener("submit",event => {
+  event.preventDefault();
+
+  if (!currentUser || !selectedRoom) {
+    notify("Please log in and select a room.");
+    return;
+  }
+
+  const name = document.getElementById("customerName").value.trim();
+  const email = document.getElementById("customerEmail").value.trim().toLowerCase();
+  const checkin = document.getElementById("bookingIn").value;
+  const checkout = document.getElementById("bookingOut").value;
+  const guests = Number(document.getElementById("bookingGuests").value);
+
+  if (!name || email !== currentUser.email ||
+      !checkin || !checkout || checkin < today() || checkout <= checkin) {
+    notify("Please enter valid details and dates.");
+    return;
+  }
+
+  if (guests < 1 || guests > selectedRoom.capacity) {
+    notify(`This room supports up to ${selectedRoom.capacity} guests.`);
+    return;
+  }
+
+  if (!isAvailable(selectedRoom,checkin,checkout)) {
+    notify("This room is already booked for those dates. Try another room or date.");
+    return;
+  }
+
+  const booking = {
+    id:"BK" + Date.now().toString(36).toUpperCase(),
+    roomId:selectedRoom.id,
+    userEmail:currentUser.email,
+    customer:name,
+    checkin,
+    checkout,
+    guests,
+    total:dateNights(checkin,checkout)*selectedRoom.price,
+    status:"Confirmed"
+  };
+
+  bookings.push(booking);
+
+  if (!saveData(BOOKINGS_KEY,bookings)) {
+    bookings.pop();
+    return;
+  }
+
+  closeBooking();
+  renderRooms();
+  renderBookings();
+  showPage("bookings",document.querySelectorAll("nav button")[2]);
+  notify("Booking confirmed! ID: " + booking.id);
+});
+
+function renderBookings() {
+  const mine = currentUser
+    ? bookings.filter(b => b.userEmail === currentUser.email)
+    : [];
+
+  document.getElementById("bookingList").innerHTML = mine.length
+    ? mine.map(b => {
+        const room = rooms.find(r => r.id === b.roomId);
+        return `
+          <div class="booking">
+            <div>
+              <h3>${esc(room ? room.name : "Room")}</h3>
+              <p>Booking ID: ${esc(b.id)}</p>
+              <p>Customer: ${esc(b.customer)}</p>
+              <p>Check-in: ${esc(b.checkin)}</p>
+              <p>Check-out: ${esc(b.checkout)}</p>
+              <p>Guests: ${b.guests}</p>
+              <p>Total: ₹${b.total.toLocaleString("en-IN")}</p>
+              <span class="status">${esc(b.status)}</span>
+            </div>
+            ${b.status === "Confirmed" ?
+              `<button class="cancel" onclick="cancelBooking('${b.id}')">Cancel Booking</button>` : ""}
+          </div>`;
+      }).join("")
+    : `<p style="margin-top:20px">${currentUser
+        ? "No bookings yet. Visit Rooms and book your stay."
+        : "Please log in to see your bookings."}</p>`;
+}
+
+function cancelBooking(id) {
+  const booking = bookings.find(b =>
+    b.id === id && currentUser && b.userEmail === currentUser.email
+  );
+
+  if (!booking || booking.status !== "Confirmed") return;
+  if (!confirm("Are you sure you want to cancel this booking?")) return;
+
+  booking.status = "Cancelled";
+
+  if (!saveData(BOOKINGS_KEY,bookings)) {
+    booking.status = "Confirmed";
+    return;
+  }
+
+  renderBookings();
+  renderRooms();
+  notify("Booking cancelled successfully.");
+}
+
+// Demo registration and login
+function openAuth() {
+  authMode = "login";
+  updateAuthForm();
+  document.getElementById("authModal").classList.remove("hidden");
+}
+
+function closeAuth() {
+  document.getElementById("authModal").classList.add("hidden");
+}
+
+function toggleAuth() {
+  authMode = authMode === "login" ? "register" : "login";
+  updateAuthForm();
+}
+
+function updateAuthForm() {
+  const registering = authMode === "register";
+  document.getElementById("authTitle").textContent =
+    registering ? "Create Account" : "Login";
+  document.getElementById("authSubmit").textContent =
+    registering ? "Register" : "Login";
+  document.getElementById("authSwitch").textContent =
+    registering ? "Back to Login" : "Register";
+  document.getElementById("nameField").classList.toggle("hidden",!registering);
+  document.getElementById("authName").required = registering;
+}
+
+document.getElementById("authForm").addEventListener("submit",event => {
+  event.preventDefault();
+
+  const email = document.getElementById("authEmail").value.trim().toLowerCase();
+  const password = document.getElementById("authPassword").value;
+  const name = document.getElementById("authName").value.trim();
+
+  if (authMode === "register") {
+    if (!name) {
+      notify("Please enter your name.");
+      return;
+    }
+
+    if (users.some(u => u.email === email)) {
+      notify("This email is already registered. Please log in.");
+      return;
+    }
+
+    // Demonstration only. Never store plaintext passwords in production.
+    users.push({email,password,name});
+
+    if (!saveData(USERS_KEY,users)) {
+      users.pop();
+      return;
+    }
+
+    notify("Registration successful! Please log in.");
+    authMode = "login";
+    updateAuthForm();
+    document.getElementById("authPassword").value = "";
+    return;
+  }
+
+  const user = users.find(u => u.email === email && u.password === password);
+
+  if (!user) {
+    notify("Invalid email or password. Register first if you are new.");
+    return;
+  }
+
+  currentUser = {email:user.email,name:user.name};
+
+  try {
+    localStorage.setItem(SESSION_KEY,JSON.stringify(currentUser));
+  } catch {
+    currentUser = null;
+    notify("Could not save login session in this browser.");
+    return;
+  }
+
+  closeAuth();
+  renderBookings();
+  notify("Welcome, " + user.name + "!");
+
+  if (selectedRoom) startBooking(selectedRoom.id);
+});
+
+document.getElementById("bookingModal").addEventListener("click",event => {
+  if (event.target.id === "bookingModal") closeBooking();
+});
+
+document.getElementById("authModal").addEventListener("click",event => {
+  if (event.target.id === "authModal") closeAuth();
+});
+
+renderHome();
+renderRooms();
+renderBookings();
+</script>
+</body>
+</html>

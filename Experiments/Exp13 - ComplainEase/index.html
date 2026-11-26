@@ -1,0 +1,820 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ComplainEase | Complaint Management System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{
+ --primary:#4f46e5;--primary2:#3730a3;--navy:#172554;
+ --bg:#f5f7fc;--white:#fff;--text:#202b43;--muted:#7b879c;
+ --border:#e8ecf3;--green:#16875c;--red:#dc4545;
+ --shadow:0 8px 30px rgba(27,43,83,.06)
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0}
+.hidden{display:none!important}
+#loginScreen{min-height:100vh;display:grid;grid-template-columns:1.05fr .95fr;background:#fff}
+.login-banner{background:linear-gradient(145deg,#172554,#4f46e5);color:white;padding:9%;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+.login-banner:after{content:"";position:absolute;width:450px;height:450px;border:1px solid #ffffff25;border-radius:50%;right:-150px;bottom:-170px;box-shadow:0 0 0 55px #ffffff09,0 0 0 110px #ffffff05}
+.brand{display:flex;align-items:center;gap:11px;font-size:23px;font-weight:800}
+.brand-icon{background:#ffffff20;border-radius:12px;padding:10px}
+.login-banner h1{font-size:42px;line-height:1.2;margin:38px 0 17px;max-width:480px}
+.login-banner p{font-size:13px;color:#dbe4ff;line-height:1.9;max-width:430px}
+.features{margin-top:35px;display:grid;gap:17px;font-size:12px;color:#e4eaff}
+.login-panel{display:grid;place-items:center;padding:30px}
+.login-form{width:min(400px,100%)}
+.login-form h2{font-size:27px;margin:20px 0 8px}
+.login-form>p{font-size:12px;color:var(--muted);margin-bottom:25px}
+.role-pick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
+.role-pick button{padding:12px 5px;border:1px solid var(--border);background:#fff;border-radius:9px;font-size:11px;font-weight:700;color:#718096}
+.role-pick button.selected{background:#eef0ff;border-color:#7772ef;color:var(--primary)}
+.field{margin-bottom:15px}
+.field label{display:block;font-size:11px;font-weight:700;color:#526078;margin-bottom:7px}
+.field input,.field select,.field textarea{width:100%;padding:12px 13px;border:1px solid #dfe5ef;border-radius:9px;outline:none;font-size:12px;background:white;color:var(--text)}
+.field textarea{min-height:100px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px #eeedff}
+.demo{background:#f5f6fb;border-radius:10px;padding:13px;margin-top:20px;font-size:10px;color:#68758c;line-height:1.9}
+.btn{padding:11px 16px;border-radius:9px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:.2s}
+.btn-primary{background:var(--primary);color:white}
+.btn-primary:hover{background:var(--primary2);transform:translateY(-1px)}
+.btn-light{background:#efefff;color:#4941c4}
+.btn-danger{background:#fff0f0;color:#c43c3c}
+.btn-success{background:#e6f7ee;color:#16875c}
+.btn-dark{background:var(--navy);color:white}
+.btn-small{padding:7px 10px;font-size:10px}
+.app{min-height:100vh}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:250px;background:#172554;color:white;padding:24px 16px;display:flex;flex-direction:column;z-index:20;overflow-y:auto;transition:.25s}
+.sidebar .brand{padding:5px 10px 32px}
+.side-label{font-size:10px;color:#9aa8ca;font-weight:700;letter-spacing:1.3px;padding:13px 12px 9px}
+.nav-item{width:100%;display:flex;align-items:center;gap:12px;padding:12px;border-radius:9px;background:transparent;color:#bac6df;text-align:left;margin:3px 0;font-size:12px;font-weight:600}
+.nav-item:hover,.nav-item.active{background:#2d3d6c;color:white}
+.nav-item.active{box-shadow:inset 3px 0 #8c8aff}
+.nav-icon{width:21px;text-align:center;font-size:17px}
+.side-bottom{margin-top:auto;padding-top:25px}
+.main{margin-left:250px;min-height:100vh}
+.topbar{height:73px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 32px;position:sticky;top:0;z-index:10}
+.topbar h2{font-size:16px}
+.top-right{display:flex;align-items:center;gap:13px}
+.avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#e8eaff;color:#4f46e5;font-weight:800}
+.user-info{font-size:11px;color:var(--muted);line-height:1.6}
+.user-info strong{display:block;color:var(--text);font-size:12px}
+.icon-btn{width:38px;height:38px;border-radius:10px;background:#f2f4fa}
+.mobile-menu{display:none}
+.content{padding:29px 32px;max-width:1500px;margin:auto}
+.page-heading{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:23px}
+.page-heading h1{font-size:24px;letter-spacing:-.6px}
+.page-heading p{font-size:12px;color:var(--muted);margin-top:7px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:21px}
+.stat{background:white;border:1px solid var(--border);border-radius:14px;padding:19px;box-shadow:var(--shadow)}
+.stat-top{display:flex;justify-content:space-between;align-items:center}
+.stat small{font-size:11px;color:var(--muted)}
+.stat-icon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:19px}
+.stat h2{font-size:25px;margin-top:13px}
+.stat p{font-size:10px;color:var(--muted);margin-top:5px}
+.panel{background:white;border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:19px}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:17px}
+.panel-head h3{font-size:14px}
+.panel-head p{font-size:11px;color:var(--muted);margin-top:5px}
+.search{padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:11px;outline:none;min-width:180px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;white-space:nowrap}
+th{text-align:left;padding:12px;background:#f8f9fd;font-size:10px;color:#7b879c;text-transform:uppercase;letter-spacing:.4px}
+td{padding:13px 12px;border-bottom:1px solid #edf0f5;font-size:11px}
+tbody tr:last-child td{border-bottom:0}
+.badge{padding:5px 9px;border-radius:20px;font-size:10px;font-weight:700;display:inline-block}
+.green{background:#e5f8ee;color:#168451}
+.orange{background:#fff3df;color:#b57a17}
+.red{background:#ffeded;color:#c33d3d}
+.blue{background:#e9efff;color:#315bc0}
+.empty{text-align:center;padding:32px;color:var(--muted);font-size:12px}
+.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.action-card{padding:21px;background:white;border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow)}
+.action-card .big-icon{font-size:26px;margin-bottom:14px}
+.action-card h3{font-size:14px;margin-bottom:8px}
+.action-card p{font-size:11px;color:var(--muted);line-height:1.7;margin-bottom:15px}
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.modal-bg{position:fixed;inset:0;background:#0d193c99;z-index:50;display:grid;place-items:center;padding:15px}
+.modal{background:white;border-radius:16px;padding:23px;width:min(520px,100%);max-height:90vh;overflow:auto;box-shadow:0 20px 70px #0d193c44}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.modal-head h3{font-size:16px}
+.close{background:#f0f2f7;width:30px;height:30px;border-radius:8px}
+.toast{position:fixed;right:22px;bottom:22px;background:#172554;color:white;padding:14px 18px;border-radius:10px;font-size:12px;z-index:100;box-shadow:var(--shadow)}
+#map{height:300px;width:100%;border-radius:10px;z-index:1}
+.map-help{font-size:10px;color:var(--muted);margin-top:8px}
+.location-card{padding:13px;background:#f4f6ff;border-radius:9px;font-size:11px;line-height:1.8;margin-top:12px}
+.file-name{font-size:10px;color:var(--muted);margin-top:6px}
+.timeline{border-left:2px solid #e3e6f5;margin:15px 0 15px 8px;padding-left:18px}
+.timeline-item{position:relative;margin-bottom:17px;font-size:11px;line-height:1.7}
+.timeline-item:before{content:"";position:absolute;left:-24px;top:3px;width:10px;height:10px;border-radius:50%;background:var(--primary)}
+@media(max-width:1050px){.stats{grid-template-columns:repeat(2,1fr)}.card-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){
+ .sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}
+ .main{margin-left:0}.mobile-menu{display:block}
+ .topbar{padding:0 14px;height:64px}.content{padding:20px 14px}
+ .stats{gap:10px}.stat{padding:13px}.stat h2{font-size:21px}
+ .card-grid,.form-grid{grid-template-columns:1fr}
+ #loginScreen{grid-template-columns:1fr}.login-banner{display:none}
+ .login-panel{min-height:100vh;padding:22px}
+ .page-heading h1{font-size:21px}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen">
+ <section class="login-banner">
+  <div class="brand"><span class="brand-icon">🛡️</span> ComplainEase</div>
+  <h1>Your voice matters. We make every complaint count.</h1>
+  <p>A smart and transparent complaint management platform designed to connect citizens, officers and administrators for faster issue resolution.</p>
+  <div class="features">
+   <div>✓ Submit complaints with supporting evidence</div>
+   <div>✓ Track your complaint status in real time</div>
+   <div>✓ Connect with assigned resolution officers</div>
+   <div>✓ Transparent updates and resolution feedback</div>
+  </div>
+ </section>
+ <section class="login-panel">
+  <div class="login-form">
+   <div style="font-size:29px">🛡️</div>
+   <h2>Welcome Back</h2>
+   <p>Sign in to access your ComplainEase account.</p>
+   <div class="role-pick">
+    <button class="selected" onclick="chooseRole('user',this)">User</button>
+    <button onclick="chooseRole('officer',this)">Officer</button>
+    <button onclick="chooseRole('admin',this)">Admin</button>
+   </div>
+   <form id="loginForm">
+    <div class="field"><label>Email Address</label><input type="email" id="loginEmail" required placeholder="Enter your email"></div>
+    <div class="field"><label>Password</label><input type="password" id="loginPassword" required placeholder="Enter your password"></div>
+    <button class="btn btn-primary" style="width:100%;padding:14px">Sign In →</button>
+   </form>
+   <div id="registerLink" style="text-align:center;margin-top:17px;font-size:11px;color:#718096">
+    Don't have an account? <a href="#" onclick="openRegister()" style="color:#4f46e5;font-weight:700">Register now</a>
+   </div>
+   <div class="demo">
+    <b>Demo login credentials</b><br>
+    Admin: admin@complainease.demo / admin123<br>
+    User: user@complainease.demo / user123<br>
+    Officer: officer@complainease.demo / officer123
+   </div>
+  </div>
+ </section>
+</div>
+
+<!-- APPLICATION -->
+<div id="app" class="app hidden">
+ <aside class="sidebar" id="sidebar">
+  <div class="brand"><span class="brand-icon">🛡️</span> ComplainEase</div>
+  <div class="side-label">WORKSPACE</div>
+  <nav id="navigation"></nav>
+  <div class="side-bottom">
+   <button class="nav-item" onclick="logout()"><span class="nav-icon">↪</span> Sign Out</button>
+   <div style="padding:15px 12px;font-size:10px;color:#9aa8ca">ComplainEase Platform<br>Version 1.0 · Demo</div>
+  </div>
+ </aside>
+ <main class="main">
+  <header class="topbar">
+   <div style="display:flex;align-items:center;gap:13px">
+    <button class="icon-btn mobile-menu" onclick="toggleSidebar()">☰</button>
+    <h2 id="topTitle">Dashboard</h2>
+   </div>
+   <div class="top-right">
+    <button class="icon-btn" onclick="notifications()">♧</button>
+    <div class="avatar" id="avatar">U</div>
+    <div class="user-info"><strong id="topName">User</strong><span id="topRole">Account</span></div>
+   </div>
+  </header>
+  <section class="content" id="pageContent"></section>
+ </main>
+</div>
+
+<div id="modalRoot"></div>
+<div id="toastRoot"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+"use strict";
+
+/* ---------------- DATABASE ---------------- */
+
+const KEY="complainease_data_v1";
+const defaults={
+ users:[
+  {id:"U1001",name:"Demo User",email:"user@complainease.demo",password:"user123",phone:"9876543210",role:"user"},
+  {id:"A1001",name:"Administrator",email:"admin@complainease.demo",password:"admin123",phone:"9000000000",role:"admin"}
+ ],
+ officers:[
+  {id:"O1001",name:"Demo Officer",email:"officer@complainease.demo",password:"officer123",phone:"9876500000",department:"Public Works",role:"officer",active:true}
+ ],
+ complaints:[],
+ feedback:[],
+ notifications:[],
+ settings:{
+  features:{post:true,track:true,feedback:true,contact:true,location:true},
+  contactName:"ComplainEase Administration",
+  contactEmail:"admin@complainease.demo",
+  contactPhone:"1800-000-1234"
+ }
+};
+function clone(x){return JSON.parse(JSON.stringify(x))}
+function load(){
+ try{
+  const s=JSON.parse(localStorage.getItem(KEY));
+  return s?{...clone(defaults),...s,settings:{...clone(defaults.settings),...(s.settings||{}),features:{...clone(defaults.settings.features),...(s.settings?.features||{})}}}:clone(defaults);
+ }catch(e){return clone(defaults)}
+}
+let db=load(),currentUser=null,currentRole="user",currentPage="dashboard",mapInstance=null,selectedLocation=null;
+
+function save(){localStorage.setItem(KEY,JSON.stringify(db))}
+function uid(p){return p+Date.now().toString(36).toUpperCase()+Math.random().toString(36).slice(2,5).toUpperCase()}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function money(v){return "₹"+Number(v||0).toLocaleString("en-IN")}
+function date(v){return v?new Date(v).toLocaleString("en-IN",{dateStyle:"medium",timeStyle:"short"}):"—"}
+function badge(s){
+ const c={Resolved:"green",Approved:"green",Completed:"green",Open:"orange",Pending:"orange","In Progress":"blue",Rejected:"red",Closed:"red"}[s]||"blue";
+ return `<span class="badge ${c}">${esc(s)}</span>`;
+}
+function toast(msg){
+ document.getElementById("toastRoot").innerHTML=`<div class="toast">${esc(msg)}</div>`;
+ setTimeout(()=>document.getElementById("toastRoot").innerHTML="",3000);
+}
+function getAccount(){
+ return currentUser.role==="officer"
+ ?db.officers.find(x=>x.id===currentUser.id)
+ :db.users.find(x=>x.id===currentUser.id);
+}
+function ownComplaints(){
+ return db.complaints.filter(c=>c.userId===currentUser.id);
+}
+
+/* ---------------- AUTHENTICATION ---------------- */
+
+function chooseRole(role,button){
+ currentRole=role;
+ document.querySelectorAll(".role-pick button").forEach(x=>x.classList.remove("selected"));
+ button.classList.add("selected");
+ document.getElementById("registerLink").style.display=role==="user"?"block":"none";
+}
+document.getElementById("loginForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const email=document.getElementById("loginEmail").value.trim().toLowerCase();
+ const password=document.getElementById("loginPassword").value;
+ const list=currentRole==="officer"?db.officers:db.users;
+ const found=list.find(x=>x.email.toLowerCase()===email&&x.password===password&&x.role===currentRole&&x.active!==false);
+ if(!found){toast("Invalid login details or account disabled.");return}
+ currentUser={...found};
+ enterApp();
+});
+function openRegister(){
+ modal("Create User Account",`
+ <form onsubmit="registerUser(event)">
+  <div class="field"><label>Full Name</label><input name="name" required></div>
+  <div class="field"><label>Email Address</label><input name="email" type="email" required></div>
+  <div class="field"><label>Phone Number</label><input name="phone" required></div>
+  <div class="field"><label>Password</label><input name="password" type="password" minlength="6" required></div>
+  <button class="btn btn-primary" style="width:100%">Create Account</button>
+ </form>`);
+}
+function registerUser(e){
+ e.preventDefault();const f=new FormData(e.target);
+ const email=String(f.get("email")).trim().toLowerCase();
+ if([...db.users,...db.officers].some(x=>x.email.toLowerCase()===email)){toast("Email already registered.");return}
+ const u={id:uid("U"),name:f.get("name"),email,password:f.get("password"),phone:f.get("phone"),role:"user"};
+ db.users.push(u);save();closeModal();currentUser={...u};enterApp();toast("Registration successful!");
+}
+function enterApp(){
+ document.getElementById("loginScreen").classList.add("hidden");
+ document.getElementById("app").classList.remove("hidden");
+ document.getElementById("topName").textContent=currentUser.name;
+ document.getElementById("topRole").textContent=currentUser.role.toUpperCase();
+ document.getElementById("avatar").textContent=currentUser.name.charAt(0).toUpperCase();
+ buildNav();navigate("dashboard");
+}
+function logout(){
+ currentUser=null;mapInstance=null;
+ document.getElementById("app").classList.add("hidden");
+ document.getElementById("loginScreen").classList.remove("hidden");
+ document.getElementById("loginForm").reset();
+}
+function toggleSidebar(){document.getElementById("sidebar").classList.toggle("open")}
+
+/* ---------------- NAVIGATION ---------------- */
+
+const menus={
+ user:[
+  ["dashboard","▦","Dashboard"],["post","＋","Post Complaint"],["mycomplaints","▤","My Complaints"],["solutions","⌕","Search Solutions"],["feedback","☆","Feedback"],["contact","☎","Admin Contact"],["profile","♙","My Profile"]
+ ],
+ officer:[
+  ["dashboard","▦","Dashboard"],["assigned","▤","View Complaints"],["profile","♙","My Profile"]
+ ],
+ admin:[
+  ["dashboard","▦","Dashboard"],["complaints","▤","All Complaints"],["users","♙","Manage Users"],["officers","♜","Manage Officers"],["settings","⚙","Platform Settings"],["contactsettings","☎","Contact Details"],["feedback","☆","Feedback Records"]
+ ]
+};
+function buildNav(){
+ document.getElementById("navigation").innerHTML=menus[currentUser.role].map(([k,i,n])=>
+ `<button class="nav-item ${currentPage===k?"active":""}" onclick="navigate('${k}')"><span class="nav-icon">${i}</span>${n}</button>`
+ ).join("");
+}
+function navigate(page){
+ currentPage=page;buildNav();
+ document.getElementById("topTitle").textContent=menus[currentUser.role].find(x=>x[0]===page)?.[2]||"Dashboard";
+ document.getElementById("sidebar").classList.remove("open");
+ render();
+}
+function render(){
+ mapInstance=null;
+ const pages={
+  user:{dashboard:userDashboard,post:postPage,mycomplaints:myComplaints,solutions:solutionsPage,feedback:userFeedback,contact:contactPage,profile:profilePage},
+  officer:{dashboard:officerDashboard,assigned:assignedComplaints,profile:profilePage},
+  admin:{dashboard:adminDashboard,complaints:allComplaints,users:manageUsers,officers:manageOfficers,settings:settingsPage,contactsettings:contactSettings,feedback:adminFeedback}
+ };
+ const fn=pages[currentUser.role]?.[currentPage];
+ document.getElementById("pageContent").innerHTML=fn?fn():"<div class='panel'>Page unavailable.</div>";
+}
+
+/* ---------------- SHARED UI ---------------- */
+
+function heading(title,desc,action=""){
+ return `<div class="page-heading"><div><h1>${title}</h1><p>${desc}</p></div>${action}</div>`;
+}
+function stat(label,value,icon,bg){
+ return `<div class="stat"><div class="stat-top"><small>${label}</small><span class="stat-icon" style="background:${bg}">${icon}</span></div><h2>${value}</h2><p>Platform overview</p></div>`;
+}
+function table(headers,rows){
+ return rows.length?`<div class="table-wrap"><table><thead><tr>${headers.map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody></table></div>`:`<div class="empty">No records available.</div>`;
+}
+function modal(title,body){
+ document.getElementById("modalRoot").innerHTML=`<div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal"><div class="modal-head"><h3>${title}</h3><button class="close" onclick="closeModal()">✕</button></div>${body}</div></div>`;
+}
+function closeModal(){document.getElementById("modalRoot").innerHTML=""}
+function confirmBox(message,callback){
+ modal("Confirm Action",`<p style="font-size:12px;line-height:1.7;margin-bottom:20px">${esc(message)}</p><div style="display:flex;justify-content:flex-end;gap:9px"><button class="btn btn-light" onclick="closeModal()">Cancel</button><button class="btn btn-danger" id="confirmAction">Confirm</button></div>`);
+ document.getElementById("confirmAction").onclick=()=>{closeModal();callback()};
+}
+function notifyUser(userId,message){
+ db.notifications.push({id:uid("N"),userId,message,created:new Date().toISOString()});
+}
+function notifications(){
+ const list=db.notifications.filter(n=>n.userId===currentUser.id).slice().reverse();
+ modal("Notifications",list.length?list.map(n=>`<div style="padding:12px;border-bottom:1px solid #eee;font-size:11px">${esc(n.message)}<p style="color:#8793a8;margin-top:6px">${date(n.created)}</p></div>`).join(""):"<div class='empty'>No notifications yet.</div>");
+}
+function filterRows(input,id){
+ const root=document.getElementById(id);if(!root)return;
+ const q=input.value.toLowerCase();
+ root.querySelectorAll("tbody tr").forEach(r=>r.style.display=r.textContent.toLowerCase().includes(q)?"":"none");
+}
+function complaintRow(c,actions=false){
+ return `<tr><td><b>${esc(c.id)}</b></td><td>${esc(c.title)}</td><td>${esc(c.category)}</td><td>${esc(c.userName)}</td><td>${badge(c.status)}</td><td>${date(c.created)}</td><td><button class="btn btn-light btn-small" onclick="viewComplaint('${c.id}')">View</button> ${actions?`<button class="btn btn-primary btn-small" onclick="updateComplaint('${c.id}')">Update</button>`:""}</td></tr>`;
+}
+
+/* ---------------- USER DASHBOARD ---------------- */
+
+function userDashboard(){
+ const list=ownComplaints();
+ return heading("Welcome, "+esc(currentUser.name.split(" ")[0])+"!","Track your concerns and stay updated on resolutions.")+
+ `<div class="stats">
+ ${stat("Total Complaints",list.length,"▤","#eeeeff")}
+ ${stat("Open Complaints",list.filter(c=>c.status==="Open").length,"◷","#fff3df")}
+ ${stat("In Progress",list.filter(c=>c.status==="In Progress").length,"↗","#e9f0ff")}
+ ${stat("Resolved",list.filter(c=>c.status==="Resolved").length,"✓","#e6f8ee")}
+ </div>
+ <div class="card-grid">
+ <div class="action-card"><div class="big-icon">📝</div><h3>Post a Complaint</h3><p>Submit a new issue with details, location and supporting evidence.</p><button class="btn btn-primary" onclick="navigate('post')">Submit Complaint →</button></div>
+ <div class="action-card"><div class="big-icon">📍</div><h3>Track Complaints</h3><p>Follow your complaint progress and view officer updates.</p><button class="btn btn-light" onclick="navigate('mycomplaints')">Track Now →</button></div>
+ <div class="action-card"><div class="big-icon">💬</div><h3>Share Feedback</h3><p>Tell us about your complaint resolution experience.</p><button class="btn btn-light" onclick="navigate('feedback')">Give Feedback →</button></div>
+ </div>
+ <div class="panel" style="margin-top:20px"><div class="panel-head"><h3>Recent Complaints</h3><button class="btn btn-light btn-small" onclick="navigate('mycomplaints')">View All</button></div>
+ ${table(["Complaint ID","Title","Category","Status","Submitted","Action"],list.slice().reverse().slice(0,5).map(c=>`<tr><td>${esc(c.id)}</td><td>${esc(c.title)}</td><td>${esc(c.category)}</td><td>${badge(c.status)}</td><td>${date(c.created)}</td><td><button class="btn btn-light btn-small" onclick="viewComplaint('${c.id}')">Details</button></td></tr>`))}
+ </div>`;
+}
+
+/* ---------------- USER POST COMPLAINT ---------------- */
+
+function postPage(){
+ if(!db.settings.features.post)return heading("Feature Unavailable","Complaint submission is temporarily disabled by the administrator.");
+ return heading("Post a Complaint","Describe the issue and provide relevant information.")+
+ `<div class="panel" style="max-width:850px">
+ <form id="complaintForm" onsubmit="submitComplaint(event)">
+ <div class="form-grid">
+  <div class="field"><label>Complaint Title</label><input name="title" placeholder="Enter complaint title" required maxlength="100"></div>
+  <div class="field"><label>Complaint Category</label><select name="category" required><option value="">Select category</option><option>Road & Transport</option><option>Water Supply</option><option>Electricity</option><option>Sanitation</option><option>Public Safety</option><option>Street Lights</option><option>Government Services</option><option>Other</option></select></div>
+ </div>
+ <div class="field"><label>Complaint Description</label><textarea name="description" placeholder="Explain your complaint in detail..." required minlength="10"></textarea></div>
+ <div class="field"><label>Complaint Location</label><input name="location" id="complaintLocation" placeholder="Address or area name" required></div>
+ <div class="field"><label>Mark Location on Map</label><div id="map"></div><p class="map-help">Click on the map to mark the complaint location. Map requires an internet connection.</p><div id="mapCoordinates" class="location-card">No map location selected. You can also enter the location manually.</div></div>
+ <div class="field"><label>Supporting Documents / Images</label><input type="file" id="evidence" accept="image/*,.pdf,.doc,.docx" multiple><p class="file-name" id="fileNames">You can attach images or documents. Maximum 2 MB per file.</p></div>
+ <button class="btn btn-primary">Submit Complaint →</button>
+ </form></div>`;
+}
+function initMap(){
+ const el=document.getElementById("map");if(!el)return;
+ if(typeof L==="undefined"){el.innerHTML="<div class='empty'>Map could not load. Enter the address manually.</div>";return}
+ mapInstance=L.map("map").setView([13.0827,80.2707],11);
+ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"© OpenStreetMap"}).addTo(mapInstance);
+ let marker=null;
+ mapInstance.on("click",e=>{
+  selectedLocation={lat:e.latlng.lat,lng:e.latlng.lng};
+  if(marker)marker.setLatLng(e.latlng);else marker=L.marker(e.latlng).addTo(mapInstance);
+  document.getElementById("mapCoordinates").textContent="Latitude: "+e.latlng.lat.toFixed(6)+" | Longitude: "+e.latlng.lng.toFixed(6);
+  const input=document.getElementById("complaintLocation");
+  if(!input.value)input.value=e.latlng.lat.toFixed(5)+", "+e.latlng.lng.toFixed(5);
+ });
+ setTimeout(()=>mapInstance.invalidateSize(),250);
+}
+document.addEventListener("change",e=>{
+ if(e.target.id==="evidence"){
+  const files=[...e.target.files];
+  document.getElementById("fileNames").textContent=files.length?files.map(f=>f.name).join(", "):"No files selected.";
+ }
+});
+function submitComplaint(e){
+ e.preventDefault();
+ const f=new FormData(e.target);
+ const files=[...(document.getElementById("evidence").files||[])];
+ if(files.some(x=>x.size>2*1024*1024)){toast("Each attachment must be 2 MB or smaller.");return}
+ const complaint={
+  id:uid("CMP"),userId:currentUser.id,userName:currentUser.name,
+  title:f.get("title"),category:f.get("category"),
+  description:f.get("description"),location:f.get("location"),
+  coordinates:selectedLocation?{...selectedLocation}:null,
+  attachments:files.map(x=>({name:x.name,type:x.type,size:x.size})),
+  status:"Open",officerId:null,officerName:null,
+  created:new Date().toISOString(),updates:[{status:"Open",note:"Complaint submitted successfully.",created:new Date().toISOString()}],
+  proof:[],resolution:""
+ };
+ db.complaints.push(complaint);
+ db.officers.forEach(o=>notifyUser(o.id,"New complaint submitted: "+complaint.id));
+ notifyUser("A1001","New complaint submitted: "+complaint.id);
+ save();selectedLocation=null;navigate("mycomplaints");toast("Complaint submitted. ID: "+complaint.id);
+}
+
+/* ---------------- USER COMPLAINT HISTORY ---------------- */
+
+function myComplaints(){
+ const list=ownComplaints().slice().reverse();
+ return heading("My Complaints","View complaint details, progress and resolution updates.")+
+ `<div class="panel"><div class="panel-head"><h3>Complaint History (${list.length})</h3><input class="search" placeholder="Search complaints..." oninput="filterRows(this,'myTable')"></div><div id="myTable">`+
+ table(["Complaint ID","Title","Category","Status","Submitted","Action"],list.map(c=>complaintRow(c)))+
+ `</div></div>`;
+}
+function viewComplaint(cid){
+ const c=db.complaints.find(x=>x.id===cid);
+ if(!c){toast("Complaint not found.");return}
+ if(currentUser.role==="user"&&c.userId!==currentUser.id){toast("Access denied.");return}
+ const history=(c.updates||[]).slice().reverse().map(u=>`<div class="timeline-item"><b>${esc(u.status)}</b><p>${esc(u.note||"Status updated")}</p><small style="color:#8793a8">${date(u.created)}</small></div>`).join("");
+ const proof=(c.proof||[]).map(p=>`<div class="location-card"><b>${esc(p.name)}</b><p>${esc(p.note)}</p><small>${date(p.created)}</small></div>`).join("");
+ const attachments=(c.attachments||[]).map(a=>`<p style="font-size:11px;margin:7px 0">📎 ${esc(a.name)}</p>`).join("")||"No attachments.";
+ modal("Complaint Details",`
+ <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><h3>${esc(c.title)}</h3>${badge(c.status)}</div>
+ <div class="location-card">Complaint ID: <b>${esc(c.id)}</b><br>Category: ${esc(c.category)}<br>Submitted: ${date(c.created)}<br>Submitted by: ${esc(c.userName)}</div>
+ <h4 style="font-size:12px;margin:17px 0 8px">Description</h4><p style="font-size:12px;line-height:1.8">${esc(c.description)}</p>
+ <h4 style="font-size:12px;margin:17px 0 8px">Location</h4><p style="font-size:11px">${esc(c.location)}</p>
+ ${c.coordinates?`<a target="_blank" rel="noopener" class="btn btn-light btn-small" style="margin-top:8px" href="https://www.google.com/maps?q=${c.coordinates.lat},${c.coordinates.lng}">Open in Google Maps ↗</a>`:""}
+ <h4 style="font-size:12px;margin:17px 0 8px">Supporting Documents</h4>${attachments}
+ <h4 style="font-size:12px;margin:17px 0 8px">Officer Proof of Work</h4>${proof||"<p style='font-size:11px;color:#8490a5'>No proof uploaded yet.</p>"}
+ ${c.resolution?`<h4 style="font-size:12px;margin:17px 0 8px">Resolution Remarks</h4><p style="font-size:12px">${esc(c.resolution)}</p>`:""}
+ <h4 style="font-size:12px;margin:17px 0 8px">Status History</h4><div class="timeline">${history}</div>
+ ${currentUser.role==="user"&&c.status==="Resolved"&&db.settings.features.feedback?`<button class="btn btn-primary" onclick="closeModal();navigate('feedback')">Give Feedback</button>`:""}
+ `);
+}
+
+/* ---------------- OFFICER DASHBOARD ---------------- */
+
+function assignedToMe(){
+ return db.complaints.filter(c=>c.officerId===currentUser.id);
+}
+function officerDashboard(){
+ const list=assignedToMe();
+ return heading("Officer Dashboard","Manage assigned complaints and update resolution progress.")+
+ `<div class="stats">
+ ${stat("Assigned Complaints",list.length,"▤","#eeeeff")}
+ ${stat("Open",list.filter(c=>c.status==="Open").length,"◷","#fff3df")}
+ ${stat("In Progress",list.filter(c=>c.status==="In Progress").length,"↗","#e9f0ff")}
+ ${stat("Resolved",list.filter(c=>c.status==="Resolved").length,"✓","#e6f8ee")}
+ </div>
+ <div class="panel"><div class="panel-head"><h3>Recent Assigned Complaints</h3><button class="btn btn-light btn-small" onclick="navigate('assigned')">View All</button></div>
+ ${table(["Complaint ID","Title","Category","User","Status","Action"],list.slice().reverse().slice(0,8).map(c=>complaintRow(c,true)))}
+ </div>`;
+}
+function assignedComplaints(){
+ const list=assignedToMe().slice().reverse();
+ return heading("Assigned Complaints","View complaint details and manage resolution.")+
+ `<div class="panel"><div class="panel-head"><h3>Assigned Work</h3><input class="search" placeholder="Search complaints..." oninput="filterRows(this,'assignedTable')"></div><div id="assignedTable">`+
+ table(["Complaint ID","Title","Category","User","Status","Date","Action"],list.map(c=>complaintRow(c,true)))+
+ `</div></div>`;
+}
+
+/* ---------------- OFFICER UPDATE ---------------- */
+
+function updateComplaint(cid){
+ const c=db.complaints.find(x=>x.id===cid);
+ if(!c)return;
+ if(currentUser.role==="officer"&&c.officerId!==currentUser.id){toast("This complaint is not assigned to you.");return}
+ modal("Update Complaint",`
+ <div class="location-card">Complaint: <b>${esc(c.id)}</b><br>${esc(c.title)}</div>
+ <form onsubmit="saveComplaintUpdate(event,'${cid}')">
+ <div class="field"><label>Update Status</label><select name="status">
+ ${["Open","In Progress","Resolved","Closed"].map(s=>`<option ${c.status===s?"selected":""}>${s}</option>`).join("")}
+ </select></div>
+ <div class="field"><label>Work Remarks / Update</label><textarea name="note" required placeholder="Describe the work completed or current progress"></textarea></div>
+ <div class="field"><label>Upload Proof of Work</label><input type="file" name="proof" id="proofFile" accept="image/*,.pdf"></div>
+ <button class="btn btn-primary" style="width:100%">Save Update</button>
+ </form>`);
+}
+function saveComplaintUpdate(e,cid){
+ e.preventDefault();const c=db.complaints.find(x=>x.id===cid);if(!c)return;
+ if(currentUser.role==="officer"&&c.officerId!==currentUser.id){toast("Access denied.");return}
+ const f=new FormData(e.target),file=document.getElementById("proofFile").files[0];
+ if(file&&file.size>2*1024*1024){toast("Proof file must be 2 MB or smaller.");return}
+ c.status=f.get("status");
+ c.resolution=f.get("note");
+ c.updates.push({status:c.status,note:f.get("note"),created:new Date().toISOString()});
+ if(file)c.proof.push({name:file.name,note:f.get("note"),created:new Date().toISOString(),type:file.type,size:file.size});
+ notifyUser(c.userId,"Your complaint "+c.id+" status has been updated to "+c.status+".");
+ save();closeModal();render();toast("Complaint updated successfully.");
+}
+
+/* ---------------- ADMIN DASHBOARD ---------------- */
+
+function adminDashboard(){
+ return heading("Administrator Dashboard","Monitor complaints, officers and platform performance.")+
+ `<div class="stats">
+ ${stat("Total Complaints",db.complaints.length,"▤","#eeeeff")}
+ ${stat("Registered Users",db.users.filter(u=>u.role==="user").length,"♙","#e9f8ef")}
+ ${stat("Officers",db.officers.length,"♜","#fff3df")}
+ ${stat("Resolved Complaints",db.complaints.filter(c=>c.status==="Resolved").length,"✓","#e9f0ff")}
+ </div>
+ <div class="panel"><div class="panel-head"><h3>Recent Complaints</h3><button class="btn btn-light btn-small" onclick="navigate('complaints')">Manage All</button></div>
+ ${table(["Complaint ID","Title","Category","User","Status","Action"],db.complaints.slice().reverse().slice(0,8).map(c=>complaintRow(c)))}
+ </div>
+ <div class="card-grid">
+ <div class="action-card"><div class="big-icon">♜</div><h3>Officer Management</h3><p>Create officer accounts and assign complaints.</p><button class="btn btn-primary" onclick="navigate('officers')">Manage Officers</button></div>
+ <div class="action-card"><div class="big-icon">⚙️</div><h3>Feature Controls</h3><p>Enable or hide website features for users.</p><button class="btn btn-light" onclick="navigate('settings')">Open Settings</button></div>
+ <div class="action-card"><div class="big-icon">☎️</div><h3>Contact Details</h3><p>Manage the contact information shown to users.</p><button class="btn btn-light" onclick="navigate('contactsettings')">Edit Contact</button></div>
+ </div>`;
+}
+
+/* ---------------- ADMIN COMPLAINT MANAGEMENT ---------------- */
+
+function allComplaints(){
+ const list=db.complaints.slice().reverse();
+ return heading("All Complaints","View, assign and manage complaints submitted by users.")+
+ `<div class="panel"><div class="panel-head"><h3>Complaint Records (${list.length})</h3><input class="search" placeholder="Search complaints..." oninput="filterRows(this,'allTable')"></div><div id="allTable">`+
+ table(["Complaint ID","Title","Category","User","Status","Date","Action"],list.map(c=>`<tr><td>${esc(c.id)}</td><td>${esc(c.title)}</td><td>${esc(c.category)}</td><td>${esc(c.userName)}</td><td>${badge(c.status)}</td><td>${date(c.created)}</td><td><button class="btn btn-light btn-small" onclick="viewComplaint('${c.id}')">View</button> <button class="btn btn-primary btn-small" onclick="assignComplaint('${c.id}')">Assign</button> <button class="btn btn-danger btn-small" onclick="deleteComplaint('${c.id}')">Delete</button></td></tr>`))+
+ `</div></div>`;
+}
+function assignComplaint(cid){
+ const c=db.complaints.find(x=>x.id===cid);if(!c)return;
+ modal("Assign Complaint to Officer",`
+ <div class="location-card">Complaint: <b>${esc(c.id)}</b> · ${esc(c.title)}</div>
+ <form onsubmit="saveAssignment(event,'${cid}')">
+ <div class="field"><label>Select Officer</label><select name="officerId" required><option value="">Choose officer</option>${db.officers.filter(o=>o.active!==false).map(o=>`<option value="${o.id}" ${c.officerId===o.id?"selected":""}>${esc(o.name)} — ${esc(o.department)}</option>`).join("")}</select></div>
+ <button class="btn btn-primary" style="width:100%">Assign Complaint</button>
+ </form>`);
+}
+function saveAssignment(e,cid){
+ e.preventDefault();const oid=new FormData(e.target).get("officerId");
+ const o=db.officers.find(x=>x.id===oid),c=db.complaints.find(x=>x.id===cid);
+ if(!o||!c){toast("Please select a valid officer.");return}
+ c.officerId=o.id;c.officerName=o.name;
+ c.updates.push({status:c.status,note:"Assigned to officer "+o.name,created:new Date().toISOString()});
+ notifyUser(o.id,"Complaint assigned to you: "+c.id);
+ notifyUser(c.userId,"Your complaint has been assigned to officer "+o.name+".");
+ save();closeModal();render();toast("Complaint assigned.");
+}
+function deleteComplaint(cid){
+ confirmBox("Permanently delete this complaint and its record?",()=>{
+ db.complaints=db.complaints.filter(c=>c.id!==cid);
+ db.feedback=db.feedback.filter(f=>f.complaintId!==cid);
+ save();render();toast("Complaint deleted.");
+ });
+}
+
+/* ---------------- ADMIN USER MANAGEMENT ---------------- */
+
+function manageUsers(){
+ return heading("Manage User Accounts","View, create and manage registered users.",`<button class="btn btn-primary" onclick="addUser()">＋ Add User</button>`)+
+ `<div class="panel"><div class="panel-head"><h3>Registered Users</h3><input class="search" placeholder="Search users..." oninput="filterRows(this,'userTable')"></div><div id="userTable">`+
+ table(["User ID","Name","Email","Phone","Actions"],db.users.filter(u=>u.role==="user").map(u=>`<tr><td>${esc(u.id)}</td><td>${esc(u.name)}</td><td>${esc(u.email)}</td><td>${esc(u.phone)}</td><td><button class="btn btn-light btn-small" onclick="editAccount('${u.id}','user')">Edit</button> <button class="btn btn-danger btn-small" onclick="deleteAccount('${u.id}','user')">Delete</button></td></tr>`))+
+ `</div></div>`;
+}
+function addUser(){
+ modal("Create User Account",`
+ <form onsubmit="createUser(event)">
+ <div class="field"><label>Name</label><input name="name" required></div>
+ <div class="field"><label>Email</label><input name="email" type="email" required></div>
+ <div class="field"><label>Phone</label><input name="phone" required></div>
+ <div class="field"><label>Password</label><input name="password" required minlength="6"></div>
+ <button class="btn btn-primary" style="width:100%">Create Account</button>
+ </form>`);
+}
+function createUser(e){
+ e.preventDefault();const f=new FormData(e.target);
+ const email=String(f.get("email")).toLowerCase();
+ if([...db.users,...db.officers].some(x=>x.email.toLowerCase()===email)){toast("Email already exists.");return}
+ db.users.push({id:uid("U"),name:f.get("name"),email,password:f.get("password"),phone:f.get("phone"),role:"user"});
+ save();closeModal();render();toast("User account created.");
+}
+function editAccount(id,role){
+ const a=role==="user"?db.users.find(x=>x.id===id):db.officers.find(x=>x.id===id);
+ if(!a)return;
+ modal("Edit Account",`
+ <form onsubmit="saveAccount(event,'${id}','${role}')">
+ <div class="field"><label>Name</label><input name="name" value="${esc(a.name)}" required></div>
+ <div class="field"><label>Email</label><input name="email" type="email" value="${esc(a.email)}" required></div>
+ <div class="field"><label>Phone</label><input name="phone" value="${esc(a.phone)}" required></div>
+ <div class="field"><label>New Password</label><input name="password" value="${esc(a.password)}" required></div>
+ <button class="btn btn-primary" style="width:100%">Save Changes</button>
+ </form>`);
+}
+function saveAccount(e,id,role){
+ e.preventDefault();const f=new FormData(e.target);
+ const list=role==="user"?db.users:db.officers;
+ const a=list.find(x=>x.id===id);
+ if([...db.users,...db.officers].some(x=>x.id!==id&&x.email.toLowerCase()===String(f.get("email")).toLowerCase())){toast("Email already in use.");return}
+ Object.assign(a,{name:f.get("name"),email:f.get("email"),phone:f.get("phone"),password:f.get("password")});
+ save();closeModal();render();toast("Account updated.");
+}
+function deleteAccount(id,role){
+ confirmBox("Delete this account?",()=>{
+ if(role==="user")db.users=db.users.filter(x=>x.id!==id);
+ else db.officers=db.officers.filter(x=>x.id!==id);
+ save();render();toast("Account deleted.");
+ });
+}
+
+/* ---------------- ADMIN OFFICER MANAGEMENT ---------------- */
+
+function manageOfficers(){
+ return heading("Manage Officers","Generate officer IDs and passwords and manage officer accounts.",`<button class="btn btn-primary" onclick="createOfficerModal()">＋ Generate Officer Account</button>`)+
+ `<div class="panel"><div class="panel-head"><h3>Officer Accounts</h3><input class="search" placeholder="Search officers..." oninput="filterRows(this,'officerTable')"></div><div id="officerTable">`+
+ table(["Officer ID","Name","Email","Department","Phone","Status","Actions"],db.officers.map(o=>`<tr><td><b>${esc(o.id)}</b></td><td>${esc(o.name)}</td><td>${esc(o.email)}</td><td>${esc(o.department)}</td><td>${esc(o.phone)}</td><td>${o.active===false?badge("Closed"):badge("Approved")}</td><td><button class="btn btn-light btn-small" onclick="editAccount('${o.id}','officer')">Edit</button> <button class="btn btn-danger btn-small" onclick="deleteAccount('${o.id}','officer')">Delete</button> <button class="btn btn-light btn-small" onclick="toggleOfficer('${o.id}')">${o.active===false?"Enable":"Disable"}</button></td></tr>`))+
+ `</div></div>`;
+}
+function createOfficerModal(){
+ modal("Generate Officer ID & Password",`
+ <form onsubmit="createOfficer(event)">
+ <div class="field"><label>Officer Name</label><input name="name" required></div>
+ <div class="field"><label>Email Address</label><input name="email" type="email" required></div>
+ <div class="field"><label>Phone Number</label><input name="phone" required></div>
+ <div class="field"><label>Department</label><select name="department"><option>Public Works</option><option>Water Supply</option><option>Electricity</option><option>Sanitation</option><option>Public Safety</option><option>General Administration</option></select></div>
+ <div class="field"><label>Initial Password</label><input name="password" minlength="6" required></div>
+ <button class="btn btn-primary" style="width:100%">Generate Account</button>
+ </form>`);
+}
+function createOfficer(e){
+ e.preventDefault();const f=new FormData(e.target),email=String(f.get("email")).toLowerCase();
+ if([...db.users,...db.officers].some(x=>x.email.toLowerCase()===email)){toast("Email already exists.");return}
+ const o={id:uid("OFF"),name:f.get("name"),email,phone:f.get("phone"),department:f.get("department"),password:f.get("password"),role:"officer",active:true};
+ db.officers.push(o);save();closeModal();render();
+ modal("Officer Account Created",`<div class="location-card"><b>Officer login credentials</b><br>Officer ID: ${esc(o.id)}<br>Email: ${esc(o.email)}<br>Password: ${esc(o.password)}</div><p style="font-size:10px;color:#8793a8;margin:12px 0">Share these credentials securely with the officer. This demo stores passwords locally.</p><button class="btn btn-primary" onclick="closeModal()">Done</button>`);
+}
+function toggleOfficer(id){
+ const o=db.officers.find(x=>x.id===id);if(!o)return;
+ o.active=o.active===false;save();render();toast(o.active?"Officer enabled.":"Officer disabled.");
+}
+
+/* ---------------- ADMIN PLATFORM SETTINGS ---------------- */
+
+function settingsPage(){
+ const features=db.settings.features;
+ const items=[["post","Post Complaint"],["track","Complaint Tracking"],["feedback","Feedback"],["contact","Admin Contact"],["location","Map Location"]];
+ return heading("Platform Settings","Control the availability of website features for users.")+
+ `<div class="panel"><div class="panel-head"><h3>User Feature Visibility</h3></div>
+ <p style="font-size:11px;color:#7b879c;margin-bottom:20px">Switch features on or off. Disabled features will be hidden or unavailable to users.</p>
+ ${items.map(([key,label])=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:15px 0;border-bottom:1px solid #edf0f5"><div><b style="font-size:12px">${label}</b><p style="font-size:10px;color:#8793a8;margin-top:5px">Control ${label.toLowerCase()} feature</p></div><label style="display:flex;align-items:center;gap:8px;font-size:11px"><input type="checkbox" ${features[key]?"checked":""} onchange="toggleFeature('${key}',this.checked)"> ${features[key]?"Enabled":"Hidden"}</label></div>`).join("")}
+ </div>
+ <div class="panel"><h3 style="font-size:13px;margin-bottom:10px">Administrative Rights</h3><p style="font-size:11px;color:#7b879c;line-height:1.8">Administrators can create, edit, disable and delete accounts; assign complaints; control feature visibility; manage contact details; and review all complaint records.</p></div>`;
+}
+function toggleFeature(key,value){
+ db.settings.features[key]=value;save();toast(value?"Feature enabled.":"Feature hidden.");
+}
+
+/* ---------------- ADMIN CONTACT DETAILS ---------------- */
+
+function contactSettings(){
+ const s=db.settings;
+ return heading("Admin Contact Details","Update the contact information visible to users.")+
+ `<div class="panel" style="max-width:650px">
+ <form onsubmit="saveContact(event)">
+ <div class="field"><label>Contact Name</label><input name="name" value="${esc(s.contactName)}" required></div>
+ <div class="field"><label>Support Email</label><input name="email" type="email" value="${esc(s.contactEmail)}" required></div>
+ <div class="field"><label>Support Phone</label><input name="phone" value="${esc(s.contactPhone)}" required></div>
+ <button class="btn btn-primary">Save Contact Details</button>
+ </form></div>`;
+}
+function saveContact(e){
+ e.preventDefault();const f=new FormData(e.target);
+ db.settings.contactName=f.get("name");db.settings.contactEmail=f.get("email");db.settings.contactPhone=f.get("phone");
+ save();render();toast("Contact details updated.");
+}
+function contactPage(){
+ if(!db.settings.features.contact)return heading("Contact Unavailable","The administrator has temporarily hidden contact details.");
+ const s=db.settings;
+ return heading("Admin Contact Details","Contact the administration team for support.")+
+ `<div class="card-grid">
+ <div class="action-card"><div class="big-icon">👤</div><h3>${esc(s.contactName)}</h3><p>Administration and complaint support team.</p></div>
+ <div class="action-card"><div class="big-icon">✉️</div><h3>Email Support</h3><p>${esc(s.contactEmail)}</p><a class="btn btn-light" href="mailto:${encodeURIComponent(s.contactEmail)}">Send Email ↗</a></div>
+ <div class="action-card"><div class="big-icon">☎️</div><h3>Phone Support</h3><p>${esc(s.contactPhone)}</p><a class="btn btn-light" href="tel:${encodeURIComponent(s.contactPhone)}">Call Support ↗</a></div>
+ </div>`;
+}
+
+/* ---------------- USER FEEDBACK ---------------- */
+
+function userFeedback(){
+ if(!db.settings.features.feedback)return heading("Feedback Unavailable","The feedback feature is temporarily disabled.");
+ const resolved=ownComplaints().filter(c=>c.status==="Resolved");
+ return heading("Share Your Feedback","Tell us about your complaint resolution experience.")+
+ `<div class="panel" style="max-width:650px"><form onsubmit="submitFeedback(event)">
+ <div class="field"><label>Select Resolved Complaint</label><select name="complaintId" required><option value="">Choose complaint</option>${resolved.map(c=>`<option value="${c.id}">${esc(c.id)} — ${esc(c.title)}</option>`).join("")}</select></div>
+ <div class="field"><label>Rating</label><select name="rating" required><option value="">Select rating</option><option value="5">★★★★★ — Excellent</option><option value="4">★★★★ — Very Good</option><option value="3">★★★ — Good</option><option value="2">★★ — Poor</option><option value="1">★ — Very Poor</option></select></div>
+ <div class="field"><label>Your Comments</label><textarea name="message" required placeholder="Share your experience..."></textarea></div>
+ <button class="btn btn-primary">Submit Feedback</button>
+ </form></div>`;
+}
+function submitFeedback(e){
+ e.preventDefault();const f=new FormData(e.target),cid=f.get("complaintId");
+ if(db.feedback.some(x=>x.complaintId===cid&&x.userId===currentUser.id)){toast("Feedback already submitted for this complaint.");return}
+ db.feedback.push({id:uid("FB"),userId:currentUser.id,userName:currentUser.name,complaintId:cid,rating:f.get("rating"),message:f.get("message"),created:new Date().toISOString()});
+ notifyUser("A1001","New feedback received for complaint "+cid);
+ save();render();toast("Thank you for your feedback!");
+}
+function adminFeedback(){
+ return heading("Feedback Records","Review feedback submitted by users.")+
+ `<div class="panel">${table(["Feedback ID","User","Complaint","Rating","Comments","Date"],db.feedback.slice().reverse().map(f=>`<tr><td>${esc(f.id)}</td><td>${esc(f.userName)}</td><td>${esc(f.complaintId)}</td><td>${"★".repeat(Number(f.rating))}</td><td>${esc(f.message)}</td><td>${date(f.created)}</td></tr>`))}</div>`;
+}
+
+/* ---------------- SEARCH COMMON SOLUTIONS ---------------- */
+
+const solutions=[
+ ["Road & Transport","Report potholes with a clear location and photographs. The relevant road maintenance team can inspect and schedule repairs."],
+ ["Water Supply","Include the affected street, supply timing and duration of disruption in your complaint."],
+ ["Electricity","Provide the area, pole or service reference when reporting outages or damaged electrical equipment."],
+ ["Sanitation","Mention the exact location and nature of waste accumulation or drainage problems."],
+ ["Public Safety","Describe the issue, location and urgency. For immediate danger, contact the appropriate emergency service."],
+ ["Street Lights","Include the pole number or nearest landmark to help the maintenance team identify the faulty light."]
+];
+function solutionsPage(){
+ return heading("Search Common Issues","Browse common issues and suggested solutions.")+
+ `<div class="panel"><div class="field"><label>Search by keyword or category</label><input id="solutionSearch" placeholder="Example: water, road, electricity..." oninput="filterSolutions(this.value)"></div><div id="solutionResults">${solutionCards(solutions)}</div></div>`;
+}
+function solutionCards(items){
+ return items.length?items.map(s=>`<div class="location-card" style="margin-bottom:10px"><b>${esc(s[0])}</b><p style="margin-top:6px">${esc(s[1])}</p></div>`).join(""):"<div class='empty'>No matching solutions found.</div>";
+}
+function filterSolutions(q){
+ document.getElementById("solutionResults").innerHTML=solutionCards(solutions.filter(s=>s.join(" ").toLowerCase().includes(q.toLowerCase())));
+}
+
+/* ---------------- PROFILE ---------------- */
+
+function profilePage(){
+ const a=getAccount();
+ return heading("My Profile","View and update your account details.")+
+ `<div class="panel" style="max-width:650px"><form onsubmit="updateProfile(event)">
+ <div class="field"><label>Account ID</label><input value="${esc(a.id)}" disabled></div>
+ <div class="field"><label>Full Name</label><input name="name" value="${esc(a.name)}" required></div>
+ <div class="field"><label>Email</label><input name="email" type="email" value="${esc(a.email)}" required></div>
+ <div class="field"><label>Phone</label><input name="phone" value="${esc(a.phone)}" required></div>
+ <div class="field"><label>New Password</label><input name="password" type="password" minlength="6" placeholder="Enter a new password to change"></div>
+ <button class="btn btn-primary">Update Profile</button>
+ </form></div>`;
+}
+function updateProfile(e){
+ e.preventDefault();const f=new FormData(e.target),a=getAccount();
+ if([...db.users,...db.officers].some(x=>x.id!==a.id&&x.email.toLowerCase()===String(f.get("email")).toLowerCase())){toast("Email already registered.");return}
+ a.name=f.get("name");a.email=f.get("email");a.phone=f.get("phone");
+ if(f.get("password"))a.password=f.get("password");
+ currentUser={...a};save();
+ document.getElementById("topName").textContent=a.name;
+ document.getElementById("avatar").textContent=a.name.charAt(0).toUpperCase();
+ render();toast("Profile updated.");
+}
+
+/* ---------------- START ---------------- */
+
+function start(){
+ // Demo application intentionally starts at the login screen.
+}
+start();
+</script>
+<script>
+// Initialize the map only after the complaint form has been rendered.
+const originalNavigate=navigate;
+navigate=function(page){
+ originalNavigate(page);
+ if(currentUser.role==="user"&&page==="post"&&db.settings.features.location){
+  setTimeout(initMap,100);
+ }
+};
+</script>
+</body>
+</html>

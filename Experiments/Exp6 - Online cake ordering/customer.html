@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Account Portal - SweetCakes Artisan Bakery</title>
+  <meta name="description" content="Manage your cake orders, live tracking, saved delivery addresses, celebration birthday reminders, and SweetCoins bakery rewards.">
+
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #9e1a47;
+      --primary-light: #c42b5d;
+      --primary-glow: rgba(158, 26, 71, 0.25);
+      --accent: #ff5e7e;
+      --accent-soft: #ffebee;
+      --gold: #d4af37;
+      --gold-light: #fef7e0;
+      --cream: #fff9f6;
+      --bg-card: #ffffff;
+      --text-main: #2b1f24;
+      --text-muted: #6e5e65;
+      --border-subtle: #f0e2e5;
+      --success: #10b981;
+      --success-light: #ecfdf5;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --shadow-sm: 0 2px 8px rgba(158, 26, 71, 0.05);
+      --shadow-md: 0 8px 24px rgba(158, 26, 71, 0.08);
+      --shadow-lg: 0 20px 40px rgba(158, 26, 71, 0.14);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--cream);
+      color: var(--text-main);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, .font-serif {
+      font-family: 'Playfair Display', Georgia, serif;
+      letter-spacing: -0.01em;
+    }
+
+    /* TOP ANNOUNCEMENT */
+    .announcement-bar {
+      background: linear-gradient(90deg, #7b1336, #b02353, #7b1336);
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 7px 16px;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .badge-pill {
+      background: rgba(255, 255, 255, 0.22);
+      padding: 2px 10px;
+      border-radius: var(--radius-full);
+      font-weight: 700;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+    }
+
+    /* HEADER */
+    header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 12px 5%;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 14px var(--primary-glow);
+      color: white;
+      transform: rotate(-3deg);
+    }
+
+    .logo-text h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.1;
+    }
+
+    .logo-text span {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 1.8px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      padding: 9px 16px;
+      border-radius: var(--radius-full);
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: var(--transition);
+    }
+
+    .nav-btn:hover {
+      color: var(--primary);
+      background: var(--accent-soft);
+    }
+
+    .nav-btn.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    /* CUSTOMER HERO PROFILE BANNER */
+    .profile-hero {
+      background: linear-gradient(135deg, #3d1422 0%, #691733 50%, #9e1a47 100%);
+      color: white;
+      padding: 36px 5%;
+      margin-bottom: 30px;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile-hero::after {
+      content: '🍰';
+      position: absolute;
+      right: 3%;
+      bottom: -15px;
+      font-size: 140px;
+      opacity: 0.08;
+      pointer-events: none;
+    }
+
+    .profile-hero-inner {
+      max-width: 1360px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .profile-user-card {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .avatar-circle {
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), #f7d794);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      border: 3px solid rgba(255,255,255,0.4);
+      color: #3b2207;
+    }
+
+    .user-info h2 {
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: white;
+      line-height: 1.2;
+    }
+
+    .user-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 6px;
+      font-size: 0.88rem;
+      color: #f7e6eb;
+    }
+
+    .vip-badge {
+      background: rgba(212, 175, 55, 0.25);
+      border: 1px solid var(--gold);
+      color: #ffd700;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .reward-stats-box {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .reward-stat-pill {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius-md);
+      padding: 14px 22px;
+      text-align: center;
+      min-width: 140px;
+    }
+
+    .stat-number {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: #ffd700;
+      line-height: 1;
+    }
+
+    .stat-title {
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 4px;
+      color: #f5dce3;
+    }
+
+    /* CUSTOMER PORTAL MAIN LAYOUT */
+    .portal-container {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 0 5% 60px;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    /* SIDEBAR TABS */
+    .portal-sidebar {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 90px;
+    }
+
+    .tab-btn {
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      border: none;
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: var(--transition);
+      margin-bottom: 6px;
+    }
+
+    .tab-btn:hover {
+      background: var(--cream);
+      color: var(--primary);
+    }
+
+    .tab-btn.active {
+      background: var(--accent-soft);
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .tab-btn .tab-icon {
+      font-size: 20px;
+      width: 24px;
+      text-align: center;
+    }
+
+    .tab-badge {
+      margin-left: auto;
+      background: var(--primary);
+      color: white;
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      font-weight: 700;
+    }
+
+    /* CONTENT TABS */
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .card-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* BUTTONS & INPUTS */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: var(--radius-full);
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px var(--primary-glow);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--primary);
+      border: 1.5px solid var(--primary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--accent-soft);
+    }
+
+    .btn-sm {
+      padding: 6px 14px;
+      font-size: 0.82rem;
+    }
+
+    .btn-danger {
+      background: #fee2e2;
+      color: var(--danger);
+      border: 1px solid #fecaca;
+    }
+
+    .btn-danger:hover {
+      background: var(--danger);
+      color: white;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      font-family: inherit;
+      font-size: 0.92rem;
+      background: white;
+      color: var(--text-main);
+      outline: none;
+      transition: var(--transition);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    /* ADDRESS TILES */
+    .address-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 18px;
+    }
+
+    .address-card {
+      border: 1.5px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      position: relative;
+      background: #fffafa;
+      transition: var(--transition);
+    }
+
+    .address-card.default-address {
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+
+    .address-type-badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      background: var(--accent-soft);
+      color: var(--primary);
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      margin-bottom: 8px;
+    }
+
+    /* REMINDERS LIST */
+    .reminder-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      border: 1.5px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+      background: white;
+    }
+
+    .reminder-date-badge {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: var(--accent-soft);
+      color: var(--primary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      line-height: 1.1;
+      flex-shrink: 0;
+    }
+
+    /* ORDER HISTORY CARDS */
+    .order-item-card {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-bottom: 16px;
+      background: white;
+    }
+
+    .order-status-pill {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+    }
+
+    .status-pending { background: #fef3c7; color: #92400e; }
+    .status-preparing { background: #e0e7ff; color: #3730a3; }
+    .status-ready { background: #dbeafe; color: #1e40af; }
+    .status-outfordelivery { background: #ede9fe; color: #5b21b6; }
+    .status-delivered { background: #d1fae5; color: #065f46; }
+    .status-cancelled { background: #fee2e2; color: #991b1b; }
+
+    /* WISHLIST GRID */
+    .wishlist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 18px;
+    }
+
+    .wish-cake-card {
+      background: white;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .wish-cake-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+
+    .wish-cake-body {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    /* TOAST */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toast {
+      background: #2b1720;
+      color: white;
+      padding: 12px 18px;
+      border-radius: var(--radius-md);
+      font-size: 0.9rem;
+      border-left: 4px solid var(--accent);
+      box-shadow: var(--shadow-lg);
+      animation: fadeIn 0.3s ease;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #241118;
+      color: #e5d7dc;
+      padding: 30px 5%;
+      margin-top: auto;
+      text-align: center;
+      font-size: 0.88rem;
+    }
+
+    @media (max-width: 900px) {
+      .portal-container {
+        grid-template-columns: 1fr;
+      }
+      .portal-sidebar {
+        position: static;
+        display: flex;
+        overflow-x: auto;
+        padding: 10px;
+        gap: 6px;
+      }
+      .tab-btn {
+        width: auto;
+        white-space: nowrap;
+        margin-bottom: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ANNOUNCEMENT -->
+  <div class="announcement-bar">
+    <span>🍰 SweetRewards Club: You earn 5 SweetCoins for every ₹100 spent!</span>
+    <span class="badge-pill">TIER: GOLD PATRON</span>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <a href="index.html" class="logo-container">
+      <div class="logo-icon">🍰</div>
+      <div class="logo-text">
+        <h1>SweetCakes</h1>
+        <span>Artisan Bakery & Co.</span>
+      </div>
+    </a>
+
+    <nav>
+      <a href="index.html" class="nav-btn">🏠 Bakery Home</a>
+      <a href="index.html#cakes" class="nav-btn">🎂 Cake Menu</a>
+      <a href="index.html#custom" class="nav-btn">🎨 Custom Studio</a>
+      <a href="customer.html" class="nav-btn active">👤 Customer Portal</a>
+      <a href="index.html#cart" class="nav-btn">🛒 Cart (<span id="portalCartCount">0</span>)</a>
+    </nav>
+  </header>
+
+  <!-- CUSTOMER HERO PROFILE -->
+  <section class="profile-hero">
+    <div class="profile-hero-inner">
+      <div class="profile-user-card">
+        <div class="avatar-circle">👩‍🍳</div>
+        <div class="user-info">
+          <h2 id="heroCustomerName">Ananya Sharma</h2>
+          <div class="user-meta">
+            <span class="vip-badge">⭐ Gold Member</span>
+            <span id="heroCustomerEmail">ananya.sharma@example.com</span>
+            <span>•</span>
+            <span id="heroCustomerPhone">+91 98765 43210</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="reward-stats-box">
+        <div class="reward-stat-pill">
+          <div class="stat-number" id="walletBalance">480</div>
+          <div class="stat-title">SweetCoins (₹480)</div>
+        </div>
+        <div class="reward-stat-pill">
+          <div class="stat-number" id="totalOrdersCount">0</div>
+          <div class="stat-title">Orders Delivered</div>
+        </div>
+        <div class="reward-stat-pill">
+          <div class="stat-number" id="remindersCount">3</div>
+          <div class="stat-title">Celebration Alerts</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTAL MAIN LAYOUT -->
+  <main class="portal-container">
+    <!-- LEFT SIDEBAR -->
+    <aside class="portal-sidebar">
+      <button class="tab-btn active" onclick="switchTab('ordersTab', this)">
+        <span class="tab-icon">📦</span>
+        <span>My Orders & Invoices</span>
+        <span class="tab-badge" id="sidebarOrdersBadge">0</span>
+      </button>
+
+      <button class="tab-btn" onclick="switchTab('addressesTab', this)">
+        <span class="tab-icon">📍</span>
+        <span>Saved Delivery Addresses</span>
+      </button>
+
+      <button class="tab-btn" onclick="switchTab('remindersTab', this)">
+        <span class="tab-icon">🎉</span>
+        <span>Birthday & Celebration Alerts</span>
+        <span class="tab-badge" style="background: var(--warning);">3</span>
+      </button>
+
+      <button class="tab-btn" onclick="switchTab('wishlistTab', this)">
+        <span class="tab-icon">❤️</span>
+        <span>My Cake Wishlist</span>
+        <span class="tab-badge" id="sidebarWishlistBadge">0</span>
+      </button>
+
+      <button class="tab-btn" onclick="switchTab('walletTab', this)">
+        <span class="tab-icon">💰</span>
+        <span>SweetCoins & Cashbacks</span>
+      </button>
+
+      <button class="tab-btn" onclick="switchTab('profileTab', this)">
+        <span class="tab-icon">⚙</span>
+        <span>Account Settings</span>
+      </button>
+    </aside>
+
+    <!-- RIGHT CONTENT AREA -->
+    <section class="portal-content">
+      <!-- ==========================================
+           TAB 1: ORDERS & INVOICES
+      ========================================== -->
+      <div id="ordersTab" class="tab-content active">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">📦 Your Order History</h3>
+            <a href="index.html" class="btn btn-primary btn-sm">+ Order New Cake</a>
+          </div>
+
+          <div id="customerOrdersContainer"></div>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           TAB 2: SAVED ADDRESSES (DAY-TO-DAY LIFE)
+      ========================================== -->
+      <div id="addressesTab" class="tab-content">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">📍 Saved Delivery Addresses</h3>
+            <button class="btn btn-primary btn-sm" onclick="toggleAddAddressForm()">+ Add New Address</button>
+          </div>
+
+          <!-- NEW ADDRESS FORM (COLLAPSIBLE) -->
+          <div id="newAddressFormWrapper" style="display: none; background: #fff8fa; border: 1.5px dashed #f5c4d0; padding: 20px; border-radius: var(--radius-md); margin-bottom: 24px;">
+            <h4 style="margin-bottom: 14px; color: var(--primary);">Save New Delivery Location</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+              <div class="form-group">
+                <label>Address Label</label>
+                <select id="addrLabel">
+                  <option value="Home">Home 🏠</option>
+                  <option value="Office">Office 🏢</option>
+                  <option value="Parents">Parents' Home 🏡</option>
+                  <option value="Partner">Partner / Friend 💖</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Recipient Name</label>
+                <input type="text" id="addrRecipient" placeholder="e.g. Ananya Sharma">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Complete Street Address & Landmark</label>
+              <textarea id="addrText" rows="2" placeholder="House/Flat No, Apartment, Street, City & Pincode"></textarea>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button class="btn btn-primary btn-sm" onclick="saveNewAddress()">Save Address</button>
+              <button class="btn btn-secondary btn-sm" onclick="toggleAddAddressForm()">Cancel</button>
+            </div>
+          </div>
+
+          <div class="address-grid" id="addressesGrid"></div>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           TAB 3: CELEBRATION REMINDERS (DAY-TO-DAY)
+      ========================================== -->
+      <div id="remindersTab" class="tab-content">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">🎉 Celebration Calendar & Reminders</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
+                Never miss an anniversary or birthday. We'll remind you 2 days in advance!
+              </p>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="toggleAddReminderForm()">+ Add Celebration</button>
+          </div>
+
+          <!-- ADD REMINDER FORM -->
+          <div id="newReminderForm" style="display: none; background: #fff8fa; border: 1.5px dashed #f5c4d0; padding: 20px; border-radius: var(--radius-md); margin-bottom: 24px;">
+            <h4 style="margin-bottom: 14px; color: var(--primary);">Add Birthday / Anniversary Reminder</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;">
+              <div class="form-group">
+                <label>Person's Name</label>
+                <input type="text" id="remPerson" placeholder="e.g. Mom, Rhea, Vikram">
+              </div>
+              <div class="form-group">
+                <label>Celebration Occasion</label>
+                <select id="remOccasion">
+                  <option value="Birthday">Birthday 🎂</option>
+                  <option value="Anniversary">Anniversary 💍</option>
+                  <option value="Mother's Day">Mother's Day 💐</option>
+                  <option value="Baby Shower">Baby Shower 🍼</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Date of Celebration</label>
+                <input type="date" id="remDate">
+              </div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button class="btn btn-primary btn-sm" onclick="saveNewReminder()">Save Celebration Alert</button>
+              <button class="btn btn-secondary btn-sm" onclick="toggleAddReminderForm()">Cancel</button>
+            </div>
+          </div>
+
+          <div id="remindersListContainer"></div>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           TAB 4: WISHLIST
+      ========================================== -->
+      <div id="wishlistTab" class="tab-content">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">❤️ Bookmarked Cakes</h3>
+            <span style="font-size: 0.85rem; color: var(--text-muted);">Cakes you've saved for upcoming parties</span>
+          </div>
+
+          <div id="wishlistContainer" class="wishlist-grid"></div>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           TAB 5: REWARDS & WALLET
+      ========================================== -->
+      <div id="walletTab" class="tab-content">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">💰 SweetCoins Rewards & Wallet</h3>
+            <span class="vip-badge">1 SweetCoin = ₹1.00</span>
+          </div>
+
+          <div style="background: linear-gradient(135deg, #fdf4f6, #ffeef2); border: 1px solid #f7cfd8; padding: 24px; border-radius: var(--radius-md); margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <span style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Available Wallet Balance</span>
+              <div style="font-size: 2.4rem; font-weight: 800; color: var(--primary);">₹480 <span style="font-size: 1rem; color: var(--text-muted); font-weight: 500;">(480 Coins)</span></div>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Redeem directly at checkout on index.html with 1-click!</p>
+            </div>
+            <a href="index.html" class="btn btn-primary">Use Coins on Cake 🍰</a>
+          </div>
+
+          <h4 style="font-size: 1.1rem; margin-bottom: 12px;">Recent Rewards Activity</h4>
+          <div style="font-size: 0.9rem;">
+            <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-subtle);">
+              <div>
+                <strong>+50 SweetCoins</strong>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">Cashback from Order #ORD9182341</p>
+              </div>
+              <span style="color: var(--success); font-weight: 700;">+₹50</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-subtle);">
+              <div>
+                <strong>+200 SweetCoins</strong>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">Welcome Birthday Bonus</p>
+              </div>
+              <span style="color: var(--success); font-weight: 700;">+₹200</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           TAB 6: PROFILE SETTINGS
+      ========================================== -->
+      <div id="profileTab" class="tab-content">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">⚙ Profile & Dietary Preferences</h3>
+          </div>
+
+          <form onsubmit="handleUpdateProfile(event)">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="profName" value="Ananya Sharma" required>
+              </div>
+              <div class="form-group">
+                <label>Mobile Number</label>
+                <input type="tel" id="profPhone" value="9876543210" required>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="profEmail" value="ananya.sharma@example.com" required>
+              </div>
+              <div class="form-group">
+                <label>Default Dietary Preference</label>
+                <select id="profDiet">
+                  <option value="eggless" selected>Always 100% Pure Eggless 🌿</option>
+                  <option value="regular">Standard / With Egg 🥚</option>
+                  <option value="sugarfree">Sugar-Free / Keto 🥑</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Save Changes</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <footer>
+    <p>© 2026 SweetCakes Artisan Bakery. Customer Portal & Self-Service Concierge.</p>
+  </footer>
+
+  <script>
+    // State Initialization
+    let orders = JSON.parse(localStorage.getItem("sweetOrders")) || [];
+    let cart = JSON.parse(localStorage.getItem("sweetCart")) || [];
+    let wishlist = JSON.parse(localStorage.getItem("sweetWishlist")) || [];
+    let cakes = JSON.parse(localStorage.getItem("sweetCakes")) || [];
+
+    // Customer Specific State
+    let userProfile = JSON.parse(localStorage.getItem("sweetUserProfile")) || {
+      name: "Ananya Sharma",
+      phone: "9876543210",
+      email: "ananya.sharma@example.com",
+      diet: "eggless"
+    };
+
+    let savedAddresses = JSON.parse(localStorage.getItem("sweetAddresses")) || [
+      {
+        id: 1,
+        label: "Home",
+        recipient: "Ananya Sharma",
+        address: "Apartment 4B, Magnolia Heights, Baker's Road, Metro Hub - 400050",
+        isDefault: true
+      },
+      {
+        id: 2,
+        label: "Office",
+        recipient: "Ananya Sharma (Tech Hub)",
+        address: "6th Floor, Cyber Towers, Corporate Park, Metro Hub - 400072",
+        isDefault: false
+      }
+    ];
+
+    let reminders = JSON.parse(localStorage.getItem("sweetReminders")) || [
+      { id: 1, person: "Rhea (Best Friend)", occasion: "Birthday 🎂", date: "2026-11-15" },
+      { id: 2, person: "Mom & Dad", occasion: "Anniversary 💍", date: "2026-12-04" },
+      { id: 3, person: "Vikram (Brother)", occasion: "Birthday 🎂", date: "2026-12-28" }
+    ];
+
+    function showToast(msg) {
+      const container = document.getElementById("toastContainer");
+      if (!container) return;
+      const t = document.createElement("div");
+      t.className = "toast";
+      t.innerText = msg;
+      container.appendChild(t);
+      setTimeout(() => t.remove(), 3500);
+    }
+
+    function switchTab(tabId, btn) {
+      document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      
+      const target = document.getElementById(tabId);
+      if (target) target.classList.add("active");
+      if (btn) btn.classList.add("active");
+    }
+
+    /* RENDER ORDERS */
+    function renderOrders() {
+      const container = document.getElementById("customerOrdersContainer");
+      if (!container) return;
+
+      document.getElementById("sidebarOrdersBadge").innerText = orders.length;
+      document.getElementById("totalOrdersCount").innerText = orders.filter(o => o.status === "Delivered").length;
+
+      if (orders.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 40px 10px;">
+            <span style="font-size: 45px;">📦</span>
+            <h4 style="margin: 10px 0 4px;">No cake orders yet!</h4>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">Celebrate special moments with gourmet artisan cakes.</p>
+            <a href="index.html" class="btn btn-primary btn-sm">Explore Menu 🎂</a>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = orders.map(order => {
+        const statusClass = "status-" + (order.status || "Pending").toLowerCase().replace(/\s+/g, '');
+        return `
+          <div class="order-item-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+              <div>
+                <strong>Order ID: ${order.id}</strong>
+                <span class="order-status-pill ${statusClass}" style="margin-left: 8px;">${order.status}</span>
+              </div>
+              <div style="font-weight: 700; color: var(--primary);">₹${order.total}</div>
+            </div>
+
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">
+              <strong>Items:</strong> ${order.items.map(i => `${i.name} (×${i.quantity})`).join(", ")}
+            </p>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 14px;">
+              <strong>Scheduled Delivery:</strong> ${order.date} (${order.time}) • <strong>To:</strong> ${order.address}
+            </p>
+
+            <div style="display: flex; gap: 8px; justify-content: flex-end;">
+              <a href="index.html#track" class="btn btn-secondary btn-sm">Track Delivery 📍</a>
+              <button class="btn btn-primary btn-sm" onclick="reorderItems('${order.id}')">Reorder ↺</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function reorderItems(orderId) {
+      const order = orders.find(o => o.id === orderId);
+      if (!order) return;
+      order.items.forEach(item => {
+        cart.push(JSON.parse(JSON.stringify(item)));
+      });
+      localStorage.setItem("sweetCart", JSON.stringify(cart));
+      showToast("Items added back to your cart! 🛒");
+      updateCartBadge();
+      setTimeout(() => { window.location.href = "index.html#cart"; }, 600);
+    }
+
+    /* RENDER ADDRESSES */
+    function renderAddresses() {
+      const container = document.getElementById("addressesGrid");
+      if (!container) return;
+
+      container.innerHTML = savedAddresses.map(addr => `
+        <div class="address-card ${addr.isDefault ? 'default-address' : ''}">
+          <span class="address-type-badge">${addr.label}</span>
+          ${addr.isDefault ? '<span style="font-size: 0.72rem; color: var(--primary); font-weight: 700; float: right;">✓ Default</span>' : ''}
+          <h4 style="font-size: 1rem; margin: 6px 0 2px;">${addr.recipient}</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px;">${addr.address}</p>
+          <div style="display: flex; gap: 6px;">
+            ${!addr.isDefault ? `<button class="btn btn-secondary btn-sm" style="padding: 4px 10px; font-size: 0.75rem;" onclick="setDefaultAddress(${addr.id})">Set Default</button>` : ''}
+            <button class="btn btn-danger btn-sm" style="padding: 4px 10px; font-size: 0.75rem;" onclick="deleteAddress(${addr.id})">Delete</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function toggleAddAddressForm() {
+      const form = document.getElementById("newAddressFormWrapper");
+      form.style.display = (form.style.display === "none") ? "block" : "none";
+    }
+
+    function saveNewAddress() {
+      const label = document.getElementById("addrLabel").value;
+      const recipient = document.getElementById("addrRecipient").value.trim();
+      const text = document.getElementById("addrText").value.trim();
+
+      if (!recipient || !text) {
+        showToast("Please provide recipient name and address!");
+        return;
+      }
+
+      savedAddresses.push({
+        id: Date.now(),
+        label: label,
+        recipient: recipient,
+        address: text,
+        isDefault: savedAddresses.length === 0
+      });
+
+      localStorage.setItem("sweetAddresses", JSON.stringify(savedAddresses));
+      toggleAddAddressForm();
+      renderAddresses();
+      showToast("Address saved successfully! 📍");
+    }
+
+    function setDefaultAddress(id) {
+      savedAddresses.forEach(a => a.isDefault = (a.id === id));
+      localStorage.setItem("sweetAddresses", JSON.stringify(savedAddresses));
+      renderAddresses();
+      showToast("Default delivery address updated.");
+    }
+
+    function deleteAddress(id) {
+      savedAddresses = savedAddresses.filter(a => a.id !== id);
+      localStorage.setItem("sweetAddresses", JSON.stringify(savedAddresses));
+      renderAddresses();
+      showToast("Address removed.");
+    }
+
+    /* RENDER REMINDERS */
+    function renderReminders() {
+      const container = document.getElementById("remindersListContainer");
+      if (!container) return;
+
+      document.getElementById("remindersCount").innerText = reminders.length;
+
+      container.innerHTML = reminders.map(r => {
+        const [year, month, day] = r.date.split("-");
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const monthName = monthNames[parseInt(month, 10) - 1] || "";
+
+        return `
+          <div class="reminder-item">
+            <div style="display: flex; align-items: center; gap: 16px;">
+              <div class="reminder-date-badge">
+                <span style="font-size: 1.1rem;">${day}</span>
+                <span style="font-size: 0.65rem; text-transform: uppercase;">${monthName}</span>
+              </div>
+              <div>
+                <strong>${r.person}</strong>
+                <p style="font-size: 0.82rem; color: var(--text-muted);">${r.occasion}</p>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <a href="index.html" class="btn btn-primary btn-sm">Order Gift Cake 🎁</a>
+              <button class="btn btn-danger btn-sm" onclick="deleteReminder(${r.id})">×</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function toggleAddReminderForm() {
+      const f = document.getElementById("newReminderForm");
+      f.style.display = (f.style.display === "none") ? "block" : "none";
+    }
+
+    function saveNewReminder() {
+      const person = document.getElementById("remPerson").value.trim();
+      const occasion = document.getElementById("remOccasion").value;
+      const date = document.getElementById("remDate").value;
+
+      if (!person || !date) {
+        showToast("Please enter person name and celebration date!");
+        return;
+      }
+
+      reminders.push({ id: Date.now(), person: person, occasion: occasion, date: date });
+      localStorage.setItem("sweetReminders", JSON.stringify(reminders));
+      toggleAddReminderForm();
+      renderReminders();
+      showToast("Celebration alert scheduled! 🎈");
+    }
+
+    function deleteReminder(id) {
+      reminders = reminders.filter(r => r.id !== id);
+      localStorage.setItem("sweetReminders", JSON.stringify(reminders));
+      renderReminders();
+    }
+
+    /* RENDER WISHLIST */
+    function renderWishlist() {
+      const container = document.getElementById("wishlistContainer");
+      if (!container) return;
+
+      document.getElementById("sidebarWishlistBadge").innerText = wishlist.length;
+
+      const wishCakes = cakes.filter(c => wishlist.includes(c.id));
+      if (wishCakes.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
+            <span style="font-size: 40px;">❤️</span>
+            <h4 style="margin: 10px 0 4px;">No cakes bookmarked yet!</h4>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 14px;">Click the heart icon on any cake to save it here.</p>
+            <a href="index.html#cakes" class="btn btn-primary btn-sm">Browse Cakes 🎂</a>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = wishCakes.map(cake => `
+        <div class="wish-cake-card">
+          <img src="${cake.image}" alt="${cake.name}">
+          <div class="wish-cake-body">
+            <h4 style="font-size: 1rem; margin-bottom: 4px;">${cake.name}</h4>
+            <div style="color: var(--primary); font-weight: 800; font-size: 1.15rem; margin-bottom: 10px;">₹${cake.price}</div>
+            <div style="display: flex; gap: 6px; margin-top: auto;">
+              <button class="btn btn-primary btn-sm" style="flex: 1;" onclick="addWishToCart(${cake.id})">Add to Bag 🛒</button>
+              <button class="btn btn-danger btn-sm" onclick="removeWish(${cake.id})">×</button>
+            </div>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function addWishToCart(cakeId) {
+      const cake = cakes.find(c => c.id === cakeId);
+      if (!cake) return;
+      cart.push({
+        id: cake.id,
+        name: cake.name,
+        price: cake.price,
+        quantity: 1,
+        isCustom: false,
+        image: cake.image
+      });
+      localStorage.setItem("sweetCart", JSON.stringify(cart));
+      updateCartBadge();
+      showToast(`Added ${cake.name} to cart! 🍰`);
+    }
+
+    function removeWish(cakeId) {
+      wishlist = wishlist.filter(id => id !== cakeId);
+      localStorage.setItem("sweetWishlist", JSON.stringify(wishlist));
+      renderWishlist();
+    }
+
+    function updateCartBadge() {
+      const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+      const b = document.getElementById("portalCartCount");
+      if (b) b.innerText = total;
+    }
+
+    function handleUpdateProfile(e) {
+      e.preventDefault();
+      userProfile.name = document.getElementById("profName").value.trim();
+      userProfile.phone = document.getElementById("profPhone").value.trim();
+      userProfile.email = document.getElementById("profEmail").value.trim();
+      userProfile.diet = document.getElementById("profDiet").value;
+
+      localStorage.setItem("sweetUserProfile", JSON.stringify(userProfile));
+
+      document.getElementById("heroCustomerName").innerText = userProfile.name;
+      document.getElementById("heroCustomerEmail").innerText = userProfile.email;
+      document.getElementById("heroCustomerPhone").innerText = `+91 ${userProfile.phone}`;
+
+      showToast("Profile settings saved! ✨");
+    }
+
+    // Initialize
+    document.addEventListener("DOMContentLoaded", () => {
+      // Sync profile info
+      document.getElementById("heroCustomerName").innerText = userProfile.name;
+      document.getElementById("heroCustomerEmail").innerText = userProfile.email;
+      document.getElementById("heroCustomerPhone").innerText = `+91 ${userProfile.phone}`;
+      document.getElementById("profName").value = userProfile.name;
+      document.getElementById("profPhone").value = userProfile.phone;
+      document.getElementById("profEmail").value = userProfile.email;
+      document.getElementById("profDiet").value = userProfile.diet || "eggless";
+
+      updateCartBadge();
+      renderOrders();
+      renderAddresses();
+      renderReminders();
+      renderWishlist();
+    });
+  </script>
+</body>
+</html>

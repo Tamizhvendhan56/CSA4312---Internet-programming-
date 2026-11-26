@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TECHNOVA | Premium Electronic Gadgets</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --dark:#0d1117;--dark2:#161b22;--dark3:#21262d;
+  --primary:#6366f1;--primary2:#818cf8;--primary-light:#eef2ff;
+  --cyan:#06b6d4;--cyan-light:#ecfeff;
+  --bg:#f8fafc;--white:#fff;--text:#0f172a;
+  --text2:#334155;--muted:#64748b;--border:#e2e8f0;
+  --green:#10b981;--green-light:#d1fae5;
+  --red:#ef4444;--red-light:#fee2e2;
+  --orange:#f59e0b;--orange-light:#fef3c7;
+  --purple:#8b5cf6;--purple-light:#ede9fe;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.04);
+  --shadow-lg:0 10px 40px rgba(0,0,0,.12);
+  --shadow-xl:0 20px 60px rgba(0,0,0,.18);
+  --radius:14px;--radius-sm:8px;--radius-lg:20px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{color:var(--primary);text-decoration:none}
+.hidden{display:none!important}
+button:disabled{opacity:.45;cursor:not-allowed}
+img{display:block;max-width:100%}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:99px}
+
+/* ══════════════════════════════════════
+   AUTH
+══════════════════════════════════════ */
+.auth{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:var(--white)}
+.auth-left{position:relative;overflow:hidden;background:var(--dark);color:white;padding:9%;display:flex;flex-direction:column;justify-content:center}
+.auth-left::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 70% 30%,#6366f140,transparent),radial-gradient(ellipse 60% 80% at 20% 80%,#06b6d430,transparent)}
+.auth-left-inner{position:relative;z-index:1}
+.auth-logo{font-size:22px;font-weight:900;letter-spacing:3px;margin-bottom:60px}
+.auth-logo span{color:#06b6d4}
+.auth-left h1{font-size:52px;font-weight:800;line-height:1.1;margin-bottom:20px;background:linear-gradient(135deg,#fff 0%,#94a3b8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.auth-left p{color:#94a3b8;font-size:16px;line-height:1.75;max-width:400px}
+.auth-features{display:flex;flex-direction:column;gap:14px;margin-top:40px}
+.auth-feature{display:flex;align-items:center;gap:12px;color:#94a3b8;font-size:14px}
+.auth-feature-icon{width:34px;height:34px;border-radius:9px;background:#ffffff12;display:grid;place-items:center;font-size:16px;flex-shrink:0}
+.auth-right{display:flex;align-items:center;justify-content:center;padding:40px 30px;background:var(--bg)}
+.login-card{width:min(420px,100%);background:white;padding:40px;border-radius:var(--radius-lg);box-shadow:var(--shadow-lg)}
+.login-card-logo{font-size:16px;font-weight:900;letter-spacing:2px;color:var(--dark);margin-bottom:28px}
+.login-card-logo span{color:var(--cyan)}
+.login-card h2{font-size:28px;font-weight:800;margin-bottom:6px}
+.login-card .sub{color:var(--muted);font-size:14px;margin-bottom:28px}
+.field-group{margin-bottom:18px}
+.field-label{display:block;font-size:11px;font-weight:700;letter-spacing:.8px;color:var(--muted);margin-bottom:7px;text-transform:uppercase}
+.field{width:100%;padding:12px 15px;border:1.5px solid var(--border);border-radius:var(--radius-sm);outline:none;background:var(--bg);color:var(--text);transition:border-color .2s,box-shadow .2s;font-size:14px}
+.field:focus{border-color:var(--primary);box-shadow:0 0 0 3px #6366f115;background:white}
+.btn{border:0;padding:11px 18px;border-radius:var(--radius-sm);font-weight:600;font-size:14px;transition:all .2s;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.btn:hover:not(:disabled){filter:brightness(.93);transform:translateY(-1px)}
+.btn:active:not(:disabled){transform:translateY(0)}
+.btn.primary{background:var(--primary);color:white;box-shadow:0 4px 14px #6366f130}
+.btn.full{width:100%;justify-content:center;padding:13px}
+.btn.secondary{background:var(--primary-light);color:var(--primary)}
+.btn.dark{background:var(--dark);color:white}
+.btn.danger{background:var(--red-light);color:var(--red)}
+.btn.success{background:var(--green-light);color:var(--green)}
+.btn.ghost{background:transparent;color:var(--muted);border:1.5px solid var(--border)}
+.btn.sm{padding:7px 12px;font-size:12px;border-radius:7px}
+.btn.icon-only{padding:9px;border-radius:9px}
+.auth-links{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;margin-top:20px;gap:10px;color:var(--muted)}
+.auth-divider{text-align:center;position:relative;margin:20px 0}
+.auth-divider::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:var(--border)}
+.auth-divider span{position:relative;background:white;padding:0 12px;color:var(--muted);font-size:12px}
+
+/* ══════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════ */
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:var(--dark);color:white;position:fixed;inset:0 auto 0 0;padding:24px 16px;display:flex;flex-direction:column;z-index:100;transition:width .25s}
+.sidebar-logo{font-size:19px;font-weight:900;letter-spacing:3px;padding:4px 12px 32px;color:white}
+.sidebar-logo span{color:var(--cyan)}
+.nav-section{font-size:9px;letter-spacing:2.5px;color:#475569;padding:12px 12px 7px;text-transform:uppercase;font-weight:600}
+.nav-btn{border:0;background:transparent;color:#94a3b8;width:100%;padding:10px 12px;border-radius:var(--radius-sm);text-align:left;margin:1px 0;display:flex;gap:12px;align-items:center;font-size:13.5px;font-weight:500;transition:all .15s;position:relative}
+.nav-btn:hover{background:#ffffff0a;color:#cbd5e1}
+.nav-btn.active{background:#6366f118;color:white;font-weight:600}
+.nav-btn.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--primary2);border-radius:0 3px 3px 0}
+.nav-icon{width:22px;text-align:center;font-size:16px;flex-shrink:0}
+.nav-badge{margin-left:auto;background:#ef4444;color:white;font-size:10px;font-weight:700;padding:2px 6px;border-radius:99px;min-width:18px;text-align:center}
+.sidebar-bottom{margin-top:auto;padding:16px 12px;border-top:1px solid #21262d;color:#475569;font-size:11px;line-height:1.6}
+.sidebar-user{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#ffffff08;border-radius:var(--radius-sm);margin-bottom:12px}
+.sidebar-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--cyan));display:grid;place-items:center;color:white;font-weight:700;font-size:13px;flex-shrink:0}
+.sidebar-user-info{flex:1;min-width:0}
+.sidebar-user-name{font-size:12.5px;font-weight:600;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sidebar-user-role{font-size:10.5px;color:#64748b}
+
+.main{margin-left:260px;width:calc(100% - 260px);display:flex;flex-direction:column;min-height:100vh}
+.topbar{height:68px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 32px;background:white;position:sticky;top:0;z-index:50}
+.topbar-left{display:flex;align-items:center;gap:10px}
+.breadcrumb{font-size:13px;color:var(--muted)}
+.breadcrumb b{color:var(--text);font-weight:600}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.topbar-role{background:var(--primary-light);color:var(--primary);padding:5px 12px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:.5px}
+.topbar-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--cyan));display:grid;place-items:center;color:white;font-weight:700;font-size:13px}
+.content{flex:1;padding:28px 32px}
+.footer{text-align:center;color:var(--muted);font-size:11.5px;padding:20px 32px;border-top:1px solid var(--border);background:white}
+
+/* ══════════════════════════════════════
+   PAGE COMPONENTS
+══════════════════════════════════════ */
+.page-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;gap:16px;flex-wrap:wrap}
+.page-head-text{}
+.eyebrow{font-size:10px;letter-spacing:2px;color:var(--primary);font-weight:700;text-transform:uppercase;margin-bottom:5px}
+.page-head h1{font-size:28px;font-weight:800;color:var(--text);margin-bottom:4px}
+.page-head p{color:var(--muted);font-size:14px}
+.page-head-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
+/* Hero Banner */
+.hero{padding:36px 40px;border-radius:var(--radius-lg);color:white;background:linear-gradient(125deg,#0f172a 0%,#1e1b4b 40%,#312e81 70%,#0e7490 100%);margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='50' cy='50' r='40' fill='none' stroke='%23ffffff08' stroke-width='1'/%3E%3C/svg%3E") 0 0/60px 60px}
+.hero-content{position:relative;z-index:1;max-width:600px}
+.hero .eyebrow{color:#93c5fd;margin-bottom:10px}
+.hero h2{font-size:30px;font-weight:800;line-height:1.2;margin-bottom:12px}
+.hero p{color:#cbd5e1;font-size:15px;margin-bottom:22px}
+.hero .btn.primary{background:white;color:#312e81;box-shadow:0 4px 14px rgba(255,255,255,.25)}
+.hero .btn.secondary{background:#ffffff15;color:white;border:1px solid #ffffff30}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:4px;position:relative;overflow:hidden;transition:box-shadow .2s}
+.stat-card:hover{box-shadow:var(--shadow-lg)}
+.stat-card::after{content:'';position:absolute;top:0;right:0;width:4px;height:100%;border-radius:0 var(--radius) var(--radius) 0}
+.stat-card.blue::after{background:var(--primary)}
+.stat-card.cyan::after{background:var(--cyan)}
+.stat-card.green::after{background:var(--green)}
+.stat-card.orange::after{background:var(--orange)}
+.stat-card.purple::after{background:var(--purple)}
+.stat-label{font-size:11px;font-weight:600;letter-spacing:.5px;color:var(--muted);text-transform:uppercase}
+.stat-value{font-size:28px;font-weight:800;color:var(--text);line-height:1.1;margin-top:4px}
+.stat-sub{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px}
+.stat-icon{position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:36px;opacity:.12}
+
+/* Panel */
+.panel{background:white;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:20px;overflow:hidden}
+.panel-head{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid var(--border)}
+.panel-head h3{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px}
+.panel-body{padding:20px 22px}
+
+.grid{display:grid;gap:18px}
+.two-col{grid-template-columns:1.6fr 1fr}
+.three-col{grid-template-columns:repeat(3,1fr)}
+
+/* ══════════════════════════════════════
+   PRODUCT CARDS
+══════════════════════════════════════ */
+.product-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.product-card{background:white;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .25s;cursor:default;display:flex;flex-direction:column}
+.product-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:#e0e7ff}
+.product-img-wrap{position:relative;height:200px;overflow:hidden;background:#f1f5f9}
+.product-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.product-card:hover .product-img-wrap img{transform:scale(1.06)}
+.product-img-emoji{height:200px;background:linear-gradient(135deg,#f1f5f9,#e2e8f0);display:grid;place-items:center;font-size:80px}
+.product-badge-wrap{position:absolute;top:12px;left:12px;display:flex;gap:6px;flex-wrap:wrap}
+.product-badge{padding:4px 10px;border-radius:99px;font-size:10px;font-weight:700;letter-spacing:.3px}
+.badge-category{background:rgba(0,0,0,.55);color:white;backdrop-filter:blur(4px)}
+.badge-out{background:#ef4444;color:white}
+.badge-new{background:var(--cyan);color:white}
+.badge-hot{background:var(--orange);color:white}
+.product-wishlist{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;background:white;border:none;box-shadow:0 2px 8px rgba(0,0,0,.12);display:grid;place-items:center;font-size:15px;transition:all .2s;cursor:pointer}
+.product-wishlist:hover{background:var(--red-light);transform:scale(1.1)}
+.product-wishlist.active{background:var(--red-light);color:var(--red)}
+.product-info{padding:16px 18px 18px;flex:1;display:flex;flex-direction:column;gap:6px}
+.product-name{font-size:15px;font-weight:700;color:var(--text);line-height:1.3}
+.product-desc{font-size:12.5px;color:var(--muted);line-height:1.5;flex:1}
+.product-rating{display:flex;align-items:center;gap:5px}
+.stars{color:#f59e0b;font-size:12px;letter-spacing:1px}
+.rating-count{font-size:11px;color:var(--muted)}
+.product-price-row{display:flex;align-items:center;gap:8px;margin-top:4px}
+.product-price{font-size:20px;font-weight:800;color:var(--text)}
+.product-price-old{font-size:13px;color:var(--muted);text-decoration:line-through}
+.product-discount{font-size:11px;font-weight:700;color:var(--green);background:var(--green-light);padding:2px 7px;border-radius:99px}
+.product-stock{font-size:12px;display:flex;align-items:center;gap:5px}
+.product-stock.in{color:var(--green)}
+.product-stock.out{color:var(--red)}
+.product-actions{display:flex;gap:8px;margin-top:6px}
+.product-actions .btn{flex:1;font-size:13px}
+
+/* ══════════════════════════════════════
+   TABLE
+══════════════════════════════════════ */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;white-space:nowrap;font-size:13px}
+thead th{text-align:left;font-size:10.5px;font-weight:700;color:var(--muted);letter-spacing:.7px;text-transform:uppercase;padding:12px 16px;background:#f8fafc;border-bottom:1px solid var(--border)}
+tbody td{padding:14px 16px;border-bottom:1px solid #f1f5f9;color:var(--text2);vertical-align:middle}
+tbody tr:last-child td{border:0}
+tbody tr:hover{background:#f8fafc}
+
+/* ══════════════════════════════════════
+   STATUS BADGES
+══════════════════════════════════════ */
+.status-badge{padding:5px 11px;border-radius:99px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:5px}
+.status-badge::before{content:'●';font-size:7px}
+.status-delivered{background:var(--green-light);color:var(--green)}
+.status-processing{background:var(--orange-light);color:var(--orange)}
+.status-cancelled{background:var(--red-light);color:var(--red)}
+.status-available{background:var(--green-light);color:var(--green)}
+.status-out{background:var(--red-light);color:var(--red)}
+
+/* ══════════════════════════════════════
+   TOOLBAR / SEARCH
+══════════════════════════════════════ */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;padding:18px 22px;border-bottom:1px solid var(--border);background:#f8fafc}
+.search-wrap{flex:1;min-width:200px;position:relative}
+.search-wrap .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:15px;pointer-events:none}
+.search-input{width:100%;padding:10px 12px 10px 36px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:white;font-size:13.5px;outline:none;transition:all .2s}
+.search-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px #6366f110}
+.filter-select{padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:white;font-size:13.5px;outline:none;cursor:pointer;transition:all .2s}
+.filter-select:focus{border-color:var(--primary)}
+
+/* ══════════════════════════════════════
+   CART
+══════════════════════════════════════ */
+.cart-item{display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid var(--border)}
+.cart-item:last-child{border:0}
+.cart-item-img{width:60px;height:60px;border-radius:var(--radius-sm);overflow:hidden;background:#f1f5f9;flex-shrink:0}
+.cart-item-img img{width:100%;height:100%;object-fit:cover}
+.cart-item-emoji{width:60px;height:60px;border-radius:var(--radius-sm);background:#f1f5f9;display:grid;place-items:center;font-size:28px;flex-shrink:0}
+.cart-item-info{flex:1;min-width:0}
+.cart-item-name{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cart-item-price{font-size:12.5px;color:var(--muted)}
+.qty-ctrl{display:flex;align-items:center;gap:0;border:1.5px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;background:white}
+.qty-ctrl button{border:0;background:transparent;padding:7px 11px;font-size:14px;font-weight:700;color:var(--primary);transition:background .15s;line-height:1}
+.qty-ctrl button:hover{background:var(--primary-light)}
+.qty-ctrl span{padding:7px 10px;font-size:13px;font-weight:600;min-width:32px;text-align:center;border-left:1.5px solid var(--border);border-right:1.5px solid var(--border)}
+
+.order-summary-box{background:var(--bg);border-radius:var(--radius);padding:20px}
+.summary-line{display:flex;justify-content:space-between;padding:8px 0;font-size:14px;color:var(--text2);border-bottom:1px solid var(--border)}
+.summary-line:last-child{border:0;font-size:17px;font-weight:800;color:var(--text);padding-top:14px}
+.payment-method{padding:12px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);display:flex;align-items:center;gap:10px;font-size:13.5px;cursor:pointer;transition:all .2s;background:white}
+.payment-method:hover{border-color:var(--primary);background:var(--primary-light)}
+.payment-method.selected{border-color:var(--primary);background:var(--primary-light);color:var(--primary);font-weight:600}
+
+/* ══════════════════════════════════════
+   MODAL
+══════════════════════════════════════ */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);display:grid;place-items:center;padding:16px;z-index:200;animation:fadeIn .15s}
+.modal{width:min(560px,100%);background:white;border-radius:var(--radius-lg);max-height:92vh;overflow-y:auto;animation:slideUp .2s}
+.modal-head{display:flex;justify-content:space-between;align-items:center;padding:22px 26px 18px;border-bottom:1px solid var(--border);position:sticky;top:0;background:white;z-index:1}
+.modal-head h3{font-size:17px;font-weight:800}
+.modal-body{padding:22px 26px}
+.close-btn{border:0;background:#f1f5f9;border-radius:7px;padding:7px 12px;font-size:14px;color:var(--muted);transition:all .15s}
+.close-btn:hover{background:var(--border);color:var(--text)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══════════════════════════════════════
+   TOAST
+══════════════════════════════════════ */
+.toast-container{position:fixed;bottom:24px;right:24px;z-index:999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:var(--dark);color:white;padding:14px 20px;border-radius:var(--radius-sm);box-shadow:var(--shadow-xl);font-size:13.5px;font-weight:500;min-width:250px;animation:toastIn .25s;display:flex;align-items:center;gap:10px;pointer-events:all}
+.toast.success{background:#065f46;border-left:4px solid var(--green)}
+.toast.error{background:#7f1d1d;border-left:4px solid var(--red)}
+.toast.info{background:#1e3a5f;border-left:4px solid var(--cyan)}
+@keyframes toastIn{from{opacity:0;transform:translateX(50px)}to{opacity:1;transform:translateX(0)}}
+
+/* ══════════════════════════════════════
+   REVIEW / FEEDBACK
+══════════════════════════════════════ */
+.review-card{padding:18px;border:1px solid var(--border);border-radius:var(--radius);background:white;margin-bottom:12px}
+.review-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:10px}
+.reviewer{display:flex;align-items:center;gap:10px}
+.reviewer-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--cyan));display:grid;place-items:center;color:white;font-weight:700;font-size:13px;flex-shrink:0}
+.reviewer-name{font-size:14px;font-weight:600}
+.reviewer-date{font-size:11.5px;color:var(--muted)}
+.review-stars{color:#f59e0b;font-size:14px}
+.review-text{font-size:13.5px;color:var(--text2);line-height:1.6}
+.review-helpful{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px;margin-top:10px}
+.review-helpful button{border:1px solid var(--border);background:white;border-radius:5px;padding:3px 10px;font-size:11.5px;cursor:pointer;transition:all .15s}
+.review-helpful button:hover{background:var(--primary-light);border-color:var(--primary);color:var(--primary)}
+
+/* Rating input */
+.star-input{display:flex;gap:5px;cursor:pointer;font-size:26px;color:#d1d5db;user-select:none}
+.star-input span{transition:color .15s}
+.star-input span.on{color:#f59e0b}
+.star-input span:hover,.star-input span:hover~span{color:#d1d5db}
+.star-input:hover span{color:#f59e0b}
+
+/* ══════════════════════════════════════
+   PROFILE / MISC
+══════════════════════════════════════ */
+.avatar-lg{width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--cyan));display:grid;place-items:center;color:white;font-weight:800;font-size:26px;flex-shrink:0}
+.info-row{display:flex;flex-direction:column;gap:3px;padding:12px 0;border-bottom:1px solid var(--border)}
+.info-row:last-child{border:0}
+.info-label{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.5px;text-transform:uppercase}
+.info-value{font-size:14.5px;font-weight:600;color:var(--text)}
+
+/* Wishlist count bubble */
+.wishlist-count{position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:50%;background:var(--red);color:white;font-size:9px;font-weight:700;display:grid;place-items:center}
+
+/* Empty state */
+.empty-state{text-align:center;padding:60px 20px;color:var(--muted)}
+.empty-state-icon{font-size:56px;margin-bottom:16px;display:block}
+.empty-state h3{font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px}
+.empty-state p{font-size:14px;margin-bottom:20px}
+
+/* Chip / tag */
+.chip{display:inline-flex;align-items:center;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:600;gap:5px}
+.chip.blue{background:var(--primary-light);color:var(--primary)}
+.chip.green{background:var(--green-light);color:var(--green)}
+.chip.orange{background:var(--orange-light);color:var(--orange)}
+.chip.red{background:var(--red-light);color:var(--red)}
+.chip.purple{background:var(--purple-light);color:var(--purple)}
+
+/* Progress bar */
+.progress-bar{height:6px;background:#e2e8f0;border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--primary),var(--cyan));transition:width .5s}
+
+/* Category pills for shop */
+.category-pills{display:flex;gap:8px;flex-wrap:wrap;padding:16px 22px;border-bottom:1px solid var(--border)}
+.cat-pill{padding:7px 16px;border-radius:99px;font-size:12.5px;font-weight:600;border:1.5px solid var(--border);background:white;cursor:pointer;transition:all .2s;color:var(--text2)}
+.cat-pill:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
+.cat-pill.active{background:var(--primary);color:white;border-color:var(--primary)}
+
+/* Quick view overlay */
+.quick-view-btn{position:absolute;bottom:0;left:0;right:0;padding:10px;background:rgba(99,102,241,.9);color:white;border:0;font-size:12.5px;font-weight:600;cursor:pointer;opacity:0;transition:opacity .2s;text-align:center;backdrop-filter:blur(2px)}
+.product-img-wrap:hover .quick-view-btn{opacity:1}
+
+/* ══════════════════════════════════════
+   COMPARE
+══════════════════════════════════════ */
+.compare-bar{position:fixed;bottom:0;left:260px;right:0;background:var(--dark);color:white;padding:14px 32px;display:flex;align-items:center;gap:14px;z-index:90;border-top:2px solid var(--primary);transform:translateY(100%);transition:transform .3s}
+.compare-bar.show{transform:translateY(0)}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media(max-width:1200px){.stats{grid-template-columns:repeat(2,1fr)}.product-grid{grid-template-columns:repeat(2,1fr)}.two-col{grid-template-columns:1fr}}
+@media(max-width:900px){.sidebar{width:68px}.sidebar-logo{font-size:0;padding:4px 8px 25px}.sidebar-logo span{font-size:20px}.sidebar-logo .tech-text{display:none}.nav-section,.nav-text,.sidebar-bottom{display:none}.nav-btn{justify-content:center;padding:12px 6px}.nav-btn.active::before{top:0;bottom:0;left:auto;right:0;width:0;height:3px;border-radius:0}.sidebar-user{padding:6px;justify-content:center}.sidebar-user-info{display:none}.main{margin-left:68px;width:calc(100% - 68px)}.compare-bar{left:68px}.product-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.auth{grid-template-columns:1fr}.auth-left{display:none}.product-grid{grid-template-columns:1fr}.content{padding:18px 16px}.topbar{padding:0 16px}.stats{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.hero{padding:24px 20px}.hero h2{font-size:22px}}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     AUTH SCREEN
+══════════════════════════════════════ -->
+<section id="auth" class="auth">
+ <div class="auth-left">
+  <div class="auth-left-inner">
+   <div class="auth-logo">TECH<span>NOVA.</span></div>
+   <div class="eyebrow" style="color:#93c5fd;margin-bottom:12px">NEXT GENERATION ELECTRONICS</div>
+   <h1>Technology<br>for a smarter<br>tomorrow.</h1>
+   <p>Discover premium electronic gadgets, shop your favourites, and manage every order through one seamless digital experience.</p>
+   <div class="auth-features">
+    <div class="auth-feature"><div class="auth-feature-icon">🛍️</div>9000+ Premium Products</div>
+    <div class="auth-feature"><div class="auth-feature-icon">🚀</div>Free Express Delivery</div>
+    <div class="auth-feature"><div class="auth-feature-icon">🔒</div>Secure & Trusted Shopping</div>
+    <div class="auth-feature"><div class="auth-feature-icon">⭐</div>Genuine Customer Reviews</div>
+   </div>
+  </div>
+ </div>
+ <div class="auth-right">
+  <div class="login-card">
+   <div class="login-card-logo">TECH<span>NOVA.</span></div>
+   <h2 id="authTitle">Welcome back</h2>
+   <p class="sub" id="authDesc">Sign in to explore our electronics collection.</p>
+   <form id="loginForm">
+    <div class="field-group">
+     <label class="field-label">Login as</label>
+     <select class="field" id="loginRole">
+      <option value="customer">Customer</option>
+      <option value="admin">Administrator</option>
+     </select>
+    </div>
+    <div class="field-group">
+     <label class="field-label">Email address</label>
+     <input class="field" id="loginEmail" type="email" placeholder="Enter your email" required>
+    </div>
+    <div class="field-group">
+     <label class="field-label">Password</label>
+     <input class="field" id="loginPassword" type="password" placeholder="Enter your password" required>
+    </div>
+    <button class="btn primary full" type="submit">Sign in →</button>
+   </form>
+   <div class="auth-links">
+    <span>Don't have an account? <a href="#" id="registerLink">Create one</a></span>
+    <a href="#" id="backLink" class="hidden">← Back to login</a>
+   </div>
+   <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:18px;line-height:1.6">
+    Demo: <b>admin@technova.demo</b> / admin123<br>
+    Customer: <b>customer@technova.demo</b> / customer123
+   </p>
+  </div>
+ </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     MAIN APP
+══════════════════════════════════════ -->
+<div id="app" class="layout hidden">
+ <aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo"><span class="tech-text">TECH</span><span>NOVA.</span></div>
+  <div class="sidebar-user" id="sidebarUser">
+   <div class="sidebar-avatar" id="sidebarAvatar">U</div>
+   <div class="sidebar-user-info">
+    <div class="sidebar-user-name" id="sidebarName">User</div>
+    <div class="sidebar-user-role" id="sidebarRole">Customer</div>
+   </div>
+  </div>
+  <div class="nav-section">Main Menu</div>
+  <nav id="navigation"></nav>
+  <div class="sidebar-bottom">
+   <div>TECHNOVA © 2026</div>
+   <div style="margin-top:3px">Electronic Gadgets Store</div>
+  </div>
+ </aside>
+ <div class="main">
+  <header class="topbar">
+   <div class="topbar-left">
+    <div class="breadcrumb">Workspace / <b id="breadcrumb">Dashboard</b></div>
+   </div>
+   <div class="topbar-right">
+    <span class="topbar-role" id="roleBadge">CUSTOMER</span>
+    <div class="topbar-avatar" id="avatar">U</div>
+    <button class="btn ghost sm" id="logout">Logout</button>
+   </div>
+  </header>
+  <div class="content" id="content"></div>
+  <div class="footer">© 2026 TECHNOVA. All rights reserved. | Premium Electronic Gadgets</div>
+ </div>
+</div>
+
+<div id="compareBar" class="compare-bar">
+ <span style="font-size:13px;font-weight:600">⚖️ Compare Products</span>
+ <div id="compareItems" style="display:flex;gap:8px;flex:1"></div>
+ <button class="btn primary sm" onclick="showComparison()">Compare Now</button>
+ <button class="btn ghost sm" onclick="clearCompare()">Clear</button>
+</div>
+
+<div id="modalRoot"></div>
+<div id="toastRoot" class="toast-container"></div>
+
+<script>
+"use strict";
+
+/* ══════════════════════════════════════
+   HELPERS
+══════════════════════════════════════ */
+const $=s=>document.querySelector(s);
+const $$=s=>document.querySelectorAll(s);
+const escapeHTML=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+/* ══════════════════════════════════════
+   DEFAULT DATA
+══════════════════════════════════════ */
+const PRODUCT_IMAGES={
+  "iPhone 16 Pro":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&q=80",
+  "Samsung Galaxy S25":"https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=600&q=80",
+  "MacBook Air M4":"https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&q=80",
+  "Sony WH-1000XM5":"https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=600&q=80",
+  "Apple Watch Series 10":"https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=600&q=80",
+  "iPad Air":"https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&q=80",
+  "Canon EOS Camera":"https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=600&q=80",
+  "JBL Bluetooth Speaker":"https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600&q=80",
+  "Gaming Console":"https://images.unsplash.com/photo-1486401899868-0e435ed85128?w=600&q=80",
+  "default":"https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=600&q=80"
+};
+
+const defaultProducts=[
+  {id:1,name:"iPhone 16 Pro",category:"Smartphones",price:119900,originalPrice:129900,stock:12,icon:"📱",description:"Premium smartphone with advanced titanium design, A18 Pro chip, ProMotion display, and next-generation camera system with 5x optical zoom.",isNew:true,isHot:false},
+  {id:2,name:"Samsung Galaxy S25",category:"Smartphones",price:84999,originalPrice:89999,stock:18,icon:"📱",description:"Flagship Android smartphone with dynamic AMOLED display, Snapdragon 8 Elite processor, and AI-powered photography features.",isNew:false,isHot:true},
+  {id:3,name:"MacBook Air M4",category:"Laptops",price:99900,originalPrice:109900,stock:8,icon:"💻",description:"Incredibly thin and light laptop with the groundbreaking M4 chip — superfast performance, all‑day battery life, and no fan.",isNew:true,isHot:false},
+  {id:4,name:"Sony WH-1000XM5",category:"Audio",price:24990,originalPrice:29990,stock:20,icon:"🎧",description:"Industry-leading wireless noise cancelling headphones with Auto NC Optimizer, Crystal Sound, and up to 30 hours battery.",isNew:false,isHot:true},
+  {id:5,name:"Apple Watch Series 10",category:"Wearables",price:42900,originalPrice:45900,stock:15,icon:"⌚",description:"Thinnest Apple Watch ever with advanced health features including ECG, blood oxygen monitoring, and crash detection.",isNew:true,isHot:false},
+  {id:6,name:"iPad Air",category:"Tablets",price:59900,originalPrice:64900,stock:10,icon:"📲",description:"Powerful and versatile tablet with M2 chip, 11-inch Liquid Retina display, and Apple Pencil Pro support for creative work.",isNew:false,isHot:false},
+  {id:7,name:"Canon EOS Camera",category:"Cameras",price:72900,originalPrice:79900,stock:6,icon:"📷",description:"Professional-grade mirrorless camera with 45MP full-frame sensor, Dual Pixel CMOS AF II, and 8K RAW video recording.",isNew:false,isHot:false},
+  {id:8,name:"JBL Bluetooth Speaker",category:"Audio",price:5999,originalPrice:7999,stock:0,icon:"🔊",description:"Portable wireless speaker with JBL Pro Sound, IP67 waterproof rating, Partyboost support, and 24-hour playtime.",isNew:false,isHot:false},
+  {id:9,name:"Gaming Console",category:"Gaming",price:49990,originalPrice:54990,stock:9,icon:"🎮",description:"Next-generation gaming console with 4K 120fps gaming, ray tracing, ultra-fast SSD, and massive game library.",isNew:false,isHot:true}
+];
+
+const defaultReviews=[
+  {id:1,productId:1,customer:"Rahul S.",rating:5,text:"Absolutely stunning phone! The camera is a game changer. Pro res video is incredible.",date:"Nov 15, 2026",helpful:12},
+  {id:2,productId:1,customer:"Priya M.",rating:4,text:"Love the titanium build. Battery could be better but overall fantastic experience.",date:"Nov 10, 2026",helpful:8},
+  {id:3,productId:2,customer:"Amit K.",rating:5,text:"Best Android phone hands down. The AI features are surprisingly useful in daily life.",date:"Nov 12, 2026",helpful:15},
+  {id:4,productId:3,customer:"Sneha R.",rating:5,text:"The M4 chip is blazing fast. As a developer I can run entire Docker stacks without breaking a sweat.",date:"Nov 8, 2026",helpful:21},
+  {id:5,productId:4,customer:"Vikram T.",rating:5,text:"Noise cancellation is unreal. I wear these on flights and can't hear a thing. Worth every rupee.",date:"Nov 5, 2026",helpful:19},
+  {id:6,productId:5,customer:"Meera B.",rating:4,text:"Love the slim design! The fitness tracking is very accurate. Sleep tracking improved my sleep routine.",date:"Nov 3, 2026",helpful:7},
+  {id:7,productId:9,customer:"Arjun P.",rating:5,text:"Gaming at 4K 120fps is mind-blowing. Load times are almost zero. Best console ever made.",date:"Nov 1, 2026",helpful:33}
+];
+
+const initialData={
+  products:defaultProducts,
+  customers:[{id:1,name:"Demo Customer",email:"customer@technova.demo",password:"customer123",phone:"9876543210"}],
+  orders:[],
+  reviews:defaultReviews,
+  nextOrder:1001,
+  nextReview:100
+};
+
+/* ══════════════════════════════════════
+   STATE
+══════════════════════════════════════ */
+function clone(x){return JSON.parse(JSON.stringify(x))}
+function loadData(){
+  try{const d=JSON.parse(localStorage.getItem("technova_v2"));return d?{...clone(initialData),...d}:clone(initialData);}
+  catch(e){return clone(initialData)}
+}
+let db=loadData();
+let session=null;
+let page="dashboard";
+let cart=[];
+let wishlist=[];
+let compareList=[];
+let activeCategory="";
+
+function save(){localStorage.setItem("technova_v2",JSON.stringify(db));}
+function money(n){return "₹"+Number(n).toLocaleString("en-IN");}
+
+/* ══════════════════════════════════════
+   TOAST
+══════════════════════════════════════ */
+function toast(msg,type="info"){
+  const el=document.createElement("div");
+  el.className=`toast ${type}`;
+  const icon=type==="success"?"✅":type==="error"?"❌":"ℹ️";
+  el.innerHTML=`<span>${icon}</span><span>${escapeHTML(msg)}</span>`;
+  $("#toastRoot").appendChild(el);
+  setTimeout(()=>el.remove(),3200);
+}
+
+/* ══════════════════════════════════════
+   AUTH
+══════════════════════════════════════ */
+$("#loginForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const role=$("#loginRole").value;
+  const email=$("#loginEmail").value.trim().toLowerCase();
+  const password=$("#loginPassword").value;
+  if(role==="admin"){
+    if(email!=="admin@technova.demo"||password!=="admin123"){toast("Invalid administrator credentials.","error");return;}
+    login("admin",email,"Admin");
+  }else{
+    const c=db.customers.find(c=>c.email.toLowerCase()===email&&c.password===password);
+    if(!c){toast("Incorrect email or password.","error");return;}
+    login("customer",email,c.name);
+  }
+});
+
+function login(role,email,name){
+  session={role,email,name};
+  $("#auth").classList.add("hidden");
+  $("#app").classList.remove("hidden");
+  $("#roleBadge").textContent=role.toUpperCase();
+  $("#avatar").textContent=(name||email)[0].toUpperCase();
+  $("#sidebarAvatar").textContent=(name||email)[0].toUpperCase();
+  $("#sidebarName").textContent=name||email;
+  $("#sidebarRole").textContent=role==="admin"?"Administrator":"Customer";
+  cart=[];wishlist=[];compareList=[];page="dashboard";
+  buildNav();render();
+  toast(`Welcome back, ${name||email}! 👋`,"success");
+}
+
+$("#logout").onclick=()=>{
+  session=null;cart=[];wishlist=[];compareList=[];
+  $("#app").classList.add("hidden");
+  $("#auth").classList.remove("hidden");
+  $("#loginForm").reset();
+  hideCompareBar();
+  toast("You have been logged out successfully.","info");
+};
+
+/* Customer Registration */
+$("#registerLink").onclick=e=>{
+  e.preventDefault();
+  showModal("Create your account",`
+  <form id="registerForm">
+   <div class="form-grid">
+    ${fField("Full name","name","","text")}
+    ${fField("Phone number","phone","","tel")}
+   </div>
+   ${fField("Email address","email","","email")}
+   ${fField("Password","password","","password")}
+   <button class="btn primary full" style="margin-top:8px">Create account →</button>
+  </form>`);
+  $("#registerForm").onsubmit=e=>{
+    e.preventDefault();
+    const d=Object.fromEntries(new FormData(e.target));
+    if(db.customers.some(c=>c.email.toLowerCase()===d.email.toLowerCase())){toast("Email already registered.","error");return;}
+    db.customers.push({...d,id:Date.now()});
+    save();closeModal();
+    $("#loginEmail").value=d.email;
+    $("#loginRole").value="customer";
+    toast("Account created! Please sign in.","success");
+  };
+};
+
+/* ══════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════ */
+const menus={
+  admin:[
+    ["dashboard","🏠","Dashboard",""],
+    ["products","📦","Products",""],
+    ["customers","👥","Customers",""],
+    ["inventory","📊","Inventory",""],
+    ["orders","🧾","All Orders",""],
+    ["reports","📈","Reports",""]
+  ],
+  customer:[
+    ["dashboard","🏠","Dashboard",""],
+    ["shop","🛍️","Shop Gadgets",""],
+    ["cart","🛒","Cart","cart"],
+    ["wishlist","❤️","Wishlist","wish"],
+    ["orders","🧾","My Orders",""],
+    ["history","⏱️","Order History",""],
+    ["profile","👤","My Profile",""]
+  ]
+};
+
+function cartCount(){return cart.reduce((n,i)=>n+i.qty,0)}
+function wishCount(){return wishlist.length}
+
+function buildNav(){
+  $("#navigation").innerHTML=menus[session.role].map(([id,icon,label,badge])=>{
+    let badgeHtml="";
+    if(badge==="cart"&&cartCount()>0)badgeHtml=`<span class="nav-badge">${cartCount()}</span>`;
+    if(badge==="wish"&&wishCount()>0)badgeHtml=`<span class="nav-badge" style="background:#8b5cf6">${wishCount()}</span>`;
+    return `<button class="nav-btn ${page===id?"active":""}" data-page="${id}">
+    <span class="nav-icon">${icon}</span><span class="nav-text">${label}</span>${badgeHtml}
+    </button>`;
+  }).join("");
+  $$("[data-page]").forEach(btn=>{btn.onclick=()=>navigate(btn.dataset.page);});
+}
+
+function navigate(p){page=p;buildNav();render();window.scrollTo(0,0);}
+
+/* ══════════════════════════════════════
+   RENDER
+══════════════════════════════════════ */
+function render(){
+  const v=$("#content");
+  const pages={dashboard:dashboardPage,products:productsPage,shop:shopPage,customers:customersPage,inventory:inventoryPage,orders:ordersPage,history:historyPage,cart:cartPage,profile:profilePage,reports:reportsPage,wishlist:wishlistPage};
+  v.innerHTML=pages[page]?pages[page]():`<div class="empty-state"><span class="empty-state-icon">🔍</span><h3>Page not found</h3></div>`;
+  $("#breadcrumb").textContent=page.charAt(0).toUpperCase()+page.slice(1);
+}
+
+/* ══════════════════════════════════════
+   COMMON UI HELPERS
+══════════════════════════════════════ */
+function pageHead(title,sub,actions=""){
+  return `<div class="page-head">
+  <div class="page-head-text"><div class="eyebrow">TECHNOVA / STORE</div><h1>${title}</h1><p>${sub}</p></div>
+  <div class="page-head-actions">${actions}</div></div>`;
+}
+function fField(label,name,value="",type="text",required=true){
+  return `<div class="field-group"><label class="field-label">${label}</label>
+  <input class="field" name="${name}" type="${type}" value="${escapeHTML(value)}" ${required?"required":""}></div>`;
+}
+function showModal(title,body){
+  $("#modalRoot").innerHTML=`<div class="modal-bg" id="modalBg">
+  <div class="modal">
+   <div class="modal-head"><h3>${title}</h3><button class="close-btn" onclick="closeModal()">✕ Close</button></div>
+   <div class="modal-body">${body}</div>
+  </div></div>`;
+  $("#modalBg").onclick=e=>{if(e.target.id==="modalBg")closeModal()};
+}
+function closeModal(){$("#modalRoot").innerHTML="";}
+function statusBadge(s){
+  const cls=s==="Delivered"?"status-delivered":s==="Cancelled"?"status-cancelled":s==="Processing"?"status-processing":"status-available";
+  return `<span class="status-badge ${cls}">${escapeHTML(s)}</span>`;
+}
+function stars(rating,count=""){
+  const filled=Math.round(rating);
+  const s="★".repeat(filled)+"☆".repeat(5-filled);
+  return `<div class="product-rating"><span class="stars">${s}</span>${count?`<span class="rating-count">(${count})</span>`:""}</div>`;
+}
+function productImage(p){
+  const url=PRODUCT_IMAGES[p.name]||PRODUCT_IMAGES["default"];
+  return `<img src="${url}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+  <div class="product-img-emoji" style="display:none">${p.icon}</div>`;
+}
+function avgRating(productId){
+  const revs=db.reviews.filter(r=>r.productId===productId);
+  if(!revs.length)return{avg:0,count:0};
+  return{avg:revs.reduce((n,r)=>n+r.rating,0)/revs.length,count:revs.length};
+}
+
+/* ══════════════════════════════════════
+   DASHBOARD
+══════════════════════════════════════ */
+function dashboardPage(){
+  const totalSales=db.orders.filter(o=>o.status!=="Cancelled").reduce((n,o)=>n+o.total,0);
+  const totalUnits=db.products.reduce((n,p)=>n+p.stock,0);
+  if(session.role==="admin"){
+    return `${pageHead("Admin Dashboard","Manage your electronic store from one place.",
+    `<button class="btn primary" onclick="navigate('products')">＋ Add Product</button>`)}
+    <div class="hero">
+     <div class="hero-content">
+      <div class="eyebrow">STORE MANAGEMENT</div>
+      <h2>Welcome to TECHNOVA Admin. 🎛️</h2>
+      <p>Monitor products, stock, customers and orders in real time. Take action from one powerful dashboard.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+       <button class="btn primary" onclick="navigate('products')">Manage Products →</button>
+       <button class="btn secondary" onclick="navigate('reports')">View Reports</button>
+      </div>
+     </div>
+    </div>
+    <div class="stats">
+     <div class="stat-card blue"><div class="stat-label">Total Products</div><div class="stat-value">${db.products.length}</div><div class="stat-sub">📦 In catalogue</div><div class="stat-icon">📦</div></div>
+     <div class="stat-card cyan"><div class="stat-label">Registered Customers</div><div class="stat-value">${db.customers.length}</div><div class="stat-sub">👥 Active users</div><div class="stat-icon">👥</div></div>
+     <div class="stat-card orange"><div class="stat-label">Total Orders</div><div class="stat-value">${db.orders.length}</div><div class="stat-sub">🧾 All time</div><div class="stat-icon">🧾</div></div>
+     <div class="stat-card green"><div class="stat-label">Total Revenue</div><div class="stat-value" style="font-size:20px">${money(totalSales)}</div><div class="stat-sub">💰 Net sales</div><div class="stat-icon">₹</div></div>
+    </div>
+    <div class="grid two-col">
+     <div class="panel"><div class="panel-head"><h3>🧾 Recent Orders</h3><button class="btn secondary sm" onclick="navigate('orders')">View all</button></div><div class="panel-body" style="padding:0"><div class="table-wrap">${ordersTable(db.orders.slice(-5).reverse())}</div></div></div>
+     <div class="panel"><div class="panel-head"><h3>⚡ Quick Actions</h3></div><div class="panel-body" style="display:flex;flex-direction:column;gap:10px">
+      <button class="btn primary full" onclick="openAddProduct()">＋ Add New Product</button>
+      <button class="btn secondary full" onclick="navigate('customers')">👥 Manage Customers</button>
+      <button class="btn secondary full" onclick="navigate('inventory')">📊 Check Inventory</button>
+      <button class="btn secondary full" onclick="navigate('reports')">📈 View Reports</button>
+     </div></div>
+    </div>
+    <div class="panel"><div class="panel-head"><h3>📦 Low Stock Alert</h3></div><div class="panel-body" style="padding:0">
+     <div class="table-wrap"><table><thead><tr><th>Product</th><th>Category</th><th>Stock</th><th>Status</th><th>Action</th></tr></thead><tbody>
+     ${db.products.filter(p=>p.stock<=5).map(p=>`<tr><td><b>${escapeHTML(p.name)}</b></td><td><span class="chip blue">${escapeHTML(p.category)}</span></td><td><b style="color:${p.stock===0?'var(--red)':'var(--orange)'}">${p.stock}</b></td><td>${statusBadge(p.stock===0?"Out of Stock":"Low Stock")}</td><td><button class="btn secondary sm" onclick="updateStock(${p.id})">Restock</button></td></tr>`).join("")||'<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--muted)">✅ All products are well stocked!</td></tr>'}
+     </tbody></table></div>
+    </div></div>`;
+  }
+
+  // Customer dashboard
+  return `${pageHead("Your Dashboard","Welcome back! Here's your shopping overview.")}
+  <div class="hero">
+   <div class="hero-content">
+    <div class="eyebrow">TECHNOLOGY MADE EASY</div>
+    <h2>Discover your next favourite gadget. 🚀</h2>
+    <p>Explore premium electronics, check availability, compare products and shop with confidence.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+     <button class="btn primary" onclick="navigate('shop')">Explore Gadgets →</button>
+     <button class="btn secondary" onclick="navigate('cart')">🛒 View Cart ${cartCount()>0?`(${cartCount()})`:""}</button>
+    </div>
+   </div>
+  </div>
+  <div class="stats">
+   <div class="stat-card blue"><div class="stat-label">Available Products</div><div class="stat-value">${db.products.filter(p=>p.stock>0).length}</div><div class="stat-sub">📦 In stock</div><div class="stat-icon">🛍️</div></div>
+   <div class="stat-card orange"><div class="stat-label">Cart Items</div><div class="stat-value">${cartCount()}</div><div class="stat-sub" onclick="navigate('cart')" style="cursor:pointer;color:var(--primary)">🛒 View cart →</div><div class="stat-icon">🛒</div></div>
+   <div class="stat-card purple"><div class="stat-label">Wishlist</div><div class="stat-value">${wishCount()}</div><div class="stat-sub" onclick="navigate('wishlist')" style="cursor:pointer;color:var(--primary)">❤️ View →</div><div class="stat-icon">❤️</div></div>
+   <div class="stat-card green"><div class="stat-label">My Orders</div><div class="stat-value">${myOrders().length}</div><div class="stat-sub" onclick="navigate('orders')" style="cursor:pointer;color:var(--primary)">🧾 View all →</div><div class="stat-icon">🧾</div></div>
+  </div>
+  <div class="panel"><div class="panel-head"><h3>⭐ Featured Gadgets</h3><button class="btn secondary sm" onclick="navigate('shop')">Shop all</button></div>
+  <div style="padding:20px"><div class="product-grid">${db.products.slice(0,3).map(p=>productCard(p)).join("")}</div></div></div>
+  ${myOrders().length?`<div class="panel"><div class="panel-head"><h3>🧾 Recent Orders</h3><button class="btn secondary sm" onclick="navigate('orders')">View all</button></div><div class="panel-body" style="padding:0"><div class="table-wrap">${ordersTable(myOrders().slice(-3).reverse())}</div></div></div>`:""}`;
+}
+
+/* ══════════════════════════════════════
+   PRODUCT CARD
+══════════════════════════════════════ */
+function productCard(p){
+  const{avg,count}=avgRating(p.id);
+  const disc=p.originalPrice&&p.originalPrice>p.price?Math.round((p.originalPrice-p.price)/p.originalPrice*100):0;
+  const inWish=wishlist.includes(p.id);
+  const inComp=compareList.includes(p.id);
+  return `<article class="product-card">
+  <div class="product-img-wrap">
+   ${productImage(p)}
+   <button class="quick-view-btn" onclick="viewProduct(${p.id})">🔍 Quick View</button>
+   <div class="product-badge-wrap">
+    <span class="product-badge badge-category">${escapeHTML(p.category)}</span>
+    ${p.isNew?'<span class="product-badge badge-new">NEW</span>':""}
+    ${p.isHot?'<span class="product-badge badge-hot">🔥 HOT</span>':""}
+    ${p.stock===0?'<span class="product-badge badge-out">OUT OF STOCK</span>':""}
+   </div>
+   <button class="product-wishlist ${inWish?"active":""}" onclick="toggleWishlist(${p.id})" title="Wishlist">${inWish?"❤️":"🤍"}</button>
+  </div>
+  <div class="product-info">
+   ${count>0?stars(avg,count):`<div style="font-size:11px;color:var(--muted)">No reviews yet</div>`}
+   <div class="product-name">${escapeHTML(p.name)}</div>
+   <div class="product-desc">${escapeHTML(p.description)}</div>
+   <div class="product-price-row">
+    <div class="product-price">${money(p.price)}</div>
+    ${p.originalPrice&&p.originalPrice>p.price?`<div class="product-price-old">${money(p.originalPrice)}</div><div class="product-discount">-${disc}%</div>`:""}
+   </div>
+   <div class="product-stock ${p.stock>0?"in":"out"}">
+    ${p.stock>0?`<span>●</span><span>${p.stock} in stock</span>`:`<span>●</span><span>Out of stock</span>`}
+   </div>
+   <div class="product-actions">
+    <button class="btn secondary sm" onclick="viewProduct(${p.id})">Details</button>
+    ${session.role==="customer"?`<button class="btn primary sm" onclick="addToCart(${p.id})" ${p.stock<=0?"disabled":""}>🛒 Add</button>`:""}
+    ${session.role==="admin"?`<button class="btn secondary sm" onclick="openEditProduct(${p.id})">✏️ Edit</button><button class="btn danger sm" onclick="deleteProduct(${p.id})">🗑️</button>`:""}
+   </div>
+   ${session.role==="customer"?`<button class="btn ghost sm" style="width:100%;margin-top:5px;font-size:12px;${inComp?"background:var(--primary-light);color:var(--primary)":""}" onclick="toggleCompare(${p.id})">⚖️ ${inComp?"Remove from":"Add to"} Compare</button>`:""}
+  </div>
+  </article>`;
+}
+
+/* ══════════════════════════════════════
+   VIEW PRODUCT (DETAIL MODAL)
+══════════════════════════════════════ */
+function viewProduct(id){
+  const p=db.products.find(x=>x.id===id);
+  if(!p)return;
+  const{avg,count}=avgRating(p.id);
+  const disc=p.originalPrice&&p.originalPrice>p.price?Math.round((p.originalPrice-p.price)/p.originalPrice*100):0;
+  const revs=db.reviews.filter(r=>r.productId===id);
+  const url=PRODUCT_IMAGES[p.name]||PRODUCT_IMAGES["default"];
+
+  showModal(p.name,`
+  <div style="border-radius:var(--radius);overflow:hidden;height:220px;background:#f1f5f9;margin-bottom:18px">
+   <img src="${url}" alt="${escapeHTML(p.name)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px">
+   <div>
+    <span class="chip blue">${escapeHTML(p.category)}</span>
+    ${p.isNew?'<span class="chip green" style="margin-left:5px">NEW</span>':""}
+    ${p.isHot?'<span class="chip orange" style="margin-left:5px">🔥 HOT</span>':""}
+   </div>
+   <div style="text-align:right">
+    <div style="font-size:24px;font-weight:800">${money(p.price)}</div>
+    ${p.originalPrice&&p.originalPrice>p.price?`<div style="font-size:13px;color:var(--muted);text-decoration:line-through">${money(p.originalPrice)}</div>`:""}
+    ${disc?`<div class="chip green">Save ${disc}%</div>`:""}
+   </div>
+  </div>
+  ${count>0?stars(avg,count)+"<br>":""}
+  <p style="color:var(--text2);font-size:14px;line-height:1.6;margin-bottom:14px">${escapeHTML(p.description)}</p>
+  <div style="display:flex;gap:12px;margin-bottom:16px;font-size:13px">
+   <span class="${p.stock>0?"chip green":"chip red"}">${p.stock>0?p.stock+" in stock":"Out of stock"}</span>
+  </div>
+  ${session.role==="customer"?`<div style="display:flex;gap:10px;margin-bottom:20px">
+   <button class="btn primary full" onclick="closeModal();addToCart(${p.id})" ${p.stock<=0?"disabled":""}>🛒 Add to Cart</button>
+   <button class="btn secondary" onclick="toggleWishlist(${p.id});closeModal()">❤️ Wishlist</button>
+  </div>`:""}
+  <hr style="margin:16px 0;border:0;border-top:1px solid var(--border)">
+  <h4 style="font-size:14px;font-weight:700;margin-bottom:14px">Customer Reviews (${revs.length})</h4>
+  ${revs.length?revs.map(r=>`
+   <div class="review-card">
+    <div class="review-header">
+     <div class="reviewer"><div class="reviewer-avatar">${r.customer[0]}</div><div><div class="reviewer-name">${escapeHTML(r.customer)}</div><div class="reviewer-date">${escapeHTML(r.date)}</div></div></div>
+     <div class="review-stars">${"★".repeat(r.rating)}${"☆".repeat(5-r.rating)}</div>
+    </div>
+    <div class="review-text">${escapeHTML(r.text)}</div>
+    <div class="review-helpful">Was this helpful? <button onclick="markHelpful(${r.id})">👍 Helpful (${r.helpful})</button></div>
+   </div>`).join(""):`<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px">No reviews yet. Be the first to review!</div>`}
+  ${session.role==="customer"?`<button class="btn secondary full" style="margin-top:8px" onclick="closeModal();openReview(${p.id})">✍️ Write a Review</button>`:""}
+  `);
+}
+
+/* ══════════════════════════════════════
+   SHOP PAGE
+══════════════════════════════════════ */
+function shopPage(){
+  const categories=[...new Set(db.products.map(p=>p.category))];
+  return `${pageHead("Explore Gadgets","Browse our premium electronics collection and find your next favourite gadget.")}
+  <div class="panel" style="margin-bottom:20px">
+   <div class="toolbar">
+    <div class="search-wrap"><span class="search-icon">🔍</span><input class="search-input" id="shopSearch" placeholder="Search smartphones, laptops, audio..." oninput="filterShop()"></div>
+    <select class="filter-select" id="sortSelect" onchange="filterShop()">
+     <option value="">Sort by: Featured</option>
+     <option value="price-asc">Price: Low to High</option>
+     <option value="price-desc">Price: High to Low</option>
+     <option value="rating">Highest Rated</option>
+     <option value="name">Name A–Z</option>
+     <option value="new">New Arrivals</option>
+    </select>
+    <select class="filter-select" id="stockFilter" onchange="filterShop()">
+     <option value="">All Items</option>
+     <option value="in">In Stock Only</option>
+    </select>
+   </div>
+   <div class="category-pills" id="catPills">
+    <button class="cat-pill active" onclick="setCat('',this)">All</button>
+    ${categories.map(c=>`<button class="cat-pill" onclick="setCat('${escapeHTML(c)}',this)">${escapeHTML(c)}</button>`).join("")}
+   </div>
+   <div style="padding:20px">
+    <div id="shopResultInfo" style="font-size:12.5px;color:var(--muted);margin-bottom:14px"></div>
+    <div class="product-grid" id="productList">${db.products.map(p=>productCard(p)).join("")}</div>
+   </div>
+  </div>`;
+}
+
+function setCat(cat,el){
+  activeCategory=cat;
+  $$(".cat-pill").forEach(b=>b.classList.remove("active"));
+  el.classList.add("active");
+  filterShop();
+}
+
+function filterShop(){
+  const q=($("#shopSearch")?.value||"").toLowerCase();
+  const sort=$("#sortSelect")?.value||"";
+  const stockF=$("#stockFilter")?.value||"";
+  let list=db.products.filter(p=>{
+    const match=(p.name+" "+p.category+" "+p.description).toLowerCase().includes(q);
+    const catMatch=!activeCategory||p.category===activeCategory;
+    const stockMatch=stockF!=="in"||(p.stock>0);
+    return match&&catMatch&&stockMatch;
+  });
+  if(sort==="price-asc")list.sort((a,b)=>a.price-b.price);
+  else if(sort==="price-desc")list.sort((a,b)=>b.price-a.price);
+  else if(sort==="rating")list.sort((a,b)=>avgRating(b.id).avg-avgRating(a.id).avg);
+  else if(sort==="name")list.sort((a,b)=>a.name.localeCompare(b.name));
+  else if(sort==="new")list=list.filter(p=>p.isNew).concat(list.filter(p=>!p.isNew));
+  const infoEl=$("#shopResultInfo");
+  if(infoEl)infoEl.textContent=`Showing ${list.length} product${list.length!==1?"s":""}${activeCategory?" in "+activeCategory:""}${q?" for '"+q+"'":""}`;
+  const el=$("#productList");
+  if(el)el.innerHTML=list.map(p=>productCard(p)).join("")||`<div class="empty-state" style="grid-column:1/-1"><span class="empty-state-icon">🔍</span><h3>No products found</h3><p>Try different keywords or clear the filters.</p></div>`;
+}
+
+/* ══════════════════════════════════════
+   PRODUCTS PAGE (ADMIN)
+══════════════════════════════════════ */
+function productsPage(){
+  return `${pageHead("Product Management","Add, edit, delete and manage your store catalogue.",
+  `<button class="btn primary" onclick="openAddProduct()">＋ Add Product</button>`)}
+  <div class="panel">
+   <div class="toolbar">
+    <div class="search-wrap"><span class="search-icon">🔍</span><input class="search-input" id="productSearch" placeholder="Search by name or category..." oninput="filterAdminProducts()"></div>
+    <select class="filter-select" id="productCatFilter" onchange="filterAdminProducts()">
+     <option value="">All Categories</option>
+     ${[...new Set(db.products.map(p=>p.category))].map(c=>`<option>${escapeHTML(c)}</option>`).join("")}
+    </select>
+   </div>
+   <div style="padding:20px"><div class="product-grid" id="productList">${db.products.map(p=>productCard(p)).join("")}</div></div>
+  </div>`;
+}
+
+function filterAdminProducts(){
+  const q=($("#productSearch")?.value||"").toLowerCase();
+  const cat=$("#productCatFilter")?.value||"";
+  const list=db.products.filter(p=>(p.name+" "+p.category).toLowerCase().includes(q)&&(!cat||p.category===cat));
+  const el=$("#productList");
+  if(el)el.innerHTML=list.map(p=>productCard(p)).join("")||`<div class="empty-state" style="grid-column:1/-1"><span class="empty-state-icon">📦</span><h3>No products found</h3></div>`;
+}
+
+function openAddProduct(){openEditProduct(null);}
+function openEditProduct(id){
+  const p=db.products.find(x=>x.id===id)||{};
+  showModal(id?"Edit Product":"Add New Product",`
+  <form id="productForm">
+   <div class="form-grid">
+    ${fField("Product Name","name",p.name||"")}
+    ${fField("Category","category",p.category||"")}
+    ${fField("Price (₹)","price",p.price||"","number")}
+    ${fField("Original Price (₹)","originalPrice",p.originalPrice||"","number",false)}
+    ${fField("Stock Quantity","stock",p.stock??0,"number")}
+    ${fField("Product Icon (emoji)","icon",p.icon||"📦")}
+   </div>
+   <div class="field-group"><label class="field-label">Description</label><textarea class="field" name="description" rows="3" required style="resize:vertical">${escapeHTML(p.description||"")}</textarea></div>
+   <div style="display:flex;gap:12px">
+    <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer"><input type="checkbox" name="isNew" value="1" ${p.isNew?"checked":""}> Mark as NEW</label>
+    <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer"><input type="checkbox" name="isHot" value="1" ${p.isHot?"checked":""}> Mark as HOT 🔥</label>
+   </div>
+   <button class="btn primary full" style="margin-top:16px">💾 Save Product</button>
+  </form>`);
+  $("#productForm").onsubmit=e=>{
+    e.preventDefault();
+    const fd=new FormData(e.target);
+    const d={name:fd.get("name"),category:fd.get("category"),price:Number(fd.get("price")),originalPrice:Number(fd.get("originalPrice"))||null,stock:Number(fd.get("stock")),icon:fd.get("icon")||"📦",description:fd.get("description"),isNew:fd.get("isNew")==="1",isHot:fd.get("isHot")==="1"};
+    if(d.price<=0||d.stock<0)return toast("Enter a valid price and stock quantity.","error");
+    if(id){Object.assign(p,d);}else{db.products.push({...d,id:Date.now()});}
+    save();closeModal();render();toast("Product saved successfully!","success");
+  };
+}
+
+function deleteProduct(id){
+  const p=db.products.find(x=>x.id===id);
+  if(!p)return;
+  if(!confirm(`Delete "${p.name}" from the store?`))return;
+  db.products=db.products.filter(x=>x.id!==id);
+  save();render();toast("Product removed.","info");
+}
+
+/* ══════════════════════════════════════
+   WISHLIST
+══════════════════════════════════════ */
+function toggleWishlist(id){
+  if(wishlist.includes(id)){
+    wishlist=wishlist.filter(x=>x!==id);
+    toast("Removed from wishlist.","info");
+  }else{
+    wishlist.push(id);
+    toast("Added to wishlist! ❤️","success");
+  }
+  buildNav();
+}
+
+function wishlistPage(){
+  const items=db.products.filter(p=>wishlist.includes(p.id));
+  if(!items.length)return `${pageHead("My Wishlist","Products you've saved for later.")}
+  <div class="panel" style="padding:40px"><div class="empty-state"><span class="empty-state-icon">❤️</span><h3>Your wishlist is empty</h3><p>Browse products and click the heart icon to save them here.</p><button class="btn primary" onclick="navigate('shop')">Browse Gadgets →</button></div></div>`;
+  return `${pageHead("My Wishlist",`${items.length} saved product${items.length!==1?"s":""}`,
+  `<button class="btn danger" onclick="clearWishlist()">🗑️ Clear All</button>`)}
+  <div class="product-grid">${items.map(p=>productCard(p)).join("")}</div>`;
+}
+
+function clearWishlist(){wishlist=[];buildNav();render();toast("Wishlist cleared.","info");}
+
+/* ══════════════════════════════════════
+   COMPARE
+══════════════════════════════════════ */
+function toggleCompare(id){
+  if(compareList.includes(id)){
+    compareList=compareList.filter(x=>x!==id);
+  }else{
+    if(compareList.length>=3){toast("You can compare up to 3 products at once.","error");return;}
+    compareList.push(id);
+  }
+  updateCompareBar();render();
+}
+
+function updateCompareBar(){
+  const bar=$("#compareBar");
+  if(!bar)return;
+  if(compareList.length>0){
+    bar.classList.add("show");
+    $("#compareItems").innerHTML=compareList.map(id=>{
+      const p=db.products.find(x=>x.id===id);
+      return p?`<span style="background:#ffffff18;padding:5px 10px;border-radius:5px;font-size:12px">${escapeHTML(p.name)}</span>`:"";
+    }).join("");
+  }else{
+    bar.classList.remove("show");
+  }
+}
+
+function hideCompareBar(){compareList=[];const bar=$("#compareBar");if(bar)bar.classList.remove("show");}
+function clearCompare(){compareList=[];updateCompareBar();render();toast("Compare list cleared.","info");}
+
+function showComparison(){
+  if(compareList.length<2){toast("Select at least 2 products to compare.","error");return;}
+  const products=compareList.map(id=>db.products.find(x=>x.id===id)).filter(Boolean);
+  const attrs=[["Price","price",v=>money(v)],["Category","category",v=>v],["Stock","stock",v=>v+" units"],["Rating","id",id=>{const{avg,count}=avgRating(id);return avg?`${"★".repeat(Math.round(avg))} (${count})`:"No reviews"}]];
+  showModal("Product Comparison",`
+  <div style="overflow-x:auto">
+  <table style="white-space:normal;min-width:400px">
+   <thead><tr><th style="padding:10px 12px;font-size:11px">Feature</th>${products.map(p=>`<th style="padding:10px 12px;font-size:12px;text-align:center">${escapeHTML(p.name)}</th>`).join("")}</tr></thead>
+   <tbody>
+   <tr><td style="padding:10px 12px;font-size:12px;font-weight:600">Image</td>${products.map(p=>{const url=PRODUCT_IMAGES[p.name]||PRODUCT_IMAGES["default"];return `<td style="padding:10px 12px;text-align:center"><img src="${url}" style="width:70px;height:70px;object-fit:cover;border-radius:8px" onerror="this.style.display='none'"></td>`;}).join("")}</tr>
+   ${attrs.map(([label,key,fmt])=>`<tr><td style="padding:10px 12px;font-size:12px;font-weight:600">${label}</td>${products.map(p=>`<td style="padding:10px 12px;font-size:13px;text-align:center">${fmt(key==="id"?p.id:p[key])}</td>`).join("")}</tr>`).join("")}
+   </tbody>
+  </table>
+  </div>
+  <div style="display:flex;gap:8px;margin-top:14px">
+  ${products.map(p=>`<button class="btn primary" style="flex:1;font-size:12px" onclick="closeModal();addToCart(${p.id})" ${p.stock<=0?"disabled":""}>Add "${escapeHTML(p.name.split(" ")[0])}"</button>`).join("")}
+  </div>`);
+}
+
+/* ══════════════════════════════════════
+   CART
+══════════════════════════════════════ */
+function addToCart(id){
+  const p=db.products.find(x=>x.id===id);
+  if(!p||p.stock<=0)return toast("This product is currently unavailable.","error");
+  const item=cart.find(x=>x.id===id);
+  if(item){if(item.qty>=p.stock)return toast("Maximum available quantity reached.","error");item.qty++;}
+  else cart.push({id,qty:1});
+  buildNav();
+  toast(`${p.name} added to cart! 🛒`,"success");
+}
+
+function changeQty(id,change){
+  const item=cart.find(x=>x.id===id);
+  const p=db.products.find(x=>x.id===id);
+  if(!item||!p)return;
+  const next=item.qty+change;
+  if(next<=0)cart=cart.filter(x=>x.id!==id);
+  else if(next>p.stock)return toast("Not enough stock available.","error");
+  else item.qty=next;
+  buildNav();render();
+}
+
+function removeCart(id){
+  cart=cart.filter(x=>x.id!==id);
+  buildNav();render();
+  toast("Item removed from cart.","info");
+}
+
+function cartTotal(){return cart.reduce((n,i)=>{const p=db.products.find(x=>x.id===i.id);return n+(p?p.price*i.qty:0);},0);}
+
+function cartPage(){
+  const items=cart.filter(i=>db.products.some(p=>p.id===i.id));
+  if(!items.length)return `${pageHead("Shopping Cart","Your cart is empty.")}
+  <div class="panel" style="padding:40px"><div class="empty-state"><span class="empty-state-icon">🛒</span><h3>Your cart is empty</h3><p>Browse our collection and add products you love.</p><button class="btn primary" onclick="navigate('shop')">Browse Gadgets →</button></div></div>`;
+  const tax=Math.round(cartTotal()*0.18);
+  const grand=cartTotal()+0; // Tax included display
+  return `${pageHead("Shopping Cart",`${items.length} item${items.length>1?"s":""} in your cart`)}
+  <div class="grid two-col">
+   <div class="panel"><div class="panel-head"><h3>🛒 Cart Items (${items.length})</h3><button class="btn danger sm" onclick="clearCart()">🗑️ Clear</button></div>
+   <div class="panel-body">
+   ${items.map(i=>{const p=db.products.find(x=>x.id===i.id);const url=PRODUCT_IMAGES[p.name]||PRODUCT_IMAGES["default"];return `<div class="cart-item">
+    <div class="cart-item-img"><img src="${url}" alt="${escapeHTML(p.name)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\\'display:grid;place-items:center;height:100%;font-size:24px\\'>${p.icon}</div>'"></div>
+    <div class="cart-item-info"><div class="cart-item-name">${escapeHTML(p.name)}</div><div class="cart-item-price">${money(p.price)} each</div></div>
+    <div class="qty-ctrl"><button onclick="changeQty(${p.id},-1)">−</button><span>${i.qty}</span><button onclick="changeQty(${p.id},1)">+</button></div>
+    <div style="font-size:15px;font-weight:700;min-width:80px;text-align:right">${money(p.price*i.qty)}</div>
+    <button class="btn danger sm icon-only" onclick="removeCart(${p.id})" title="Remove">🗑️</button>
+   </div>`;}).join("")}
+   </div></div>
+   <div>
+    <div class="panel"><div class="panel-head"><h3>💳 Order Summary</h3></div><div class="panel-body">
+     <div class="order-summary-box">
+      <div class="summary-line"><span>Subtotal (${items.reduce((n,i)=>n+i.qty,0)} items)</span><b>${money(cartTotal())}</b></div>
+      <div class="summary-line"><span>Delivery</span><b style="color:var(--green)">FREE</b></div>
+      <div class="summary-line"><span>Tax & GST</span><b>Included</b></div>
+      <div class="summary-line"><span>Total</span><span>${money(grand)}</span></div>
+     </div>
+     <button class="btn primary full" style="margin-top:14px" onclick="checkout()">Proceed to Checkout →</button>
+     <button class="btn ghost full" style="margin-top:8px" onclick="navigate('shop')">Continue Shopping</button>
+    </div></div>
+    <div class="panel"><div class="panel-head"><h3>🛡️ Safe Shopping</h3></div><div class="panel-body" style="font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:8px">
+     <div>✅ Secure SSL-encrypted checkout</div>
+     <div>✅ Free returns within 7 days</div>
+     <div>✅ Genuine products guaranteed</div>
+     <div>✅ 24/7 customer support</div>
+    </div></div>
+   </div>
+  </div>`;
+}
+
+function clearCart(){if(!confirm("Remove all items from your cart?"))return;cart=[];buildNav();render();toast("Cart cleared.","info");}
+
+/* ══════════════════════════════════════
+   CHECKOUT
+══════════════════════════════════════ */
+function checkout(){
+  if(!cart.length)return toast("Your cart is empty.","error");
+  for(const item of cart){const p=db.products.find(x=>x.id===item.id);if(!p||p.stock<item.qty)return toast("Stock changed. Please review your cart.","error");}
+  const total=cartTotal();
+  showModal("🔒 Secure Checkout",`
+  <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:16px;font-size:13px;color:#065f46">
+   ✅ Your order is protected. Demo checkout — no real payment collected.
+  </div>
+  <h4 style="font-size:14px;font-weight:700;margin-bottom:10px">Order Summary</h4>
+  <div style="margin-bottom:14px">
+  ${cart.map(i=>{const p=db.products.find(x=>x.id===i.id);return `<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px solid var(--border)"><span>${escapeHTML(p.name)} × ${i.qty}</span><b>${money(p.price*i.qty)}</b></div>`;}).join("")}
+   <div style="display:flex;justify-content:space-between;padding:10px 0;font-size:16px;font-weight:800"><span>Total</span><span>${money(total)}</span></div>
+  </div>
+  <form id="checkoutForm">
+   ${fField("Full delivery address","address","","text")}
+   ${fField("Phone number","phone","","tel")}
+   <div class="field-group"><label class="field-label">Payment Method</label>
+   <div style="display:flex;flex-direction:column;gap:8px">
+    <label class="payment-method selected" id="pm-cod"><input type="radio" name="payment" value="Cash on Delivery" checked style="margin-right:8px"> 💵 Cash on Delivery</label>
+    <label class="payment-method" id="pm-upi"><input type="radio" name="payment" value="UPI (Demo)" style="margin-right:8px"> 📱 UPI Payment (Demo)</label>
+    <label class="payment-method" id="pm-card"><input type="radio" name="payment" value="Card (Demo)" style="margin-right:8px"> 💳 Credit / Debit Card (Demo)</label>
+   </div>
+   </div>
+   <button class="btn primary full" style="margin-top:8px">Place Order 🎉</button>
+  </form>`);
+  // Payment method selection styling
+  document.querySelectorAll(".payment-method").forEach(el=>{
+    el.querySelector("input").addEventListener("change",()=>{
+      document.querySelectorAll(".payment-method").forEach(e=>e.classList.remove("selected"));
+      el.classList.add("selected");
+    });
+  });
+  $("#checkoutForm").onsubmit=e=>{
+    e.preventDefault();
+    for(const i of cart){const p=db.products.find(x=>x.id===i.id);if(!p||p.stock<i.qty){closeModal();return toast("Insufficient stock. Please update your cart.","error");}}
+    const d=Object.fromEntries(new FormData(e.target));
+    const customer=db.customers.find(c=>c.email===session.email);
+    const order={id:db.nextOrder++,email:session.email,customer:customer?.name||session.email,items:cart.map(i=>({...i,name:db.products.find(p=>p.id===i.id).name,price:db.products.find(p=>p.id===i.id).price})),total,address:d.address,phone:d.phone,payment:d.payment,status:"Processing",date:new Date().toLocaleString()};
+    cart.forEach(i=>db.products.find(p=>p.id===i.id).stock-=i.qty);
+    db.orders.push(order);
+    cart=[];
+    save();closeModal();buildNav();
+    page="orders";buildNav();render();
+    toast(`🎉 Order #${order.id} placed successfully!`,"success");
+  };
+}
+
+/* ══════════════════════════════════════
+   REVIEWS
+══════════════════════════════════════ */
+function openReview(productId){
+  const p=db.products.find(x=>x.id===productId);
+  if(!p)return;
+  let selectedRating=5;
+  showModal(`✍️ Review: ${p.name}`,`
+  <div style="margin-bottom:16px">
+   <label class="field-label">Your Rating</label>
+   <div class="star-input" id="starInput">
+    <span onclick="setRating(1)" class="on">★</span>
+    <span onclick="setRating(2)" class="on">★</span>
+    <span onclick="setRating(3)" class="on">★</span>
+    <span onclick="setRating(4)" class="on">★</span>
+    <span onclick="setRating(5)" class="on">★</span>
+   </div>
+   <div id="ratingLabel" style="font-size:12px;color:var(--muted);margin-top:5px">5 stars – Excellent</div>
+  </div>
+  <form id="reviewForm">
+   <div class="field-group"><label class="field-label">Your Review</label>
+    <textarea class="field" name="text" rows="4" placeholder="Share your experience with this product..." required style="resize:vertical"></textarea>
+   </div>
+   <button class="btn primary full">Submit Review ⭐</button>
+  </form>`);
+
+  window.setRating=function(n){
+    selectedRating=n;
+    const labels=["","Terrible","Poor","Average","Good","Excellent"];
+    $$(".star-input span").forEach((s,i)=>{s.classList.toggle("on",i<n);});
+    const lbl=$("#ratingLabel");
+    if(lbl)lbl.textContent=`${n} star${n>1?"s":""} – ${labels[n]}`;
+  };
+
+  $("#reviewForm").onsubmit=e=>{
+    e.preventDefault();
+    const text=new FormData(e.target).get("text");
+    const customer=db.customers.find(c=>c.email===session.email);
+    db.reviews.push({id:db.nextReview++,productId,customer:customer?.name||session.email,rating:selectedRating,text,date:new Date().toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"}),helpful:0});
+    save();closeModal();
+    toast("Review submitted! Thank you. ⭐","success");
+  };
+}
+
+function markHelpful(reviewId){
+  const r=db.reviews.find(x=>x.id===reviewId);
+  if(r){r.helpful++;save();toast("Marked as helpful! 👍","success");}
+}
+
+/* ══════════════════════════════════════
+   CUSTOMERS (ADMIN)
+══════════════════════════════════════ */
+function customersPage(){
+  return `${pageHead("Customer Management","View and manage registered customer accounts.")}
+  <div class="panel">
+   <div class="toolbar">
+    <div class="search-wrap"><span class="search-icon">🔍</span><input class="search-input" placeholder="Search customer..." oninput="filterTable(this,'customerTable')"></div>
+   </div>
+   <div class="table-wrap" id="customerTable"><table>
+    <thead><tr><th>Customer</th><th>Email</th><th>Phone</th><th>Orders</th><th>Spent</th><th>Actions</th></tr></thead>
+    <tbody>${db.customers.map(c=>{
+      const ords=db.orders.filter(o=>o.email===c.email);
+      const spent=ords.filter(o=>o.status!=="Cancelled").reduce((n,o)=>n+o.total,0);
+      return `<tr>
+      <td><div style="display:flex;align-items:center;gap:10px"><div class="reviewer-avatar" style="width:32px;height:32px;font-size:12px">${c.name[0]}</div><b>${escapeHTML(c.name)}</b></div></td>
+      <td>${escapeHTML(c.email)}</td><td>${escapeHTML(c.phone||"—")}</td>
+      <td><span class="chip blue">${ords.length} orders</span></td>
+      <td><b>${money(spent)}</b></td>
+      <td style="display:flex;gap:6px"><button class="btn secondary sm" onclick="viewCustomer(${c.id})">View</button><button class="btn danger sm" onclick="deleteCustomer(${c.id})">Delete</button></td>
+      </tr>`;}).join("")||'<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--muted)">No customers found.</td></tr>'}
+    </tbody></table></div>
+  </div>`;
+}
+
+function viewCustomer(id){
+  const c=db.customers.find(x=>x.id===id);
+  if(!c)return;
+  const ords=db.orders.filter(o=>o.email===c.email);
+  const spent=ords.filter(o=>o.status!=="Cancelled").reduce((n,o)=>n+o.total,0);
+  showModal("Customer Details",`
+  <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">
+   <div class="avatar-lg">${c.name[0]}</div>
+   <div><div style="font-size:18px;font-weight:800">${escapeHTML(c.name)}</div><div style="color:var(--muted);font-size:13px">Customer since ${new Date(c.id).toLocaleDateString("en-IN",{month:"short",year:"numeric"})}</div></div>
+  </div>
+  <div class="stats" style="grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+   <div class="stat-card blue" style="padding:14px"><div class="stat-label">Total Orders</div><div class="stat-value" style="font-size:22px">${ords.length}</div></div>
+   <div class="stat-card green" style="padding:14px"><div class="stat-label">Total Spent</div><div class="stat-value" style="font-size:18px">${money(spent)}</div></div>
+  </div>
+  <div class="info-row"><div class="info-label">Email</div><div class="info-value">${escapeHTML(c.email)}</div></div>
+  <div class="info-row"><div class="info-label">Phone</div><div class="info-value">${escapeHTML(c.phone||"Not provided")}</div></div>
+  `);
+}
+
+function deleteCustomer(id){
+  if(!confirm("Delete this customer account permanently?"))return;
+  db.customers=db.customers.filter(c=>c.id!==id);
+  save();render();toast("Customer deleted.","info");
+}
+
+/* ══════════════════════════════════════
+   INVENTORY (ADMIN)
+══════════════════════════════════════ */
+function inventoryPage(){
+  const low=db.products.filter(p=>p.stock>0&&p.stock<=5).length;
+  const out=db.products.filter(p=>p.stock===0).length;
+  return `${pageHead("Inventory Management","Monitor stock levels and update product quantities.")}
+  <div class="stats" style="grid-template-columns:repeat(3,1fr);margin-bottom:20px">
+   <div class="stat-card green"><div class="stat-label">In Stock Products</div><div class="stat-value">${db.products.filter(p=>p.stock>0).length}</div><div class="stat-icon">📦</div></div>
+   <div class="stat-card orange"><div class="stat-label">Low Stock (≤5)</div><div class="stat-value">${low}</div><div class="stat-icon">⚠️</div></div>
+   <div class="stat-card blue" style="--color:var(--red)"><div class="stat-label">Out of Stock</div><div class="stat-value" style="color:var(--red)">${out}</div><div class="stat-icon">🚫</div></div>
+  </div>
+  <div class="panel"><div class="panel-head"><h3>📊 Stock Levels</h3></div><div class="table-wrap"><table>
+   <thead><tr><th>Product</th><th>Category</th><th>Stock</th><th>Stock Level</th><th>Status</th><th>Update</th></tr></thead>
+   <tbody>${db.products.map(p=>{
+    const pct=Math.min(100,Math.round(p.stock/20*100));
+    const color=p.stock===0?"var(--red)":p.stock<=5?"var(--orange)":"var(--green)";
+    return `<tr>
+    <td><div style="display:flex;align-items:center;gap:10px"><span style="font-size:22px">${p.icon}</span><b>${escapeHTML(p.name)}</b></div></td>
+    <td><span class="chip blue">${escapeHTML(p.category)}</span></td>
+    <td><b style="color:${color}">${p.stock}</b></td>
+    <td style="min-width:120px"><div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${color}"></div></div></td>
+    <td>${p.stock===0?statusBadge("Out of Stock"):p.stock<=5?statusBadge("Low Stock"):statusBadge("Available")}</td>
+    <td><button class="btn secondary sm" onclick="updateStock(${p.id})">Update</button></td>
+    </tr>`;}).join("")}
+   </tbody></table></div></div>`;
+}
+
+function updateStock(id){
+  const p=db.products.find(x=>x.id===id);
+  showModal(`📦 Update Stock: ${p.name}`,`
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+   <span style="font-size:36px">${p.icon}</span>
+   <div><div style="font-weight:700;font-size:15px">${escapeHTML(p.name)}</div><div style="color:var(--muted);font-size:13px">Current stock: <b>${p.stock} units</b></div></div>
+  </div>
+  <form id="stockForm">
+   <div class="field-group"><label class="field-label">New Stock Quantity</label><input class="field" type="number" name="stock" min="0" value="${p.stock}" required></div>
+   <button class="btn primary full">Update Quantity</button>
+  </form>`);
+  $("#stockForm").onsubmit=e=>{e.preventDefault();p.stock=Number(new FormData(e.target).get("stock"));save();closeModal();render();toast("Inventory updated!","success");};
+}
+
+/* ══════════════════════════════════════
+   ORDERS
+══════════════════════════════════════ */
+function myOrders(){return db.orders.filter(o=>o.email===session.email);}
+
+function ordersTable(list){
+  if(!list.length)return `<div class="empty-state" style="padding:40px"><span class="empty-state-icon">🧾</span><h3>No orders found</h3><p>Orders will appear here once placed.</p></div>`;
+  return `<table><thead><tr><th>Order ID</th><th>Customer</th><th>Date</th><th>Amount</th><th>Payment</th><th>Status</th><th>Action</th></tr></thead><tbody>
+  ${list.map(o=>`<tr>
+  <td><b style="color:var(--primary)">#${o.id}</b></td>
+  <td>${escapeHTML(o.customer)}</td>
+  <td style="color:var(--muted);font-size:12px">${escapeHTML(o.date)}</td>
+  <td><b>${money(o.total)}</b></td>
+  <td style="font-size:12px">${escapeHTML(o.payment||"—")}</td>
+  <td>${statusBadge(o.status)}</td>
+  <td><button class="btn secondary sm" onclick="viewOrder(${o.id})">View</button></td>
+  </tr>`).join("")}
+  </tbody></table>`;
+}
+
+function ordersPage(){
+  const list=session.role==="admin"?db.orders.slice().reverse():myOrders().slice().reverse();
+  return `${pageHead(session.role==="admin"?"All Orders":"My Orders","Track and manage all order details.")}
+  <div class="panel">
+   <div class="toolbar"><div class="search-wrap"><span class="search-icon">🔍</span><input class="search-input" placeholder="Search order ID or customer..." oninput="filterTable(this,'ordersTable')"></div>
+   ${session.role==="admin"?`<select class="filter-select" onchange="filterOrderStatus(this)">
+    <option value="">All Statuses</option>
+    <option>Processing</option><option>Delivered</option><option>Cancelled</option>
+   </select>`:""}
+   </div>
+   <div class="table-wrap" id="ordersTable">${ordersTable(list)}</div>
+  </div>`;
+}
+
+function filterOrderStatus(sel){
+  const val=sel.value.toLowerCase();
+  document.querySelectorAll("#ordersTable tbody tr").forEach(row=>{
+    row.style.display=val?row.innerText.toLowerCase().includes(val)?"":"none":"";
+  });
+}
+
+function historyPage(){
+  const list=myOrders().slice().reverse();
+  return `${pageHead("Order History","A complete history of your previous purchases.")}
+  <div class="panel"><div class="panel-head"><h3>🧾 All Orders</h3><span style="font-size:12px;color:var(--muted)">${list.length} order${list.length!==1?"s":""}</span></div>
+  <div class="table-wrap">${ordersTable(list)}</div></div>`;
+}
+
+function viewOrder(id){
+  const o=db.orders.find(x=>x.id===id);
+  if(!o)return;
+  showModal(`Order #${o.id}`,`
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+   ${statusBadge(o.status)}
+   <span class="chip blue">${escapeHTML(o.payment||"—")}</span>
+  </div>
+  <div class="info-row"><div class="info-label">Customer</div><div class="info-value">${escapeHTML(o.customer)}</div></div>
+  <div class="info-row"><div class="info-label">Order Date</div><div class="info-value">${escapeHTML(o.date)}</div></div>
+  <div class="info-row"><div class="info-label">Delivery Address</div><div class="info-value">${escapeHTML(o.address)}</div></div>
+  <div class="info-row"><div class="info-label">Phone</div><div class="info-value">${escapeHTML(o.phone)}</div></div>
+  <h4 style="margin:16px 0 10px;font-size:14px;font-weight:700">Order Items</h4>
+  ${o.items.map(i=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px"><span>${escapeHTML(i.name)} × ${i.qty}</span><b>${money(i.price*i.qty)}</b></div>`).join("")}
+  <div style="display:flex;justify-content:space-between;padding:12px 0;font-size:17px;font-weight:800;margin-top:4px"><span>Total</span><span>${money(o.total)}</span></div>
+  ${session.role==="admin"?`<hr style="margin:14px 0;border:0;border-top:1px solid var(--border)">
+  <label class="field-label" style="margin-bottom:8px;display:block">UPDATE ORDER STATUS</label>
+  <div style="display:flex;gap:10px">
+   <select class="field" id="orderStatus" style="flex:1"><option ${o.status==="Processing"?"selected":""}>Processing</option><option ${o.status==="Delivered"?"selected":""}>Delivered</option><option ${o.status==="Cancelled"?"selected":""}>Cancelled</option></select>
+   <button class="btn primary" onclick="updateOrder(${o.id})">Update</button>
+  </div>`:""}
+  `);
+}
+
+function updateOrder(id){
+  const o=db.orders.find(x=>x.id===id);
+  const next=$("#orderStatus").value;
+  if(next==="Cancelled"&&o.status!=="Cancelled"){o.items.forEach(i=>{const p=db.products.find(p=>p.id===i.id);if(p)p.stock+=i.qty;});}
+  o.status=next;
+  save();closeModal();render();toast(`Order #${id} status updated to ${next}.`,"success");
+}
+
+/* ══════════════════════════════════════
+   PROFILE
+══════════════════════════════════════ */
+function profilePage(){
+  const c=db.customers.find(x=>x.email===session.email);
+  if(!c)return `<div class="panel" style="padding:40px"><div class="empty-state"><h3>Profile not found</h3></div></div>`;
+  const ords=myOrders();
+  const spent=ords.filter(o=>o.status!=="Cancelled").reduce((n,o)=>n+o.total,0);
+  return `${pageHead("My Profile","Manage your personal account details.")}
+  <div class="grid two-col">
+   <div>
+    <div class="panel"><div class="panel-head"><h3>👤 Personal Information</h3><button class="btn secondary sm" onclick="editProfile()">✏️ Edit</button></div>
+    <div class="panel-body">
+     <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
+      <div class="avatar-lg">${c.name[0]}</div>
+      <div><div style="font-size:20px;font-weight:800">${escapeHTML(c.name)}</div><div style="color:var(--muted);font-size:13px">Customer Account</div></div>
+     </div>
+     <div class="info-row"><div class="info-label">Full Name</div><div class="info-value">${escapeHTML(c.name)}</div></div>
+     <div class="info-row"><div class="info-label">Email Address</div><div class="info-value">${escapeHTML(c.email)}</div></div>
+     <div class="info-row"><div class="info-label">Phone Number</div><div class="info-value">${escapeHTML(c.phone||"Not provided")}</div></div>
+    </div></div>
+    <div class="panel"><div class="panel-head"><h3>🔐 Change Password</h3></div>
+    <div class="panel-body"><form id="pwForm">
+     ${fField("Current Password","current","","password")}
+     ${fField("New Password","newpw","","password")}
+     <button class="btn primary">Update Password</button>
+    </form></div></div>
+   </div>
+   <div>
+    <div class="stats" style="grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+     <div class="stat-card blue" style="padding:16px"><div class="stat-label">Total Orders</div><div class="stat-value" style="font-size:24px">${ords.length}</div></div>
+     <div class="stat-card green" style="padding:16px"><div class="stat-label">Total Spent</div><div class="stat-value" style="font-size:18px">${money(spent)}</div></div>
+    </div>
+    <div class="panel"><div class="panel-head"><h3>❤️ Wishlist</h3><button class="btn secondary sm" onclick="navigate('wishlist')">View all</button></div>
+    <div class="panel-body" style="font-size:13px;color:var(--muted)">
+     ${wishlist.length?wishlist.map(id=>{const p=db.products.find(x=>x.id===id);return p?`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)"><span>${p.icon}</span><span style="flex:1;font-weight:600;color:var(--text)">${escapeHTML(p.name)}</span><span>${money(p.price)}</span></div>`:""}).join(""):`<div class="empty-state" style="padding:20px"><p>No wishlist items yet.</p><button class="btn secondary sm" onclick="navigate('shop')">Browse</button></div>`}
+    </div></div>
+   </div>
+  </div>`;
+}
+
+function editProfile(){
+  const c=db.customers.find(x=>x.email===session.email);
+  showModal("Edit Profile",`<form id="profileForm">
+  ${fField("Full Name","name",c.name)}
+  ${fField("Phone Number","phone",c.phone||"")}
+  <button class="btn primary full">Save Changes</button></form>`);
+  $("#profileForm").onsubmit=e=>{
+    e.preventDefault();const d=Object.fromEntries(new FormData(e.target));Object.assign(c,d);
+    session.name=d.name;
+    $("#sidebarName").textContent=d.name;
+    save();closeModal();render();toast("Profile updated!","success");
+  };
+}
+
+/* ══════════════════════════════════════
+   REPORTS (ADMIN)
+══════════════════════════════════════ */
+function reportsPage(){
+  const sales=db.orders.filter(o=>o.status!=="Cancelled").reduce((n,o)=>n+o.total,0);
+  const delivered=db.orders.filter(o=>o.status==="Delivered").length;
+  const processing=db.orders.filter(o=>o.status==="Processing").length;
+  const cancelled=db.orders.filter(o=>o.status==="Cancelled").length;
+  const totalStock=db.products.reduce((n,p)=>n+p.stock,0);
+  const stockValue=db.products.reduce((n,p)=>n+p.stock*p.price,0);
+  const topProducts=db.orders.flatMap(o=>o.items).reduce((acc,i)=>{acc[i.name]=(acc[i.name]||0)+i.qty;return acc;},{});
+  const topList=Object.entries(topProducts).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  return `${pageHead("Store Reports","Analytics and performance overview of your store.")}
+  <div class="stats">
+   <div class="stat-card green"><div class="stat-label">Net Revenue</div><div class="stat-value" style="font-size:20px">${money(sales)}</div><div class="stat-sub">💰 Excluding cancellations</div><div class="stat-icon">₹</div></div>
+   <div class="stat-card blue"><div class="stat-label">Total Orders</div><div class="stat-value">${db.orders.length}</div><div class="stat-sub">🧾 All time</div><div class="stat-icon">🧾</div></div>
+   <div class="stat-card cyan"><div class="stat-label">Delivered</div><div class="stat-value">${delivered}</div><div class="stat-sub">✅ Successfully delivered</div><div class="stat-icon">✅</div></div>
+   <div class="stat-card orange"><div class="stat-label">Processing</div><div class="stat-value">${processing}</div><div class="stat-sub">⏳ In progress</div><div class="stat-icon">⏳</div></div>
+  </div>
+  <div class="grid two-col">
+   <div class="panel"><div class="panel-head"><h3>📦 Inventory Summary</h3></div><div class="panel-body" style="padding:0"><table>
+    <thead><tr><th>Product</th><th>Stock</th><th>Stock Value</th></tr></thead>
+    <tbody>${db.products.map(p=>`<tr><td>${p.icon} ${escapeHTML(p.name)}</td><td>${p.stock}</td><td>${money(p.stock*p.price)}</td></tr>`).join("")}
+    <tr style="background:#f8fafc"><td colspan="2"><b>Total Stock Value</b></td><td><b>${money(stockValue)}</b></td></tr>
+    </tbody></table></div></div>
+   <div>
+    <div class="panel"><div class="panel-head"><h3>🏆 Top Selling Products</h3></div><div class="panel-body" style="display:flex;flex-direction:column;gap:10px">
+    ${topList.length?topList.map(([name,qty],i)=>`<div style="display:flex;align-items:center;gap:10px"><span style="font-size:18px;min-width:28px;text-align:center">${["🥇","🥈","🥉","4️⃣","5️⃣"][i]}</span><span style="flex:1;font-size:13px;font-weight:600">${escapeHTML(name)}</span><span class="chip blue">${qty} sold</span></div>`).join(""):`<div style="text-align:center;color:var(--muted);font-size:13px">No sales data yet.</div>`}
+    </div></div>
+    <div class="panel"><div class="panel-head"><h3>📊 Order Status</h3></div><div class="panel-body" style="display:flex;flex-direction:column;gap:12px">
+     ${[["Processing",processing,"var(--orange)"],["Delivered",delivered,"var(--green)"],["Cancelled",cancelled,"var(--red)"]].map(([label,count,color])=>{
+       const pct=db.orders.length?Math.round(count/db.orders.length*100):0;
+       return `<div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px"><span style="font-weight:600">${label}</span><span style="color:var(--muted)">${count} (${pct}%)</span></div><div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${color}"></div></div></div>`;
+     }).join("")}
+    </div></div>
+   </div>
+  </div>`;
+}
+
+/* ══════════════════════════════════════
+   TABLE FILTER
+══════════════════════════════════════ */
+function filterTable(input,id){
+  const q=input.value.toLowerCase();
+  document.querySelectorAll("#"+id+" tbody tr").forEach(row=>{
+    row.style.display=row.innerText.toLowerCase().includes(q)?"":"none";
+  });
+}
+
+/* ══════════════════════════════════════
+   KEYBOARD SHORTCUTS
+══════════════════════════════════════ */
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape")closeModal();
+  if(e.key==="/"&&document.activeElement.tagName!=="INPUT"&&session){e.preventDefault();document.querySelector(".search-input")?.focus();}
+});
+</script>
+</body>
+</html>
